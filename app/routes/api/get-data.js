@@ -1,6 +1,7 @@
 // app/routes/api/get-data.js
 import { json } from "@remix-run/node";
-import { fetchData } from "../entry.server"; // Import your MongoDB query function
+import { fetchData } from "../../entry.server";
+
 
 // Action handler for GET requests to fetch data from MongoDB
 export async function loader() {
