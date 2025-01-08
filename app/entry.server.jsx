@@ -71,24 +71,40 @@ export async function fetchMongoData() {
   }
 }
 
-export async function fetchData() {
-  try {
-    // Connect to the MongoDB database
-    await client.connect();
+// export async function fetchData() {
+//   try {
+//     // Connect to the MongoDB database
+//     await client.connect();
     
-    // Get the database and collection
-    const db = client.db('Trevor'); // Replace with your database name
-    const collection = db.collection('Trevor'); // Replace with your collection name
+//     // Get the database and collection
+//     const db = client.db('Trevor'); // Replace with your database name
+//     const collection = db.collection('Trevor'); // Replace with your collection name
 
-    // Fetch all documents from the collection
-    const data = await collection.find({}).toArray();
+//     // Fetch all documents from the collection
+//     const data = await collection.find({}).toArray();
     
+//     return data;
+//   } catch (error) {
+//     console.error("Error fetching data:", error);
+//     throw error; // Throw error so we can catch it in the loader
+//   } finally {
+//     // Close the connection after operation
+//     await client.close();
+//   }
+// }
+
+export async function fetchData(data) {
+  try {
+    await client.connect();
+    const db = client.db(dbName);
+    const collection = db.collection(collectionName);
+
+    const data = await collection.find({}).toArray();
     return data;
   } catch (error) {
-    console.error("Error fetching data:", error);
-    throw error; // Throw error so we can catch it in the loader
+    console.error("Error inserting data into MongoDB:", error);
+    throw error;
   } finally {
-    // Close the connection after operation
     await client.close();
   }
 }
