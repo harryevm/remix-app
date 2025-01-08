@@ -71,39 +71,39 @@ export async function fetchMongoData() {
   }
 }
 
-// export async function insertData(customData) {
-//   try {
-//     await client.connect();
-//     console.log("Connected to MongoDB");
-
-//     const db = client.db("Trevor"); // Use your database name
-//     const collection = db.collection("Trevor"); // Use your collection name
-
-//     // Insert custom data into the collection
-//     const result = await collection.insertOne(customData);
-//     console.log("Data inserted:", result);
-
-//     return result; // Return the result for further use if needed
-//   } catch (error) {
-//     console.error("Error inserting data:", error);
-//     throw error;
-//   } finally {
-//     await client.close();
-//   }
-// }
-
-export async function insertData(data) {
+export async function insertData(customData) {
   try {
     await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection(collectionName);
+    console.log("Connected to MongoDB");
 
-    const result = await collection.insertOne(data);
-    return result;
+    const db = client.db("Trevor"); // Use your database name
+    const collection = db.collection("Trevor"); // Use your collection name
+
+    // Insert custom data into the collection
+    const result = await collection.insertOne(customData);
+    console.log("Data inserted:", result);
+
+    return result; // Return the result for further use if needed
   } catch (error) {
-    console.error("Error inserting data into MongoDB:", error);
+    console.error("Error inserting data:", error);
     throw error;
   } finally {
     await client.close();
   }
 }
+
+// export async function insertData(data) {
+//   try {
+//     await client.connect();
+//     const db = client.db(dbName);
+//     const collection = db.collection(collectionName);
+
+//     const result = await collection.insertOne(data);
+//     return result;
+//   } catch (error) {
+//     console.error("Error inserting data into MongoDB:", error);
+//     throw error;
+//   } finally {
+//     await client.close();
+//   }
+// }
