@@ -71,6 +71,11 @@ export async function fetchMongoData() {
   }
 }
 
+const data = await fetchMongoData();
+console.log("Data fetched:", data);
+return json(data);
+
+
 export async function insertData(customData) {
   try {
     await client.connect();
