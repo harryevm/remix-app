@@ -76,7 +76,7 @@ export async function insertData(customData) {
     console.log("Connected to MongoDB");
 
     const db = client.db("Trevor"); // Use your database name
-    const collection = db.collection("documents"); // Use your collection name
+    const collection = db.collection("Trevor"); // Use your collection name
 
     // Insert custom data into the collection
     const result = await collection.insertOne(customData);
