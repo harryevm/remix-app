@@ -4,6 +4,28 @@ import { RemixServer } from "@remix-run/react";
 import { createReadableStreamFromReadable } from "@remix-run/node";
 import { isbot } from "isbot";
 import { addDocumentResponseHeaders } from "./shopify.server";
+import { MongoClient } from "mongodb";
+
+const url =
+  "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(url);
+export async function fetchMongoData() {
+  try {
+    await client.connect();
+    console.log("Connected successfully to MongoDB");
+
+    const db = client.db("testDbName"); // Replace with your database name
+    const collection = db.collection("testCollection"); // Replace with your collection name
+    const data = await collection.find({}).toArray();
+
+    return data;
+  } catch (error) {
+    console.error("Error connecting to MongoDB:", error);
+    throw error;
+  } finally {
+    await client.close();
+  }
+}
 
 export const streamTimeout = 5000;
 
