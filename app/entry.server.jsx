@@ -69,3 +69,24 @@ export async function fetchMongoData() {
     await client.close();
   }
 }
+
+export async function insertData(customData) {
+  try {
+    await client.connect();
+    console.log("Connected to MongoDB");
+
+    const db = client.db("Trevor"); // Use your database name
+    const collection = db.collection("documents"); // Use your collection name
+
+    // Insert custom data into the collection
+    const result = await collection.insertOne(customData);
+    console.log("Data inserted:", result);
+
+    return result; // Return the result for further use if needed
+  } catch (error) {
+    console.error("Error inserting data:", error);
+    throw error;
+  } finally {
+    await client.close();
+  }
+}
