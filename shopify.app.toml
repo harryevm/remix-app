@@ -1,0 +1,36 @@
+# Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
+
+client_id = "37e49e51914544bf83dcf74502684490"
+application_url = "https://ideal-winner-6xvpvrr79rv357v-4040.app.github.dev"
+embedded = true
+name = "remix-app-form"
+handle = "remix-app-form"
+
+[webhooks]
+api_version = "2025-01"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/uninstalled" ]
+  uri = "/webhooks/app/uninstalled"
+
+  [[webhooks.subscriptions]]
+  topics = [ "app/scopes_update" ]
+  uri = "/webhooks/app/scopes_update"
+
+[access_scopes]
+# Learn more at https://shopify.dev/docs/apps/tools/cli/configuration#access_scopes
+scopes = "write_products"
+
+[auth]
+redirect_urls = [
+  "https://ideal-winner-6xvpvrr79rv357v-4040.app.github.dev/auth/callback",
+  "https://ideal-winner-6xvpvrr79rv357v-4040.app.github.dev/auth/shopify/callback",
+  "https://ideal-winner-6xvpvrr79rv357v-4040.app.github.dev/api/auth/callback"
+]
+
+[pos]
+embedded = false
+
+[build]
+dev_store_url = "trevorf-testing.myshopify.com"
+automatically_update_urls_on_dev = true
