@@ -7,7 +7,7 @@ import { fetchData, fetchMongoData } from "../../entry.server";
 // Action handler for GET requests to fetch data from MongoDB
 export async function loader() {
     try {
-      const data = await fetchData();
+      const data = await fetchMongoData();
       return data;
     } catch (error) {
       console.error("Error fetching data:", error);

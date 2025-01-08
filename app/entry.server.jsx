@@ -58,52 +58,14 @@ export default async function handleRequest(
 }
 
 
-// export async function fetchMongoData() {
-//   try {
-//     await client.connect();
-//     console.log("Connected to MongoDB");
-//     return { connected: true, message: "Successfully connected to MongoDB" };
-//   } catch (error) {
-//     console.error("Error connecting to MongoDB:", error);
-//     return { connected: false, message: error.message };
-//   } finally {
-//     await client.close();
-//   }
-// }
-
-// export async function fetchData() {
-//   try {
-//     // Connect to the MongoDB database
-//     await client.connect();
-    
-//     // Get the database and collection
-//     const db = client.db('Trevor'); // Replace with your database name
-//     const collection = db.collection('Trevor'); // Replace with your collection name
-
-//     // Fetch all documents from the collection
-//     const data = await collection.find({}).toArray();
-    
-//     return data;
-//   } catch (error) {
-//     console.error("Error fetching data:", error);
-//     throw error; // Throw error so we can catch it in the loader
-//   } finally {
-//     // Close the connection after operation
-//     await client.close();
-//   }
-// }
-
-export async function fetchData(data) {
+export async function fetchMongoData() {
   try {
     await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection(collectionName);
-
-    const data = await collection.find({}).toArray();
-    return data;
+    console.log("Connected to MongoDB");
+    return { connected: true, message: "Successfully connected to MongoDB" };
   } catch (error) {
-    console.error("Error inserting data into MongoDB:", error);
-    throw error;
+    console.error("Error connecting to MongoDB:", error);
+    return { connected: false, message: error.message };
   } finally {
     await client.close();
   }
