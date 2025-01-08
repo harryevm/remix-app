@@ -58,18 +58,18 @@ export default async function handleRequest(
 }
 
 
-export async function fetchMongoData() {
-  try {
-    await client.connect();
-    console.log("Connected to MongoDB");
-    return { connected: true, message: "Successfully connected to MongoDB" };
-  } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
-    return { connected: false, message: error.message };
-  } finally {
-    await client.close();
-  }
-}
+// export async function fetchMongoData() {
+//   try {
+//     await client.connect();
+//     console.log("Connected to MongoDB");
+//     return { connected: true, message: "Successfully connected to MongoDB" };
+//   } catch (error) {
+//     console.error("Error connecting to MongoDB:", error);
+//     return { connected: false, message: error.message };
+//   } finally {
+//     await client.close();
+//   }
+// }
 
 // export async function fetchData() {
 //   try {
