@@ -11,32 +11,22 @@ import {
   BlockStack,
 } from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
+import { fetchMongoData } from "../entry.server";
+
+export const loader = async () => {
+  try {
+    const data = await fetchMongoData();
+    return json({ success: true, data });
+  } catch (error) {
+    console.error("Error in loader:", error);
+    return json({ success: false, error: "Failed to fetch data" });
+  }
+};
 
 export default function AdditionalPage() {
-  const [mongoData, setMongoData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { success, data, error } = useLoaderData();
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("/api/mongo-data"); // Replace with your API endpoint
-        const result = await response.json();
 
-        if (result.success) {
-          setMongoData(result.data);
-        } else {
-          setError(result.error);
-        }
-      } catch (err) {
-        setError("Failed to fetch MongoDB data");
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-  }, []);
 
   return (
     <Page>
@@ -45,13 +35,12 @@ export default function AdditionalPage() {
         <Layout.Section>
           <Card>
             <BlockStack gap="300">
-              {loading && <Text>Loading...</Text>}
-              {error && <Text>Error: {error}</Text>}
-              {!loading && !error && (
-                <Text as="p" variant="bodyMd">
-                  MongoDB Data: <pre>{JSON.stringify(mongoData, null, 2)}</pre>
-                </Text>
-              )}
+            <h1>MongoDB Data</h1>
+      {success ? (
+        <pre>{JSON.stringify(data, null, 2)}</pre>
+      ) : (
+        <p>Error: {error}</p>
+      )}
             </BlockStack>
           </Card>
         </Layout.Section>

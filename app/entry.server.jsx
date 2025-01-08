@@ -12,15 +12,15 @@ const client = new MongoClient(url);
 export async function fetchMongoData() {
   try {
     await client.connect();
-    console.log("Connected successfully to MongoDB");
+    console.log("Connected to MongoDB");
 
-    const db = client.db("testDbName"); // Replace with your database name
-    const collection = db.collection("testCollection"); // Replace with your collection name
+    const db = client.db("Trevor"); // Replace with your database name
+    const collection = db.collection("Trevor"); // Replace with your collection name
+
     const data = await collection.find({}).toArray();
-
     return data;
   } catch (error) {
-    console.error("Error connecting to MongoDB:", error);
+    console.error("Error fetching data:", error);
     throw error;
   } finally {
     await client.close();
@@ -71,3 +71,23 @@ export default async function handleRequest(
     setTimeout(abort, streamTimeout + 1000);
   });
 }
+
+
+// server/api.js
+import express from "express";
+import { fetchMongoData } from "./mongo.js";
+
+const app = express();
+
+app.get("/api/mongo-data", async (_req, res) => {
+  try {
+    const data = await fetchMongoData();
+    res.json({ success: true, data });
+  } catch (error) {
+    res.status(500).json({ success: false, error: "Failed to fetch data" });
+  }
+});
+
+app.listen(3000, () => {
+  console.log("Server is running on http://localhost:3000");
+});
