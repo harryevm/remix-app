@@ -8,7 +8,7 @@ import { fetchData, fetchMongoData } from "../../entry.server";
 export async function loader() {
     try {
       const data = await fetchData();
-      return json(data);
+      return data;
     } catch (error) {
       console.error("Error fetching data:", error);
       return json({ error: "Failed to fetch data" }, { status: 500 });
