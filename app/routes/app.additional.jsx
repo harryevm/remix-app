@@ -16,10 +16,11 @@ import { fetchMongoData } from "../entry.server";
 export const loader = async () => {
   try {
     const data = await fetchMongoData();
-    return json({ success: true, data });
+    console.log(data);
+    // return json({ success: true, data });
   } catch (error) {
     console.error("Error in loader:", error);
-    return json({ success: false, error: "Failed to fetch data" });
+    // return json({ success: false, error: "Failed to fetch data" });
   }
 };
 

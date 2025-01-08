@@ -14,11 +14,6 @@ export async function fetchMongoData() {
     await client.connect();
     console.log("Connected to MongoDB");
 
-    const db = client.db("Trevor"); // Replace with your database name
-    const collection = db.collection("Trevor"); // Replace with your collection name
-
-    const data = await collection.find({}).toArray();
-    return data;
   } catch (error) {
     console.error("Error fetching data:", error);
     throw error;
