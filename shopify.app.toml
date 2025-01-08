@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "37e49e51914544bf83dcf74502684490"
-application_url = "https://ideal-winner-6xvpvrr79rv357v-4040.app.github.dev"
+application_url = "https://burlington-characterization-toolkit-differential.trycloudflare.com"
 embedded = true
 name = "remix-app-form"
 handle = "remix-app-form"
@@ -23,9 +23,9 @@ scopes = "write_products"
 
 [auth]
 redirect_urls = [
-  "https://ideal-winner-6xvpvrr79rv357v-4040.app.github.dev/auth/callback",
-  "https://ideal-winner-6xvpvrr79rv357v-4040.app.github.dev/auth/shopify/callback",
-  "https://ideal-winner-6xvpvrr79rv357v-4040.app.github.dev/api/auth/callback"
+  "https://burlington-characterization-toolkit-differential.trycloudflare.com/auth/callback",
+  "https://burlington-characterization-toolkit-differential.trycloudflare.com/auth/shopify/callback",
+  "https://burlington-characterization-toolkit-differential.trycloudflare.com/api/auth/callback"
 ]
 
 [pos]
