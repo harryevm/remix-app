@@ -7,7 +7,7 @@ import { addDocumentResponseHeaders } from "./shopify.server";
 import { MongoClient } from "mongodb";
 
 const url =
-  "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
+  "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority&tls=true";
 const client = new MongoClient(url);
 
 
