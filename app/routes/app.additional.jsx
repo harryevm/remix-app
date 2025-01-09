@@ -10,8 +10,8 @@ import {
 } from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
 import { json } from "@remix-run/node";
-import { useLoaderData } from "@remix-run/react";
-import { fetchMongoData, insertData } from "../entry.server";
+// import { useLoaderData } from "@remix-run/react";
+// import { fetchMongoData, insertData } from "../entry.server";
 
 
 // export const loader = async () => {
@@ -39,7 +39,7 @@ import { fetchMongoData, insertData } from "../entry.server";
 
 
 export default function AdditionalPage() {
-  const { connected, message } = useLoaderData();
+  // const { connected, message } = useLoaderData();
   return (
     <Page>
       <TitleBar title="Additional page" />
@@ -66,7 +66,7 @@ export default function AdditionalPage() {
                 link to it in the <Code>&lt;NavMenu&gt;</Code> component found
                 in <Code>app/routes/app.jsx</Code>.
               </Text>
-             
+              
             </BlockStack>
           </Card>
         </Layout.Section>
