@@ -48,11 +48,12 @@ export async function action({ request }) {
     const result = await insertMongoData(jsonData);
     
     // return json({ success: true, insertedId: result.insertedId });
-    return json({ success: true, insertedId: result.insertedId }, {
-        headers: corsHeaders,
-    });
+    return json({ success: true, insertedId: result.insertedId }, { headers: corsHeaders });
   } catch (error) {
     console.error('Error inserting data:', error);
-    return json({ success: false, message: 'Error inserting data' }, { status: 500 });
+    return json({ success: false, message: 'Error inserting data' }, {
+        status: 500,
+        headers: corsHeaders,
+        });
   }
 }
