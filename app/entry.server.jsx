@@ -8,6 +8,9 @@ import { MongoClient } from "mongodb";
 
 const url =
   "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
+const database = 'Trevor';
+const collection = 'Trevor';
+
 const client = new MongoClient(url);
 
 export const streamTimeout = 5000;
@@ -58,7 +61,9 @@ export default async function handleRequest(
 export async function fetchMongoData(data) {
   try {
     await client.connect();
-    return 'Connected to MongoDB';
+    db = client.db(database);
+    collection = client.db(collection);
+    return { client, db, collection };
 
   } catch (error) {
     console.error("Error fetching data:", error);
