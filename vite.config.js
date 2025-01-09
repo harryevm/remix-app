@@ -39,6 +39,9 @@ if (host === "localhost") {
 
 export default defineConfig({
   server: {
+    proxy:{
+      '/api':'https://remix-app-88og.onrender.com/api/insert_data'
+    },
     port: Number(process.env.PORT || 3000),
     hmr: hmrConfig,
     fs: {
