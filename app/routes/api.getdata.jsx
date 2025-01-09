@@ -13,5 +13,5 @@ export async function loader() {
   } catch (error) {
     console.error('Error fetching data:', error);
     return new Response('Error fetching data', { status: 500 });
-  }
+  } 
 }

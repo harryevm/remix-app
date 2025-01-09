@@ -63,7 +63,7 @@ export async function fetchMongoData() {
   try {
     // Reuse client if already connected
     if (!client) {
-      client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology: true });
+      client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
     }
 
     // Connect if not already connected
