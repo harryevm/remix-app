@@ -30,30 +30,27 @@ import { json } from '@remix-run/node';  // For JSON response
 import { insertMongoData } from '../entry.server';
 
 export async function action({ request }) {
-    const corsHeaders = {
-        'Access-Control-Allow-Origin': 'https://trevorf-testing.myshopify.com',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
+    const headers = {
+        'Access-Control-Allow-Origin': '*',  // For testing. Change to your Shopify domain in production
+        'Access-Control-Allow-Methods': 'POST',
+        'Access-Control-Allow-Headers': 'Content-Type'
       };
     
       // Handle preflight requests
-      if (request.method === 'OPTIONS') {
-        return new Response(null, { headers: corsHeaders });
-      }
-  try {
-    // Parse the incoming JSON data
-    const jsonData = await request.json();
-    
-    // Insert the data into MongoDB
-    const result = await insertMongoData(jsonData);
-    
-    // return json({ success: true, insertedId: result.insertedId });
-    return json({ success: true, insertedId: result.insertedId }, { headers: corsHeaders });
-  } catch (error) {
-    console.error('Error inserting data:', error);
-    return json({ success: false, message: 'Error inserting data' }, {
-        status: 500,
-        headers: corsHeaders,
-        });
-  }
+      if (request.method === 'POST') {
+        
+        try {
+            // Parse the incoming JSON data
+            const jsonData = await request.json();
+            
+            // Insert the data into MongoDB
+            const result = await insertMongoData(jsonData);
+            
+            // return json({ success: true, insertedId: result.insertedId });
+            return json({ success: true, insertedId: result.insertedId }, { headers });
+        } catch (error) {
+            console.error('Error inserting data:', error);
+            return json({ success: false, message: 'Error inserting data' }, { status: 500, headers });
+        }
+    }
 }
