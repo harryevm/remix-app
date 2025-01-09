@@ -8,10 +8,12 @@ import { MongoClient } from "mongodb";
 
 const url =
   "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
-let client;
-let db;
 
-// const client = new MongoClient(url);
+const client = new MongoClient(url);
+
+// Database Name
+const dbName = 'Trevor';
+
 
 export const streamTimeout = 5000;
 
@@ -62,24 +64,18 @@ export default async function handleRequest(
 export async function fetchMongoData() {
   try {
     // Reuse client if already connected
-    if (!client) {
-      client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
-    }
-    console.log(client);
-    
-    // Connect if not already connected
-    if (!client.isConnected()) {
-      await client.connect();
-    }
+    await client.connect();
+    console.log('Connected successfully to server');
 
-    // Access the database and collection
-    db = client.db('Trevor');
+    const db = client.db(dbName);
+    
     const collection = db.collection('Trevor');
 
     // Example query, replace with actual data fetching logic
-    const data = await collection.find({}).toArray();
+    const findResult = await collection.find({}).toArray();
 
-    return { data };
+
+    return findResult;
 
   } catch (error) {
     console.error("Error fetching data:", error);
