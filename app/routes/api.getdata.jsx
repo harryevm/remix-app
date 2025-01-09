@@ -6,7 +6,7 @@ import { fetchMongoData } from '../entry.server';
 export async function loader() {
   try {
     // Fetch data from MongoDB using the fetchMongoData function
-    const { findResult } = await fetchMongoData();
+    const findResult = await fetchMongoData();
 
     // Return the data as JSON
     return json(findResult);
