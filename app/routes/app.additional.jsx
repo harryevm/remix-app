@@ -66,6 +66,7 @@ export default function AdditionalPage() {
                 link to it in the <Code>&lt;NavMenu&gt;</Code> component found
                 in <Code>app/routes/app.jsx</Code>.
               </Text>
+              <h1>MongoDB Connection Status</h1>
               
             </BlockStack>
           </Card>
