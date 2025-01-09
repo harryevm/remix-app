@@ -1,8 +1,8 @@
-// routes/api/get-data.js
-import { json } from "@remix-run/node";
-import { fetchMongoData } from "../../entry.server";
-
-
-export function loader() {
-  return new Response('API Test is working!');
+export async function loader({ request }) {
+  // Your existing API logic here
+  return new Response(JSON.stringify({ message: "API is working" }), {
+    headers: {
+      "Content-Type": "application/json",
+    },
+  });
 }
