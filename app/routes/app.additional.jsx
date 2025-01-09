@@ -14,27 +14,27 @@ import { useLoaderData } from "@remix-run/react";
 import { fetchMongoData, insertData } from "../entry.server";
 
 
-export const loader = async () => {
-  const connectionStatus = await fetchMongoData();
+// export const loader = async () => {
+//   const connectionStatus = await fetchMongoData();
 
-  const customData = {
-    name: "John Doe",
-    email: "john.doe@example.com",
-    age: 30,
-    address: "123 Main St",
-    city: "Anytown",
-    country: "Countryland"
-  };
+//   const customData = {
+//     name: "John Doe",
+//     email: "john.doe@example.com",
+//     age: 30,
+//     address: "123 Main St",
+//     city: "Anytown",
+//     country: "Countryland"
+//   };
 
-  try {
-    const result = await insertData(customData);
-    console.log("Inserted data:", result);
-  } catch (error) {
-    console.error("Error inserting data:", error);
-  }
+//   try {
+//     const result = await insertData(customData);
+//     console.log("Inserted data:", result);
+//   } catch (error) {
+//     console.error("Error inserting data:", error);
+//   }
   
-  return json(connectionStatus);
-};
+//   return json(connectionStatus);
+// };
 
 
 
@@ -66,18 +66,7 @@ export default function AdditionalPage() {
                 link to it in the <Code>&lt;NavMenu&gt;</Code> component found
                 in <Code>app/routes/app.jsx</Code>.
               </Text>
-              <h1>MongoDB Connection Status</h1>
-              <p>
-                {connected ? (
-                  <Text as="span" color="success">
-                    ✅ {message}
-                  </Text>
-                ) : (
-                  <Text as="span" color="critical">
-                    ❌ {message}
-                  </Text>
-                )}
-              </p>
+             
             </BlockStack>
           </Card>
         </Layout.Section>

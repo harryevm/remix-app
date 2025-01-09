@@ -4,6 +4,11 @@ import { RemixServer } from "@remix-run/react";
 import { createReadableStreamFromReadable } from "@remix-run/node";
 import { isbot } from "isbot";
 import { addDocumentResponseHeaders } from "./shopify.server";
+import { MongoClient } from "mongodb";
+
+const url =
+  "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(url);
 
 export const streamTimeout = 5000;
 
@@ -48,4 +53,17 @@ export default async function handleRequest(
     // React has enough time to flush down the rejected boundary contents
     setTimeout(abort, streamTimeout + 1000);
   });
+}
+
+export async function fetchMongoData() {
+  try {
+    await client.connect();
+    console.log("Connected to MongoDB");
+
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  } finally {
+    await client.close();
+  }
 }
