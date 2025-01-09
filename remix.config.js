@@ -17,4 +17,11 @@ module.exports = {
   serverModuleFormat: "cjs",
   dev: { port: process.env.HMR_SERVER_PORT || 8002 },
   future: {},
+  proxy: {
+    '/api/insert_data': {
+      target: 'https://remix-app-88og.onrender.com',
+      changeOrigin: true,
+      secure: false,
+    },
+  },
 };
