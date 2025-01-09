@@ -65,7 +65,8 @@ export async function fetchMongoData() {
     if (!client) {
       client = new MongoClient(url, { useNewUrlParser: true, useUnifiedTopology: true });
     }
-
+    console.log(client);
+    
     // Connect if not already connected
     if (!client.isConnected()) {
       await client.connect();
