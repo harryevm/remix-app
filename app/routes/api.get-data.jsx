@@ -1,6 +1,7 @@
 // routes/api/get-data.js
 import { json } from "@remix-run/node";
-import { fetchMongoData } from "../../entry.server";
+import { fetchMongoData } from "../entry.server";
+
 
 
 export async function loader() {

@@ -1,6 +1,6 @@
 // app/routes/api/submit-form.js
 import { json } from "@remix-run/node";
-import { insertData } from "../../entry.server"; // Import your insert function
+import { insertData } from "../../../entry.server"; // Import your insert function
 import { validateFormData } from "../utils/validation"; // Optional: a utility for validating data
 
 export async function action({ request }) {
