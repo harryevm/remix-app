@@ -61,6 +61,7 @@ export default function AdditionalPage() {
                 .
               </Text>
               <Text as="p" variant="bodyMd">
+                assdadssd
                 To create your own page and have it show up in the app
                 navigation, add a page inside <Code>app/routes</Code>, and a
                 link to it in the <Code>&lt;NavMenu&gt;</Code> component found
