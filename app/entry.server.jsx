@@ -82,3 +82,20 @@ export async function fetchMongoData() {
     throw error;
   }
 }
+
+
+export async function insertMongoData(data) {
+ 
+  try {
+    await client.connect();
+    const db = client.db('Trevor');
+    const collection = db.collection('Trevor');
+    const result = await collection.insertOne(data);
+    return result;
+  } catch (error) {
+    console.error('Error inserting data into MongoDB:', error);
+    throw error;
+  } finally {
+    await client.close();
+  }
+}

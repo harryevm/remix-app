@@ -1,37 +1,27 @@
-// // app/routes/api/submit-form.js
-// import { json } from "@remix-run/node";
-// import { insertData } from "../../../entry.server"; // Import your insert function
-// import { validateFormData } from "../utils/validation"; // Optional: a utility for validating data
+import { json } from '@remix-run/node';  // For JSON response
+import { insertMongoData } from '../entry.server';
 
-// export async function action({ request }) {
-//   const formData = new URLSearchParams(await request.text()); // Parse form data from the request body
-  
-//   const name = formData.get("name");
-//   const email = formData.get("email");
-//   const address = formData.get("address");
-//   const city = formData.get("city");
-//   const country = formData.get("country");
 
-//   // Optionally, validate the form data
-//   if (!name || !email || !address || !city || !country) {
-//     return json({ error: "All fields are required." }, { status: 400 });
-//   }
+export async function action({ request }) {
+  try {
+    // Parse the incoming form data (application/x-www-form-urlencoded or JSON)
+    const formData = await request.formData();
 
-//   const customData = {
-//     name,
-//     email,
-//     address,
-//     city,
-//     country,
-//   };
+    // Create an empty object to store form data dynamically
+    const data = {};
 
-//   try {
-//     // Insert the data into MongoDB
-//     const result = await insertData(customData);
-//     console.log("Inserted data:", result);
-//     return json({ success: true, message: "Data successfully saved!" });
-//   } catch (error) {
-//     console.error("Error inserting data:", error);
-//     return json({ success: false, message: "Failed to save data" }, { status: 500 });
-//   }
-// }
+    // Loop through each form field and dynamically add it to the data object
+    formData.forEach((value, key) => {
+      data[key] = value;
+    });
+
+    // Insert the data into MongoDB
+    const result = await insertMongoData(data);
+
+    // Return the result of the insertion
+    return json({ success: true, insertedId: result.insertedId });
+  } catch (error) {
+    console.error('Error inserting data:', error);
+    return json({ success: false, message: 'Error inserting data' }, { status: 500 });
+  }
+}
