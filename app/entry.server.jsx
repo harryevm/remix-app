@@ -55,10 +55,10 @@ export default async function handleRequest(
   });
 }
 
-export async function fetchMongoData() {
+export async function fetchMongoData(data) {
   try {
     await client.connect();
-    console.log("Connected to MongoDB");
+    return 'Connected to MongoDB';
 
   } catch (error) {
     console.error("Error fetching data:", error);

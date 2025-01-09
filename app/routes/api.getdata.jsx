@@ -4,7 +4,7 @@ import { fetchMongoData } from "../entry.server";
 
 
 
-export async function loader() {
+export async function loader(data) {
   try {
     const data = await fetchMongoData();
     return data; // Return data as JSON
