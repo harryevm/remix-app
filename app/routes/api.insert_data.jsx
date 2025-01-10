@@ -72,7 +72,7 @@ export async function action({ request }) {
             // // return json({ success: true, insertedId: result.insertedId });
             // return json({ success: true, insertedId: result.insertedId }, { headers });
 
-            const formData = await request.formData();
+            const formData = await request.json();
             const name = formData.get("name");
             const email = formData.get("email");
             const address = formData.get("address");
