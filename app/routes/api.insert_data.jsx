@@ -74,8 +74,10 @@ export async function action({ request }) {
 
             const formData = await request.json();
             console.log(formData);
-            
+            console.log(formData.name+'test');
             const name = formData.get("name");
+            
+            console.log(name+'test2');
             const email = formData.get("email");
             const address = formData.get("address");
             const phone = formData.get("phone");
