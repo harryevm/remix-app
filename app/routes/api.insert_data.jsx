@@ -104,7 +104,7 @@ export async function action({ request }) {
           // const result = await insertMongoData(data);
 
           // Return success response
-          // return json({ success: true, insertedId: result.insertedId, fileUrl }, { headers });
+          return json({ success: true, insertedId: formData }, { headers });
 
         } catch (error) {
             console.error('Error inserting data:', error);
