@@ -73,6 +73,8 @@ export async function action({ request }) {
             // return json({ success: true, insertedId: result.insertedId }, { headers });
 
             const formData = await request.json();
+            console.log(formData);
+            
             const name = formData.get("name");
             const email = formData.get("email");
             const address = formData.get("address");
