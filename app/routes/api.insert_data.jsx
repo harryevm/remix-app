@@ -30,7 +30,6 @@ import { json } from '@remix-run/node';  // For JSON response
 import { insertMongoData } from '../entry.server';
 import fs from "fs";
 import path from "path";
-import fs from "fs/promises"
 
 const uploadsDir = path.resolve("app", "routes", "uploads");
 if (!fs.existsSync(uploadsDir)) {
