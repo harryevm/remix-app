@@ -74,14 +74,12 @@ export async function action({ request }) {
 
             const formData = await request.json();
             console.log(formData);
-            console.log(formData.name+'test');
-            const name = formData.get("name");
-            
-            console.log(name+'test2');
-            const email = formData.get("email");
-            const address = formData.get("address");
-            const phone = formData.get("phone");
-            const imageFile  = formData.get("image"); // File object
+
+            const name = formData.name;
+            const email = formData.email;
+            const address = formData.address;
+            const phone = formData.phone;
+            const imageFile  = formData.image; // File object
 
             if (!imageFile || typeof imageFile.name !== 'string') {
               throw new Error('Invalid file upload');
