@@ -30,13 +30,8 @@ import { json } from '@remix-run/node';  // For JSON response
 import { insertMongoData } from '../entry.server';
 import fs from "fs";
 import path from "path";
-// import formidable from 'formidable';
 
 
-const uploadsDir = path.resolve('app', 'routes', 'uploads');
-if (!fs.existsSync(uploadsDir)) {
-  await fs.mkdir(uploadsDir, { recursive: true });
-}
 
 
 export async function loader({ request }) {
@@ -63,55 +58,18 @@ export async function action({ request }) {
     
       // Handle preflight requests
       if (request.method === 'POST') {
-        // const form = formidable({
-        //   multiples: false,
-        //   uploadDir: uploadsDir,
-        //   keepExtensions: true,
-        // });
-        
+
         try {
             // Parse the incoming JSON data
-            // const jsonData = await request.json();
+            const jsonData = await request.json();
             
             // Insert the data into MongoDB
-            // const result = await insertMongoData(jsonData);
+            const result = await insertMongoData(jsonData);
             
             // // return json({ success: true, insertedId: result.insertedId });
-            // return json({ success: true, insertedId: result.insertedId }, { headers });
+            return json({ success: true, insertedId: result.insertedId }, { headers });
 
-            const formData = await request.json();
-            console.log(formData);
-
-            const name = formData.name;
-            const email = formData.email;
-            const address = formData.address;
-            const phone = formData.phone;
-            const imageFile  = formData.image; // File object
-
-            if (!imageFile || typeof imageFile.name !== 'string') {
-              throw new Error('Invalid file upload');
-            }
-                  // Create a unique folder name based on a random number and email
-          const randomNumber = Math.floor(Math.random() * 100000);
-          const folderName = `${randomNumber}-${email}`;
-          const uploadDir = path.join(process.cwd(), 'public', 'uploads', folderName);
-                // Ensure the directory exists
-          await fs.mkdir(uploadDir, { recursive: true });
-
-          // Save the file
-          const filePath = path.join(uploadDir, imageFile.name);
-          const buffer = await imageFile.arrayBuffer();
-          await fs.writeFile(filePath, Buffer.from(buffer));
-
-          // Generate the file URL
-          const fileUrl = `https://remix-app-88og.onrender.com/uploads/${folderName}/${imageFile.name}`;
-
-          // Save the form data to MongoDB, including the file URL
-          const data = { name, email, address, phone, imageUrl: fileUrl };
-          const result = await insertMongoData(data);
-
-          // Return success response
-          return json({ success: true, insertedId: result.insertedId, fileUrl }, { headers });
+            
 
         } catch (error) {
             console.error('Error inserting data:', error);
