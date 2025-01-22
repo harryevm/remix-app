@@ -50,7 +50,7 @@ export default function AdditionalPage() {
     // Fetch data from API
     const fetchData = async () => {
       try {
-        const response = await fetch("api/getdata");
+        const response = await fetch("https://remix-app-88og.onrender.com/api/getdata");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
