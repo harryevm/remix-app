@@ -70,45 +70,52 @@ export async function action({ request }) {
         });
         
         try {
-          const parsedForm = await new Promise((resolve, reject) => {
-            form.parse(request, (err, fields, files) => {
-              if (err) reject(err);
-              else resolve({ fields, files });
-            });
-          });
+            // Parse the incoming JSON data
+            // const jsonData = await request.json();
+            
+            // Insert the data into MongoDB
+            // const result = await insertMongoData(jsonData);
+            
+            // // return json({ success: true, insertedId: result.insertedId });
+            // return json({ success: true, insertedId: result.insertedId }, { headers });
 
-          const { name, email, address, phone } = parsedForm.fields;
-          const { image } = parsedForm.files;
-    
-          if (!image) {
-            throw new Error('No file uploaded');
-          }
-    
+            const formData = await request.json();
+            console.log(formData);
+
+            const name = formData.name;
+            const email = formData.email;
+            const address = formData.address;
+            const phone = formData.phone;
+            const imageFile  = formData.image; // File object
+
+            if (!imageFile || typeof imageFile.name !== 'string') {
+              throw new Error('Invalid file upload');
+            }
+                  // Create a unique folder name based on a random number and email
           const randomNumber = Math.floor(Math.random() * 100000);
           const folderName = `${randomNumber}-${email}`;
-          const uploadFolder = path.join(uploadsDir, folderName);
-    
-          // Ensure the directory exists
-          await fs.mkdir(uploadFolder, { recursive: true });
-    
-          // Move the uploaded file to the new folder
-          const fileName = path.basename(image.filepath);
-          const filePath = path.join(uploadFolder, fileName);
-          await fs.rename(image.filepath, filePath);
-    
+          const uploadDir = path.join(process.cwd(), 'public', 'uploads', folderName);
+                // Ensure the directory exists
+          await fs.mkdir(uploadDir, { recursive: true });
+
+          // Save the file
+          const filePath = path.join(uploadDir, imageFile.name);
+          const buffer = await imageFile.arrayBuffer();
+          await fs.writeFile(filePath, Buffer.from(buffer));
+
           // Generate the file URL
-          const fileUrl = `https://remix-app-88og.onrender.com/uploads/${folderName}/${fileName}`;
-    
-          // Insert data into MongoDB
+          const fileUrl = `https://remix-app-88og.onrender.com/uploads/${folderName}/${imageFile.name}`;
+
+          // Save the form data to MongoDB, including the file URL
           const data = { name, email, address, phone, imageUrl: fileUrl };
           const result = await insertMongoData(data);
-    
+
+          // Return success response
           return json({ success: true, insertedId: result.insertedId, fileUrl }, { headers });
 
         } catch (error) {
-          console.error('Error handling file upload:', error);
-          return json({ success: false, message: 'Error handling file upload' }, { status: 500, headers });
+            console.error('Error inserting data:', error);
+            return json({ success: false, message: 'Error inserting data' }, { status: 500, headers });
         }
     }
-    return json({ success: false, message: 'Method not allowed' }, { status: 405, headers });
 }
