@@ -30,7 +30,7 @@ import { json } from '@remix-run/node';  // For JSON response
 import { insertMongoData } from '../entry.server';
 import fs from "fs";
 import path from "path";
-import formidable from 'formidable';
+// import formidable from 'formidable';
 
 
 const uploadsDir = path.resolve('app', 'routes', 'uploads');
@@ -63,11 +63,11 @@ export async function action({ request }) {
     
       // Handle preflight requests
       if (request.method === 'POST') {
-        const form = formidable({
-          multiples: false,
-          uploadDir: uploadsDir,
-          keepExtensions: true,
-        });
+        // const form = formidable({
+        //   multiples: false,
+        //   uploadDir: uploadsDir,
+        //   keepExtensions: true,
+        // });
         
         try {
             // Parse the incoming JSON data
