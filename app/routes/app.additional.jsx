@@ -10,6 +10,8 @@ import {
 } from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
 import { json } from "@remix-run/node";
+import React, { useEffect, useState } from "react";
+
 // import { useLoaderData } from "@remix-run/react";
 // import { fetchMongoData, insertData } from "../entry.server";
 
@@ -40,13 +42,54 @@ import { json } from "@remix-run/node";
 
 export default function AdditionalPage() {
   // const { connected, message } = useLoaderData();
+  const [sampleData, setSampleData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  useEffect(() => {
+    // Fetch data from API
+    const fetchData = async () => {
+      try {
+        const response = await fetch("api/getdata");
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        const data = await response.json();
+        setSampleData(data); // Assuming the API returns an array of objects
+      } catch (err) {
+        console.error("Failed to fetch data:", err);
+        setError(err.message);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
+
   return (
     <Page>
       <TitleBar title="Additional page" />
       <Layout>
         <Layout.Section>
           <Card>
-            TEst
+            <div>
+              <h1>Sample Data</h1>
+              <ul>
+                {sampleData.map((item, index) => (
+                  <li key={index}>
+                    <strong>Name:</strong> {item.name} <br />
+                    <strong>Email:</strong> {item.email} <br />
+                    <strong>Phone:</strong> {item.phone} <br />
+                    <strong>Address:</strong> {item.address} <br />
+                    {/* Add more fields as needed */}
+                  </li>
+                ))}
+              </ul>
+            </div>
           </Card>
         </Layout.Section>
         
