@@ -67,121 +67,26 @@ export default function AdditionalPage() {
     fetchData();
   }, []);
 
-  const customizeFunc = () => {
-    alert()
-    // const nextElement = this.nextElementSibling;
-    // if (nextElement) {
-    //     if (nextElement.style.display === 'none' || nextElement.style.display === '') {
-    //         nextElement.style.display = 'block'; 
-    //     } else {
-    //             nextElement.style.display = 'none';
-    //     }
-    // }
-  }
-
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
-    <Page>
-      <TitleBar title="Additional page" />
-      <Layout>
-        <Layout.Section>
-          <Card>
+    <>
             <div>
-            <div class="dashboard">
-	<div class="dashboard-info">
-			<div class="dashboard-header">
-				<h2>Dashboard</h2>
-				<div class="accounts">
-					<a href="" class="notification"><svg></svg></a>
-					<a href="" class="profile"><img src="icon.png" /></a>
-				</div>
-			</div>
-			<div class="dashboard-content">
-				<div class="heading-wr">
-					<h2>Property Listening</h2>
-					<a id="customize-btn" onClick={customizeFunc} class="btn"><svg></svg>Customize Columns</a>
-					<div class="columns">
-						<h5>Columns</h5>
-						<ul id="columns">
-						    <li draggable="true"><input type="checkbox" value="name" checked /> name</li>
-						    <li draggable="true"><input type="checkbox" value="email" checked /> email</li>
-						    <li draggable="true"><input type="checkbox" value="phone" checked /> phone</li>
-						    <li draggable="true"><input type="checkbox" value="address" checked /> address</li>
-						    <li draggable="true"><input type="checkbox" value="city"checked  /> city</li>
-						    <li draggable="true"><input type="checkbox" value="zip" /> zip</li>
-						    <li draggable="true"><input type="checkbox" value="neighborhood" /> neighborhood</li>
-						    <li draggable="true"><input type="checkbox" value="property-type" /> property-type</li>
-						    <li draggable="true"><input type="checkbox" value="home-size" /> home-size</li>
-						    <li draggable="true"><input type="checkbox" value="lot-size" /> lot-size</li>
-
-                            <li draggable="true"><input type="checkbox" value="lot-unit" /> lot-unit</li>
-                            <li draggable="true"><input type="checkbox" value="year-built" /> year-built</li>
-                            <li draggable="true"><input type="checkbox" value="bedrooms" /> bedrooms</li>
-                            <li draggable="true"><input type="checkbox" value="heating" /> heating</li>
-                            <li draggable="true"><input type="checkbox" value="cooling" /> cooling</li>
-                            <li draggable="true"><input type="checkbox" value="waterSource" /> waterSource</li>
-                            <li draggable="true"><input type="checkbox" value="sewer" /> sewer</li>
-                            <li draggable="true"><input type="checkbox" value="otherUtilities" /> otherUtilities</li>
-                            <li draggable="true"><input type="checkbox" value="garage" /> garage</li>
-                            <li draggable="true"><input type="checkbox" value="garage-specify" /> garage-specify</li>
-                            <li draggable="true"><input type="checkbox" value="basement" /> basement</li>
-                            <li draggable="true"><input type="checkbox" value="outdoorFeatures" /> outdoorFeatures</li>
-                            <li draggable="true"><input type="checkbox" value="additionalFeatures" /> additionalFeatures</li>
-                            <li draggable="true"><input type="checkbox" value="propertyPhotos" /> propertyPhotos</li>
-                            <li draggable="true"><input type="checkbox" value="listingCheckbox" /> listingCheckbox</li>
-                            <li draggable="true"><input type="checkbox" value="mediaRelease" /> mediaRelease</li>
-                            <li draggable="true"><input type="checkbox" value="mediaReleaseDate" /> mediaReleaseDate</li>
-                            <li draggable="true"><input type="checkbox" value="description" /> description</li>
-                            <li draggable="true"><input type="checkbox" value="askingPrice" /> askingPrice</li>
-                            <li draggable="true"><input type="checkbox" value="preferredContact" /> preferredContact</li>
-                            <li draggable="true"><input type="checkbox" value="contactHours" /> contactHours</li>
-
-                            <li draggable="true"><input type="checkbox" value="agencyCheckbox" /> agencyCheckbox</li>
-                            <li draggable="true"><input type="checkbox" value="agencySignature" /> agencySignature</li>
-                            <li draggable="true"><input type="checkbox" value="agencyDate" /> agencyDate</li>
-                            <li draggable="true"><input type="checkbox" value="agencyAgreement" /> agencyAgreement</li>
-                            <li draggable="true"><input type="checkbox" value="fairHousingCheckbox" /> fairHousingCheckbox</li>
-                            <li draggable="true"><input type="checkbox" value="fairHousingSignature" /> fairHousingSignature</li>
-                            <li draggable="true"><input type="checkbox" value="fairHousingDate" /> fairHousingDate</li>
-                            <li draggable="true"><input type="checkbox" value="fairHousing" /> fairHousing</li>
-                            <li draggable="true"><input type="checkbox" value="propertyCheckbox" /> propertyCheckbox</li>
-                            <li draggable="true"><input type="checkbox" value="propertySignature" /> propertySignature</li>
-                            <li draggable="true"><input type="checkbox" value="propertyDate" /> propertyDate</li>
-                            <li draggable="true"><input type="checkbox" value="propertyDisclosure" /> propertyDisclosure</li>
-
-                            <li draggable="true"><input type="checkbox" value="listingSignature" /> listingSignature</li>
-                            <li draggable="true"><input type="checkbox" value="listingDate" /> listingDate</li>
-                            <li draggable="true"><input type="checkbox" value="listingAgreement" /> listingAgreement</li>
-                            
-
-
-						</ul>
-
-						<a class="btn" id="done-button">Done</a>
-					</div>
-				</div>
-				<div class="table">
-					<table>
-					    <thead>
-					        <tr id="table-header"></tr>
-					    </thead>
-					    <tbody id="table-body"></tbody>
-					</table>
-
-				</div>
-			</div>
-			<div class="footer">All Content &#169; NYFISBO. All Rights Reserved</div>
-		</div>
-	</div>
-              
+              <h1>Sample Data</h1>
+              <ul>
+                {sampleData.map((item, index) => (
+                  <li key={index}>
+                    <strong>Name:</strong> {item.name} <br />
+                    <strong>Email:</strong> {item.email} <br />
+                    <strong>Phone:</strong> {item.phone} <br />
+                    <strong>Address:</strong> {item.address} <br />
+                    {/* Add more fields as needed */}
+                  </li>
+                ))}
+              </ul>
             </div>
-          </Card>
-        </Layout.Section>
-        
-      </Layout>
-    </Page>
+    </>
   );
 }
 
