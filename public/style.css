@@ -1,0 +1,52 @@
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
+
+* { margin: 0; padding: 0; }
+body{font-family: "Poppins", serif; font-style: normal;font-size: 16px;line-height: 25px;}
+h2 { font-size: 20px; line-height: 30px; }
+h3 { font-size: 20px; line-height: 30px; font-weight: 500; }
+.dashboard { display: flex; min-height: 100vh; height: 100%; }
+.sidebar { width: 21%; background-color: #EEEEEE; padding: 20px 2%; }
+.dashboard-info { width: 100%; position: relative; padding-bottom: 150px; }
+.dashboard ul { list-style: none; }
+.dashboard ul.menu li { background-color: transparent; margin-bottom: 5px; padding: 7px 15px; border-radius: 10px; }
+.dashboard ul.menu li.active { background-color: #222222; }
+.dashboard ul.menu li.active>a { color: #fff; }
+.dashboard ul.menu li.active a svg * { fill: #fff; }
+ul.menu li a { display: flex; align-items: center;text-decoration: none; color: #222222; }
+ul.menu li a svg { margin-right: 15px; }
+.sidebar >a { text-decoration: none; font-size: 25px; display: block; margin-bottom: 20px; }
+.accounts { display: flex; align-items: center; gap: 20px; }
+
+
+.dashboard-header { display: flex; align-items: center; justify-content: space-between; border-bottom: 1px solid #ccc; padding-bottom: 10px; margin-bottom: 20px; padding: 20px 2%; }
+.heading-wr { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; padding: 0 2%; position: relative; }
+.btn { background-color: #EEEEEE; padding: 10px 20px; border-radius: 5px; }
+a#customize-btn { display: flex; align-items: center; cursor: pointer; }
+a#customize-btn svg { margin-right: 15px; }
+.columns { display: none; position: absolute; top: 60px; right: 2%; background-color: #fff; left: 0; width: 300px; margin: 0 0 0 auto; border-radius: 10px; box-shadow: 0 0 30px rgba(0, 0, 0, 0.2); padding: 20px 0; z-index: 1; }
+ul#columns li { padding: 10px 15px; border-top: 1px solid #E9E9E9; font-size: 14px; line-height: 20px; }
+.columns h5 { font-size: 16px; line-height: 25px; font-weight: 400; padding: 0 15px; margin-bottom: 15px; }
+ul#columns li:last-child { border-bottom: 1px solid #E9E9E9; margin-bottom: 20px; }
+a#done-button { padding: 5px 10px; margin: 0 15px; font-size: 14px; background-color: transparent; border: 1px solid #2222220001A; cursor: pointer; }
+.table { border: 1px solid #eeeeee; border-radius: 10px; overflow: hidden; margin: 0 2%; }
+thead { border-bottom: 1px solid #eeeeee; background-color: #EBEBEB; }
+#table-header th { padding: 10px; font-size: 16px; line-height: 25px; }
+#table-body tr { border-bottom: 1px solid #ebebeb; }
+#table-body td { padding: 15px 10px; font-size: 14px; line-height: 20px; }
+table { border-collapse: collapse; width: 100%; } 
+td, th { text-align: left; padding: 8px; }
+tbody#table-body button { background-color: transparent; border: none; outline: none; cursor: pointer; }
+.detail-box { border-top: 1px solid #eeeeee; padding: 20px 2%; }	
+.detail-box h3 { margin-bottom: 15px; }
+.utilies_feature h3 { text-decoration: underline; }
+.utilies_feature .info h4 { font-weight: 500; font-size: 14px; line-height: 20px; margin-bottom: 10px; }
+.utilies_feature .info ul li { font-size: 13px; line-height: 20px; position: relative; padding-left: 10px; margin-bottom: 5px; }
+.utilies_feature .info ul li::before { position: absolute; content: ''; background-color: #000; width: 5px; height: 5px; left: 0; top: 7px; border-radius: 50%; }
+.detail-box .box { display: flex; flex-wrap: wrap; justify-content: space-between; }
+.form-control label { display: block; }
+.form-control { width: 22%; margin-bottom: 15px; }
+.form-control input { width: 100%; box-sizing: border-box; padding: 10px; background-color: #EEEEEE; border: none; border-radius: 5px; margin-top: 10px; }
+.footer { padding: 0 2%; height: 100px; display: flex; align-items: center; justify-content: center; border-top: 1px solid #D3D3D3; margin-top: 30px; position: absolute; bottom: 0; left: 0; right: 0; }
+.photos-wr,.videos-wr  { display: flex; gap: 15px; }
+.photos-wr>.img-box { background-color: #EEEEEE; padding: 20px; }
+.videos-wr>.video-box { background-color: #EEEEEE; padding: 20px; }
