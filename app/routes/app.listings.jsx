@@ -176,11 +176,11 @@ export default function ListingPage() {
                             <td>{item.city}</td>
                             <td>{item.zip}</td>
                             <td>{item.neighborhood}</td>
-                            <td>{item.property-type}</td>
-                            <td>{item.home-size}</td>
-                            <td>{item.lot-size}</td>
-                            <td>{item.lot-unit}</td>
-                            <td>{item.year-built}</td>
+                            <td>{item['property-type']}</td>
+                            <td>{item['home-size']}</td>
+                            <td>{item['lot-size']}</td>
+                            <td>{item['lot-unit']}</td>
+                            <td>{item['year-built']}</td>
                             <td>{item.bedrooms}</td>
                             <td>{item.bathrooms}</td>
                             <td>{item.heating}</td>
@@ -189,7 +189,7 @@ export default function ListingPage() {
                             <td>{item.sewer}</td>
                             <td>{item.otherUtilities}</td>
                             <td>{item.garage}</td>
-                            <td>{item.garage-specify}</td>
+                            <td>{item['garage-specify']}</td>
                             <td>{item.basement}</td>
                             <td>{item.outdoorFeatures}</td>
                             <td>{item.additionalFeatures}</td>
