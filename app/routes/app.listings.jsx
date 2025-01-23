@@ -65,6 +65,9 @@ export default function ListingPage() {
     };
 
     fetchData();
+
+    console.log(sampleData);
+    
   }, []);
 
   if (loading) return <div>Loading...</div>;
@@ -156,9 +159,23 @@ export default function ListingPage() {
             <div class="table">
                 <table>
                     <thead>
-                        <tr id="table-header"></tr>
+                        <tr id="table-header"><th>name</th><th>email</th><th>phone</th><th>address</th><th>city</th><th>zip</th><th>Action</th></tr>
                     </thead>
-                    <tbody id="table-body"></tbody>
+                    <tbody id="table-body">
+                    {
+                    
+                    
+                    sampleData.map((item, index) => (
+
+                        <tr key={index}>
+                            <td>{item.name}</td>
+                            <td>{item.email}</td>
+                            <td>{item.phone}</td>
+                            <td>{item.address}</td>
+                            {/* Add more fields as needed */}
+                        </tr>
+                        ))}
+                    </tbody>
                 </table>
 
             </div>
