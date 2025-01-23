@@ -159,7 +159,9 @@ export default function ListingPage() {
             <div class="table">
                 <table>
                     <thead>
-                        <tr id=" table-header"><th>name</th><th>email</th><th>phone</th><th>address</th><th>city</th><th>zip</th><th>Action</th></tr>
+                        <tr id="table-header">
+                            <th>Test</th>
+                        </tr>
                     </thead>
                     <tbody id="table-body">
                     {
