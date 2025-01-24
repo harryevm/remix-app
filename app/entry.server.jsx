@@ -88,9 +88,9 @@ export async function fetchMongoDataById(userId) {
     await client.connect();
     const db = client.db(dbName);
     const collection = db.collection("Trevor");
-
+    const findResult = await collection.findOne({ _id: userId });
     // Fetching the user by their string ID
-    return await collection.findOne({ _id: userId });
+    return findResult;
   } catch (error) {
     console.error("Error fetching data by ID:", error);
     throw error;
