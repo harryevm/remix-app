@@ -52,6 +52,10 @@ export default function ListingPage() {
     "address",
     "city",
     "zip",
+    "property-type",
+    "home-size",
+    "year-built",
+    "bedrooms"
   ]);
   const [checkboxState, setCheckboxState] = useState({});
   const [isVisible, setIsVisible] = useState(false);
