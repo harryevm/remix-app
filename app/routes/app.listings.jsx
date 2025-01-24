@@ -67,11 +67,11 @@ export default function ListingPage() {
   useEffect(() => {
     // Initialize checkbox state based on visible columns
     const initialState = visibleColumns.reduce((acc, col) => {
-        acc[col] = col !== "property-type" && col !== "home-size" && col !== "year-built" && col !== "bedrooms"; // Set the proper condition
-        return acc;
+      acc[col] = !["property-type", "home-size", "year-built", "bedrooms"].includes(col);
+      return acc;
     }, {});
     setCheckboxState(initialState);
-  }, []);
+  }, [visibleColumns]);
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
@@ -79,10 +79,9 @@ export default function ListingPage() {
   };
 
   const handleDoneClick = () => {
-    const selectedColumns = Object.keys(checkboxState).filter(
-      (key) => checkboxState[key]
-    );
+    const selectedColumns = Object.keys(checkboxState).filter((key) => checkboxState[key]);
     setVisibleColumns(selectedColumns);
+    setIsVisible(false); // Close modal after confirming
   };
 
   useEffect(() => {
