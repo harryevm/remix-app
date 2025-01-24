@@ -71,11 +71,14 @@ export default function ListingPage() {
         return acc;
     }, {});
     setCheckboxState(initialState);
-  }, []);
+  }, [visibleColumns]);
 
-  const handleCheckboxChange = (e) => {
-    const { value, checked } = e.target;
-    setCheckboxState((prev) => ({ ...prev, [value]: checked }));
+  const handleCheckboxChange = (column) => {
+    // Toggle the checkbox state
+    setCheckboxState(prevState => ({
+      ...prevState,
+      [column]: !prevState[column]
+    }));
   };
 
   const handleDoneClick = () => {
@@ -137,15 +140,14 @@ export default function ListingPage() {
                 <div class="columns" style={{ display: isVisible ? "block" : "none" }}>
                     <h5>Columns</h5>
                     <ul id="columns">
-                      {Object.keys(checkboxState).map((column) => (
+                    {columns.map(col => (
                         <li key={column} draggable="true">
                           <input
                             type="checkbox"
-                            value={column}
-                            checked={checkboxState[column]}
-                            onChange={handleCheckboxChange}
-                          />{" "}
-                          {column}
+                            checked={checkboxState[col] ?? true}  // Defaults to true if not found
+                            onChange={() => handleCheckboxChange(col)}
+                          />
+                          {col}
                         </li>
                       ))}
                     </ul>
@@ -158,18 +160,26 @@ export default function ListingPage() {
                 <table>
                     <thead>
                     <tr id="table-header">
-                      {visibleColumns.map((col) => (
-                        <th key={col}>{col.replace("-", " ")}</th>
-                      ))}
+                    {columns.map(col => {
+                      // Render table header only if the column is checked
+                      if (checkboxState[col]) {
+                        return <th key={col}>{col}</th>;
+                      }
+                      return null;
+                    })}
                       <th>Action</th>
                     </tr>
                     </thead>
                     <tbody id="table-body">
                     {sampleData.map((item, index) => (
                         <tr key={index}>
-                          {visibleColumns.map((col) => (
-                            <td key={col}>{item[col]}</td>
-                          ))}
+                          {columns.map(col => {
+                            // Render column content only if the checkbox is checked
+                            if (checkboxState[col]) {
+                              return <td key={col}>Data for {col}</td>;
+                            }
+                            return null;
+                          })}
                           <td>
                             <button>Delete</button>
                           </td>
