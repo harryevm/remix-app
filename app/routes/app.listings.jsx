@@ -74,6 +74,7 @@ export default function ListingPage() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
+  console.log(sampleData)
   return (
     <>
            <div class="dashboard">
@@ -176,6 +177,7 @@ export default function ListingPage() {
                             <td>{item.city}</td>
                             <td>{item.zip}</td>
                             <td>{item.neighborhood}</td>
+                            <td>{item["property-type"]}</td>
                         </tr>
                         ))}
                     </tbody>
