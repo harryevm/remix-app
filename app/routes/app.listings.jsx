@@ -45,6 +45,40 @@ export default function ListingPage() {
   const [sampleData, setSampleData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [visibleColumns, setVisibleColumns] = useState([
+    "name",
+    "email",
+    "phone",
+    "address",
+    "city",
+    "zip",
+    "property-type",
+    "home-size",
+    "year-built",
+    "bedrooms",
+  ]);
+  const [checkboxState, setCheckboxState] = useState({});
+
+  useEffect(() => {
+    // Initialize checkbox state based on visible columns
+    const initialState = visibleColumns.reduce((acc, col) => {
+      acc[col] = true;
+      return acc;
+    }, {});
+    setCheckboxState(initialState);
+  }, []);
+
+  const handleCheckboxChange = (e) => {
+    const { value, checked } = e.target;
+    setCheckboxState((prev) => ({ ...prev, [value]: checked }));
+  };
+
+  const handleDoneClick = () => {
+    const selectedColumns = Object.keys(checkboxState).filter(
+      (key) => checkboxState[key]
+    );
+    setVisibleColumns(selectedColumns);
+  };
 
   useEffect(() => {
     // Fetch data from API
@@ -98,99 +132,44 @@ export default function ListingPage() {
                 <div class="columns">
                     <h5>Columns</h5>
                     <ul id="columns">
-                        <li draggable="true"><input type="checkbox" value="name" checked /> name</li>
-                        <li draggable="true"><input type="checkbox" value="email" checked /> email</li>
-                        <li draggable="true"><input type="checkbox" value="phone" checked /> phone</li>
-                        <li draggable="true"><input type="checkbox" value="address" checked /> address</li>
-                        <li draggable="true"><input type="checkbox" value="city"checked  /> city</li>
-                        <li draggable="true"><input type="checkbox" value="zip" /> zip</li>
-                        <li draggable="true"><input type="checkbox" value="neighborhood" /> neighborhood</li>
-                        <li draggable="true"><input type="checkbox" value="property-type" /> property-type</li>
-                        <li draggable="true"><input type="checkbox" value="home-size" /> home-size</li>
-                        <li draggable="true"><input type="checkbox" value="lot-size" /> lot-size</li>
-
-                        <li draggable="true"><input type="checkbox" value="lot-unit" /> lot-unit</li>
-                        <li draggable="true"><input type="checkbox" value="year-built" /> year-built</li>
-                        <li draggable="true"><input type="checkbox" value="bedrooms" /> bedrooms</li>
-                        <li draggable="true"><input type="checkbox" value="heating" /> heating</li>
-                        <li draggable="true"><input type="checkbox" value="cooling" /> cooling</li>
-                        <li draggable="true"><input type="checkbox" value="waterSource" /> waterSource</li>
-                        <li draggable="true"><input type="checkbox" value="sewer" /> sewer</li>
-                        <li draggable="true"><input type="checkbox" value="otherUtilities" /> otherUtilities</li>
-                        <li draggable="true"><input type="checkbox" value="garage" /> garage</li>
-                        <li draggable="true"><input type="checkbox" value="garage-specify" /> garage-specify</li>
-                        <li draggable="true"><input type="checkbox" value="basement" /> basement</li>
-                        <li draggable="true"><input type="checkbox" value="outdoorFeatures" /> outdoorFeatures</li>
-                        <li draggable="true"><input type="checkbox" value="additionalFeatures" /> additionalFeatures</li>
-                        <li draggable="true"><input type="checkbox" value="propertyPhotos" /> propertyPhotos</li>
-                        <li draggable="true"><input type="checkbox" value="listingCheckbox" /> listingCheckbox</li>
-                        <li draggable="true"><input type="checkbox" value="mediaRelease" /> mediaRelease</li>
-                        <li draggable="true"><input type="checkbox" value="mediaReleaseDate" /> mediaReleaseDate</li>
-                        <li draggable="true"><input type="checkbox" value="description" /> description</li>
-                        <li draggable="true"><input type="checkbox" value="askingPrice" /> askingPrice</li>
-                        <li draggable="true"><input type="checkbox" value="preferredContact" /> preferredContact</li>
-                        <li draggable="true"><input type="checkbox" value="contactHours" /> contactHours</li>
-
-                        <li draggable="true"><input type="checkbox" value="agencyCheckbox" /> agencyCheckbox</li>
-                        <li draggable="true"><input type="checkbox" value="agencySignature" /> agencySignature</li>
-                        <li draggable="true"><input type="checkbox" value="agencyDate" /> agencyDate</li>
-                        <li draggable="true"><input type="checkbox" value="agencyAgreement" /> agencyAgreement</li>
-                        <li draggable="true"><input type="checkbox" value="fairHousingCheckbox" /> fairHousingCheckbox</li>
-                        <li draggable="true"><input type="checkbox" value="fairHousingSignature" /> fairHousingSignature</li>
-                        <li draggable="true"><input type="checkbox" value="fairHousingDate" /> fairHousingDate</li>
-                        <li draggable="true"><input type="checkbox" value="fairHousing" /> fairHousing</li>
-                        <li draggable="true"><input type="checkbox" value="propertyCheckbox" /> propertyCheckbox</li>
-                        <li draggable="true"><input type="checkbox" value="propertySignature" /> propertySignature</li>
-                        <li draggable="true"><input type="checkbox" value="propertyDate" /> propertyDate</li>
-                        <li draggable="true"><input type="checkbox" value="propertyDisclosure" /> propertyDisclosure</li>
-
-                        <li draggable="true"><input type="checkbox" value="listingSignature" /> listingSignature</li>
-                        <li draggable="true"><input type="checkbox" value="listingDate" /> listingDate</li>
-                        <li draggable="true"><input type="checkbox" value="listingAgreement" /> listingAgreement</li>
-                        
-
-
+                      {Object.keys(checkboxState).map((column) => (
+                        <li key={column} draggable="true">
+                          <input
+                            type="checkbox"
+                            value={column}
+                            checked={checkboxState[column]}
+                            onChange={handleCheckboxChange}
+                          />{" "}
+                          {column}
+                        </li>
+                      ))}
                     </ul>
-
-                    <a class="btn" id="done-button">Done</a>
+                    <button className="btn" id="done-button" onClick={handleDoneClick}>
+                      Done
+                    </button>
                 </div>
             </div>
             <div class="table">
                 <table>
                     <thead>
                     <tr id="table-header">
-                      <th>Name</th>
-                      <th>Email</th>
-                      <th>Phone</th>
-                      <th>Address</th>
-                      <th>City</th>
-                      <th>Zip</th>
-                      <th>Property Type</th>
-                      <th>Home Size</th>
-                      <th>Year-built</th>
-                      <th>Bedrooms</th>
+                      {visibleColumns.map((col) => (
+                        <th key={col}>{col.replace("-", " ")}</th>
+                      ))}
                       <th>Action</th>
                     </tr>
                     </thead>
                     <tbody id="table-body">
-                    {
-                    
-                    
-                    sampleData.map((item, index) => (
-
-                      <tr key={index}>
-                          <td>{item.name}</td>
-                          <td>{item.email}</td>
-                          <td>{item.phone}</td>
-                          <td>{item.address}</td>
-                          <td>{item.city}</td>
-                          <td>{item.zip}</td>
-                          <td>{item["property-type"]}</td>
-                          <td>{item["home-size"]}</td>
-                          <td>{item["year-built"]}</td>
-                          <td>{item.bedrooms}</td>
-                      </tr>
-                        ))}
+                    {sampleData.map((item, index) => (
+                        <tr key={index}>
+                          {visibleColumns.map((col) => (
+                            <td key={col}>{item[col]}</td>
+                          ))}
+                          <td>
+                            <button>Delete</button>
+                          </td>
+                        </tr>
+                      ))}
                     </tbody>
                 </table>
 
