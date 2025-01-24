@@ -59,15 +59,19 @@ export default function ListingPage() {
   ]);
   const [checkboxState, setCheckboxState] = useState({});
   const [isVisible, setIsVisible] = useState(false);
+  
 
   const toggleVisibility = () => {
     setIsVisible((prev) => !prev); // Toggle the visibility state
   };
 
   useEffect(() => {
+    const hiddenColumns = ["property-type", "home-size", "year-built", "bedrooms"];
+    const filteredColumns = visibleColumns.filter(col => !hiddenColumns.includes(col));
+    setVisibleColumns(filteredColumns);
     // Initialize checkbox state based on visible columns
     const initialState = visibleColumns.reduce((acc, col) => {
-      acc[col] = !["property-type", "home-size", "year-built", "bedrooms"].includes(col);
+      acc[col] = !hiddenColumns.includes(col);
       return acc;
     }, {});
     setCheckboxState(initialState);
