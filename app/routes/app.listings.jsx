@@ -52,10 +52,6 @@ export default function ListingPage() {
     "address",
     "city",
     "zip",
-    "property-type",
-    "home-size",
-    "year-built",
-    "bedrooms",
   ]);
   const [checkboxState, setCheckboxState] = useState({});
 
@@ -66,6 +62,31 @@ export default function ListingPage() {
       return acc;
     }, {});
     setCheckboxState(initialState);
+
+    const customizeBtn = document.querySelector("a#customize-btn");
+    if (customizeBtn) {
+      customizeBtn.addEventListener("click", function () {
+        const nextElement = this.nextElementSibling;
+        if (nextElement) {
+          if (
+            nextElement.style.display === "none" ||
+            nextElement.style.display === ""
+          ) {
+            nextElement.style.display = "block";
+          } else {
+            nextElement.style.display = "none";
+          }
+        }
+      });
+    }
+
+    // Cleanup event listener
+    return () => {
+      if (customizeBtn) {
+        customizeBtn.removeEventListener("click", function () {});
+      }
+    };
+    
   }, []);
 
   const handleCheckboxChange = (e) => {
