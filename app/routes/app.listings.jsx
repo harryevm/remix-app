@@ -105,6 +105,8 @@ export default function ListingPage() {
     
   }, []);
 
+  console.log(sampleData)
+
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
@@ -168,7 +170,7 @@ export default function ListingPage() {
                     </thead>
                     <tbody id="table-body">
                     {sampleData.map((item, index) => (
-                        <tr key={index}>
+                        <tr key={index} test={item}>
                           {visibleColumns.map((col) => (
                             <td key={col}>{item[col]}</td>
                           ))}
