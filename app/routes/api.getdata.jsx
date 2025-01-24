@@ -1,24 +1,17 @@
-import { json } from "@remix-run/node";
-import { fetchMongoData, fetchMongoDataById } from "../entry.server";
+// routes/api/test.jsx
+import { json } from '@remix-run/node';  // for JSON response
+import { fetchMongoData } from '../entry.server';
 
-export async function loader({ params }) {
-  const { userId } = params;
 
+export async function loader() {
   try {
-    if (userId) {
-      const user = await fetchMongoDataById(userId);
+    // Fetch data from MongoDB using the fetchMongoData function
+    const findResult = await fetchMongoData();
 
-      if (!user) {
-        return new Response("User not found", { status: 404 });
-      }
-
-      return json(user);
-    }
-
-    const allData = await fetchMongoData();
-    return json(allData);
+    // Return the data as JSON
+    return json(findResult);
   } catch (error) {
-    console.error("Error:", error);
-    return new Response("Internal Server Error", { status: 500 });
-  }
+    console.error('Error fetching data:', error);
+    return new Response('Error fetching data', { status: 500 });
+  } 
 }
