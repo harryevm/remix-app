@@ -66,15 +66,12 @@ export default function ListingPage() {
     };
 
     fetchData();
-
-    console.log(sampleData);
     
   }, []);
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  console.log(sampleData)
   return (
     <>
            <div class="dashboard">
@@ -161,7 +158,7 @@ export default function ListingPage() {
             <div class="table">
                 <table>
                     <thead>
-                        <tr id="table-header"><th>name</th><th>email</th><th>phone</th><th>address</th><th>city</th><th>zip</th><th>Action</th></tr>
+                    <tr id="table-header"><th>name</th><th>email</th><th>phone</th><th>address</th><th>city</th><th>zip</th><th>neighborhood</th><th>property-type</th><th>home-size</th><th>lot-size</th><th>lot-unit</th><th>year-built</th><th>bedrooms</th><th>heating</th><th>cooling</th><th>waterSource</th><th>sewer</th><th>otherUtilities</th><th>garage</th><th>garage-specify</th><th>basement</th><th>outdoorFeatures</th><th>additionalFeatures</th><th>propertyPhotos</th><th>listingCheckbox</th><th>mediaRelease</th><th>mediaReleaseDate</th><th>description</th><th>askingPrice</th><th>preferredContact</th><th>contactHours</th><th>agencyCheckbox</th><th>agencySignature</th><th>agencyDate</th><th>agencyAgreement</th><th>fairHousingCheckbox</th><th>fairHousingSignature</th><th>fairHousingDate</th><th>fairHousing</th><th>propertyCheckbox</th><th>propertySignature</th><th>propertyDate</th><th>propertyDisclosure</th><th>listingSignature</th><th>listingDate</th><th>listingAgreement</th><th>Action</th></tr>
                     </thead>
                     <tbody id="table-body">
                     {
@@ -178,6 +175,46 @@ export default function ListingPage() {
                             <td>{item.zip}</td>
                             <td>{item.neighborhood}</td>
                             <td>{item["property-type"]}</td>
+                            <td>{item["home-size"]}</td>
+                            <td>{item["lot-size"]}</td>
+                            <td>{item["lot-unit"]}</td>
+                            <td>{item["year-built"]}</td>
+                            <td>{item.bedrooms}</td>
+                            <td>{item.bathrooms}</td>
+                            <td>{item.heating}</td>
+                            <td>{item.cooling}</td>
+                            <td>{item.waterSource}</td>
+                            <td>{item.sewer}</td>
+                            <td>{item.otherUtilities}</td>
+                            <td>{item.garage}</td>
+                            <td>{item["garage-specify"]}</td>
+                            <td>{item.basement}</td>
+                            <td>{item.outdoorFeatures}</td>
+                            <td>{item.additionalFeatures}</td>
+                            <td>{item.propertyPhotos}</td>
+                            <td>{item.listingCheckbox}</td>
+                            <td>{item.mediaRelease}</td>
+                            <td>{item.mediaReleaseDate}</td>
+                            <td>{item.description}</td>
+                            <td>{item.askingPrice}</td>
+                            <td>{item.preferredContact}</td>
+                            <td>{item.contactHours}</td>
+                            <td>{item.agencyCheckbox}</td>
+                            <td>{item.agencySignature}</td>
+                            <td>{item.agencyDate}</td>
+                            <td>{item.agencyAgreement}</td>
+                            <td>{item.fairHousingCheckbox}</td>
+                            <td>{item.fairHousingSignature}</td>
+                            <td>{item.fairHousingDate}</td>
+                            <td>{item.fairHousing}</td>
+                            <td>{item.propertyCheckbox}</td>
+                            <td>{item.propertySignature}</td>
+                            <td>{item.propertyDate}</td>
+                            <td>{item.propertyDisclosure}</td>
+                            <td>{item.listingSignature}</td>
+                            <td>{item.listingDate}</td>
+                            <td>{item.listingAgreement}</td>
+                            
                         </tr>
                         ))}
                     </tbody>
