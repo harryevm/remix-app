@@ -73,6 +73,8 @@ export default function ListingPage() {
     setCheckboxState(initialState);
   }, [visibleColumns]);
 
+  console.log(visibleColumns)
+
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
     setCheckboxState((prev) => ({ ...prev, [value]: checked }));
