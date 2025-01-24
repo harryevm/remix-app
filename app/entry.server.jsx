@@ -4,7 +4,8 @@ import { RemixServer } from "@remix-run/react";
 import { createReadableStreamFromReadable } from "@remix-run/node";
 import { isbot } from "isbot";
 import { addDocumentResponseHeaders } from "./shopify.server";
-import { MongoClient } from "mongodb";
+import { MongoClient, ObjectId } from "mongodb";
+
 
 const url =
   "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
@@ -84,11 +85,12 @@ export async function fetchMongoData() {
 }
 
 export async function fetchMongoDataById(userId) {
+  const objectId = new ObjectId(userId);
   try {
     await client.connect();
     const db = client.db(dbName);
     const collection = db.collection("Trevor");
-    const findResult = await collection.findOne({ _id: userId });
+    const findResult = await collection.findOne({ _id: objectId });
     // Fetching the user by their string ID
     return findResult;
   } catch (error) {
