@@ -1,31 +1,32 @@
-import { useLoaderData, useParams } from '@remix-run/react';
-
-
+import { json, useLoaderData } from 'remix';
 import { fetchMongoDataById } from '../entry.server';
 
 export const loader = async ({ params }) => {
-    const { userId } = params; // Destructure userId from params
-    
-    console.log(userId); // Log userId to check if it's correct
-    
+  const { userId } = params;
+
+  console.log(userId); // Log userId to check if it's correct
+
+  try {
     const data = await fetchMongoDataById(userId); // Use userId to fetch data
-    
+
     if (!data) {
       throw new Response('Item not found', { status: 404 });
     }
-  
-    return { data }; // Return the fetched data
-  };
-  
 
-// export default function ItemPage() {
-//   const { data } = useLoaderData();
+    return json({ data }); // Return the fetched data
+  } catch (error) {
+    console.error("Error loading data:", error);
+    throw new Response('Error loading data', { status: 500 });
+  }
+};
 
-//   return (
-//     <div>
-//       <h1>{data.name}</h1>
+export default function UserPage() {
+  const { data } = useLoaderData();
 
-//       {/* Render other data fields as needed */}
-//     </div>
-//   );
-// }
+  return (
+    <div>
+      <h1>User Details</h1>
+      <pre>{JSON.stringify(data, null, 2)}</pre>
+    </div>
+  );
+}
