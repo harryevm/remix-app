@@ -4,7 +4,7 @@ import { RemixServer } from "@remix-run/react";
 import { createReadableStreamFromReadable } from "@remix-run/node";
 import { isbot } from "isbot";
 import { addDocumentResponseHeaders } from "./shopify.server";
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient } from "mongodb";
 
 const url =
   "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
@@ -88,12 +88,15 @@ export async function fetchMongoDataById(userId) {
     await client.connect();
     const db = client.db(dbName);
     const collection = db.collection("Trevor");
-    return await collection.findOne({ _id: new ObjectId(userId) });
+
+    // Fetching the user by their string ID
+    return await collection.findOne({ _id: userId });
   } catch (error) {
     console.error("Error fetching data by ID:", error);
     throw error;
   }
 }
+
 
 
 
