@@ -83,6 +83,27 @@ export async function fetchMongoData() {
   }
 }
 
+export async function fetchMongoDataById(userId) {
+  try {
+    // Reuse client if already connected
+    await client.connect();
+    console.log("Connected successfully to server");
+
+    const db = client.db(dbName);
+    const collection = db.collection("Trevor");
+
+    // Fetch a single document by ID
+    const user = await collection.findOne({ _id: new ObjectId(userId) });
+
+    return user;
+  } catch (error) {
+    console.error("Error fetching data by ID:", error);
+    throw error;
+  } finally {
+    // Do not close the client here to allow reuse
+  }
+}
+
 
 export async function insertMongoData(data) {
  
