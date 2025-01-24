@@ -1,5 +1,10 @@
+import { TitleBar } from "@shopify/app-bridge-react";
+import { json } from "@remix-run/node";
+import React, { useEffect, useState } from "react";
+
 import { useLoaderData } from '@remix-run/react';
 import { fetchMongoDataById } from '../entry.server';
+
 
 export const loader = async ({ params }) => {
   const { userId } = params; // `params` already contains userId from the URL
