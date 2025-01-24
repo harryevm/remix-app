@@ -10,6 +10,8 @@ export const loader = async ({ params }) => {
   
   if (!data) {
     throw new Response('Item not found', { status: 404 });
+  }else{
+    console.log('Error Hai')
   }
 
   return { data };
