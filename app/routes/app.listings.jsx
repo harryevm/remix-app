@@ -150,7 +150,10 @@ export default function ListingPage() {
                             checked={checkboxState[column]}
                             onChange={handleCheckboxChange}
                           />{" "}
-                          {column}
+                          
+                          {column
+                          .replace("-", " ")
+                          .replace(/\b\w/g, (char) => char.toUpperCase())}
                         </li>
                       ))}
                     </ul>
@@ -164,7 +167,9 @@ export default function ListingPage() {
                     <thead>
                     <tr id="table-header">
                       {visibleColumns.map((col) => (
-                        <th key={col}>{col.replace("-", " ")}</th>
+                        <th key={col}>{col
+                          .replace("-", " ")
+                          .replace(/\b\w/g, (char) => char.toUpperCase())}</th>
                       ))}
                       <th>Action</th>
                     </tr>
