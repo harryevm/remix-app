@@ -71,7 +71,7 @@ export default function ListingPage() {
       return acc;
     }, {});
     setCheckboxState(initialState);
-  }, [visibleColumns]);
+  }, []);
 
   console.log(visibleColumns)
 
@@ -95,7 +95,7 @@ export default function ListingPage() {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
-        console.log(data);
+        // console.log(data);
         setSampleData(data); // Assuming the API returns an array of objects
       } catch (err) {
         console.error("Failed to fetch data:", err);
