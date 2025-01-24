@@ -191,7 +191,7 @@ export default function ListingPage() {
                             <td>{item.basement}</td>
                             <td>{item.outdoorFeatures}</td>
                             <td>{item.additionalFeatures}</td>
-                            <td>{item.propertyPhotos}</td>
+                            <td>{item.propertyPhotos || ''}</td>
                             <td>{item.listingCheckbox}</td>
                             <td>{item.mediaRelease}</td>
                             <td>{item.mediaReleaseDate}</td>
