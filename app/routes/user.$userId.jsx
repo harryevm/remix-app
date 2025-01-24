@@ -7,6 +7,8 @@ export const loader = async ({ params }) => {
     // const { userId } = params; // Destructure userId from params
     const { userId } = useParams();
     console.log(userId);
+    const data = userId;
+    
     
     // const data = await fetchMongoDataById(userId); // Use userId instead of 'item'
   
@@ -18,14 +20,14 @@ export const loader = async ({ params }) => {
   };
   
 
-export default function ItemPage() {
-  const { data } = useLoaderData();
+// export default function ItemPage() {
+//   const { data } = useLoaderData();
 
-  return (
-    <div>
-      <h1>{data.name}</h1>
+//   return (
+//     <div>
+//       <h1>{data.name}</h1>
 
-      {/* Render other data fields as needed */}
-    </div>
-  );
-}
+//       {/* Render other data fields as needed */}
+//     </div>
+//   );
+// }
