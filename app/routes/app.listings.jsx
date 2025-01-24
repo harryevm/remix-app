@@ -67,9 +67,8 @@ export default function ListingPage() {
   useEffect(() => {
     // Initialize checkbox state based on visible columns
     const initialState = visibleColumns.reduce((acc, col) => {
-      acc[col] = col !== "property-type" && col !== "home-size" && col !== "year-built" && col !== "bedrooms";
-      acc[col] = true;
-      return acc;
+        acc[col] = col !== "property-type" && col !== "home-size" && col !== "year-built" && col !== "bedrooms"; // Set the proper condition
+        return acc;
     }, {});
     setCheckboxState(initialState);
   }, []);
