@@ -3,7 +3,7 @@ import { useLoaderData } from '@remix-run/react';
 import { fetchMongoDataById } from '../entry.server';
 
 export const loader = async ({ params }) => {
-  const { item } = params;
+  const { userId } = params;
   const data = await fetchMongoDataById(item);
 
   if (!data) {
