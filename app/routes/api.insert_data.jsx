@@ -47,7 +47,7 @@
 //         },
 //       });
 //     }
-//   }
+//   } 
 
   
 // export async function action({ request }) {
@@ -87,6 +87,19 @@ import { json } from '@remix-run/node';
 import { insertMongoData } from '../entry.server'; 
 import { writeFile } from "fs/promises";
 import path from "path";
+
+export async function loader({ request }) {
+    if (request.method === 'OPTIONS') {
+      return new Response(null, {
+        status: 204,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        },
+      });
+    }
+  }
 
 export async function action({ request }) {
     const headers = {
