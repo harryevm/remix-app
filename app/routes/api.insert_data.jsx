@@ -82,30 +82,28 @@
 
 
 /****************** End my code *****************************/
-
 import { json } from '@remix-run/node'; 
 import { insertMongoData } from '../entry.server'; 
-import { writeFile } from "fs/promises";
-import path, { dirname } from "path";
-import { fileURLToPath } from 'url';
-const SHOPIFY_STORE = "trevorf-testing.myshopify.com"; // Replace with your Shopify store URL
-const ADMIN_API_TOKEN = "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";
 
+const SHOPIFY_STORE = "trevorf-testing.myshopify.com"; // Your Shopify store
+const ADMIN_API_TOKEN = "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"; // Use environment variables for security
 
+// Handle CORS preflight request
 export async function loader({ request }) {
     if (request.method === 'OPTIONS') {
-      return new Response(null, {
-        status: 204,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type',
-        },
-      });
+        return new Response(null, {
+            status: 204, 
+            headers: {
+                'Access-Control-Allow-Origin': '*',
+                'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type',
+            },
+        });
     }
-  }
+    return json({ message: "Invalid request method" }, { status: 405 });
+}
 
-  export async function action({ request }) {
+export async function action({ request }) {
     const headers = {
         'Access-Control-Allow-Origin': '*', 
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -113,74 +111,68 @@ export async function loader({ request }) {
     };
 
     try {
-      // const __filename = fileURLToPath(import.meta.url);
-      // const __dirname = dirname(__filename);
-      // const uploadDir = path.join(__dirname, "../public/uploads");
+        // Parse form data
+        const formData = await request.formData();
+        const file = formData.get("file");
+        const title = formData.get("title");
+        const email = formData.get("email");
+        const password = formData.get("password");
 
-      const formData = await request.formData();
-      const file = formData.get("file");
-      const title = formData.get("title");
-      const email = formData.get("email");
-      const password = formData.get("password");
+        // Validate required fields
+        if (!file || !title || !email || !password) {
+            return json({ success: false, message: "Missing required fields" }, { status: 400, headers });
+        }
 
-      console.log(formData);
-      console.log(file);
-      console.log(title);
-
-      if (!file || !title || !email || !password) {
-          return json({ success: false, message: "Missing required fields" }, { status: 400, headers });
-      }
-
-      const arrayBuffer = await file.arrayBuffer();
+        // Convert file to base64
+        const arrayBuffer = await file.arrayBuffer();
         const buffer = Buffer.from(arrayBuffer);
-        const base64Image = buffer.toString("base64"); 
+        const mimeType = file.type || "image/png"; // Detect MIME type
+        const base64Image = buffer.toString("base64");
 
         // Upload file to Shopify Files API
-        const response = await fetch(`https://${SHOPIFY_STORE}/admin/api/2025-01/graphql.json`, {
-          method: "POST",
-          headers: {
-              "Content-Type": "application/json",
-              "X-Shopify-Access-Token": ADMIN_API_TOKEN,
-          },
-          body: JSON.stringify({
-              query: `
-                  mutation fileCreate($files: [FileCreateInput!]!) {
-                      fileCreate(files: $files) {
-                          files {
-                              id
-                              url
-                          }
-                          userErrors {
-                              field
-                              message
-                          }
-                      }
-                  }
-              `,
-              variables: {
-                  files: [
-                      {
-                          originalSource: `data:image/png;base64,${base64Image}`, // Convert to base64
-                      },
-                  ],
-              },
-          }),
-      });
+        const response = await fetch(`https://${SHOPIFY_STORE}/admin/api/2024-01/graphql.json`, {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                "X-Shopify-Access-Token": ADMIN_API_TOKEN,
+            },
+            body: JSON.stringify({
+                query: `
+                    mutation fileCreate($files: [FileCreateInput!]!) {
+                        fileCreate(files: $files) {
+                            files {
+                                id
+                                url
+                            }
+                            userErrors {
+                                field
+                                message
+                            }
+                        }
+                    }
+                `,
+                variables: {
+                    files: [{ originalSource: `data:${mimeType};base64,${base64Image}` }],
+                },
+            }),
+        });
 
-      const result = await response.json();
+        const result = await response.json();
 
-      if (result.data.fileCreate.userErrors.length > 0) {
-          return json({ success: false, message: result.data.fileCreate.userErrors[0].message }, { status: 400,headers });
-      }
+        // Handle API errors
+        if (result.errors || !result.data?.fileCreate?.files?.length) {
+            return json({ success: false, message: result.errors?.[0]?.message || "File upload failed" }, { status: 400, headers });
+        }
 
-      return json({ success: true, fileUrl: result.data.fileCreate.files[0].url },{ headers });
+        const fileUrl = result.data.fileCreate.files[0].url;
 
-      // const result = await insertMongoData({ title, email, password, fileUrl });
+        // Insert into MongoDB (Uncomment if needed)
+        // const dbResult = await insertMongoData({ title, email, password, fileUrl });
 
-      //  return json({ success: true, fileUrl, insertedId: result.insertedId }, { headers });
+        return json({ success: true, fileUrl }, { headers });
 
-  } catch (error) {
-      console.error("Error inserting data:", error);
-      return json({ success: false, message: "Error inserting data" }, { status: 500, headers });
-  }
+    } catch (error) {
+        console.error("Error:", error);
+        return json({ success: false, message: "Server error" }, { status: 500, headers });
+    }
 }
