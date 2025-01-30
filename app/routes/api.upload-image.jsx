@@ -1,6 +1,8 @@
 import { json } from '@remix-run/node';
 import shopify from '../shopify.server';
 
+console.log(shopify)
+
 export async function loader({ request }) {
     if (request.method === 'OPTIONS') {
         return new Response(null, {
