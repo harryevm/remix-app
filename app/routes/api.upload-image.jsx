@@ -27,7 +27,10 @@ export async function action({ request }) {
         const { filename, mimeType, shop } = await request.json(); // Ensure you pass the 'shop' parameter
 
         // Load session from Shopify session storage
+        console.log(shopify);
         const session = await shopify.sessionStorage.loadSession(shop);
+        console.log(session);
+
         if (!session) {
             throw new Error("Session not found");
         }
@@ -65,7 +68,7 @@ export async function action({ request }) {
         if (!response.body || !response.body.data) {
             throw new Error("Invalid response from Shopify API");
         }
-        
+
         // Extract the Upload URL from Response
         const uploadUrl = response.body.data.stagedUploadsCreate.stagedTargets[0].url;
 
