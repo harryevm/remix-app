@@ -79,12 +79,17 @@
 // }
 /************************************************************************** */
 import { json } from '@remix-run/node';
-import { insertMongoData } from '../entry.server';
-import { unstable_parseMultipartFormData, writeAsyncIterableToFile } from "@remix-run/node";
+import formidable from 'formidable';
+import fs from 'fs';
 import fetch from 'node-fetch';
 
 const SHOPIFY_STORE = "trevorf-testing.myshopify.com";
 const SHOPIFY_ACCESS_TOKEN = "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";
+
+// Set up formidable options
+const form = new formidable.IncomingForm();
+form.uploadDir = "./tmp"; // Temporary folder to store uploaded files
+form.keepExtensions = true; // Keep file extension
 
 export async function action({ request }) {
     const headers = {
@@ -97,56 +102,61 @@ export async function action({ request }) {
         return json({ success: false, message: 'Invalid request method' }, { status: 405, headers });
     }
 
-    try {
-        // Parse multipart form data
-        const formData = await unstable_parseMultipartFormData(request, async ({ stream, filename }) => {
-            const filePath = `/tmp/${filename}`;
-            await writeAsyncIterableToFile(stream, filePath);
-            return filePath;
-        });
+    return new Promise((resolve, reject) => {
+        form.parse(request, async (err, fields, files) => {
+            if (err) {
+                console.error("Error parsing form data:", err);
+                return resolve(json({ success: false, message: 'Error parsing form data' }, { status: 500, headers }));
+            }
 
-        const title = formData.get("title");
-        const email = formData.get("email");
-        const password = formData.get("password");
-        const filePath = formData.get("file"); // File path saved temporarily
+            const title = fields.title[0];  // Assuming title is sent in fields
+            const email = fields.email[0];  // Same for email
+            const password = fields.password[0];  // Same for password
 
-        if (!filePath) {
-            return json({ success: false, message: "File is missing" }, { status: 400, headers });
-        }
+            const file = files.file[0]; // This will contain the file object
+            const filePath = file.filepath; // Temporary path where the file is stored
 
-        // Read the file and upload it to Shopify
-        const fileStream = await Bun.file(filePath).arrayBuffer();
-        const shopifyResponse = await fetch(`https://${SHOPIFY_STORE}/admin/api/2023-04/files.json`, {
-            method: "POST",
-            headers: {
-                "X-Shopify-Access-Token": SHOPIFY_ACCESS_TOKEN,
-                "Content-Type": "application/json"
-            },
-            body: JSON.stringify({
-                file: {
-                    attachment: Buffer.from(fileStream).toString("base64"),
-                    filename: filePath.split('/').pop()
+            if (!filePath) {
+                return resolve(json({ success: false, message: "File is missing" }, { status: 400, headers }));
+            }
+
+            // Read the file into a buffer and upload it to Shopify
+            const fileBuffer = fs.readFileSync(filePath);
+
+            try {
+                // Upload file to Shopify
+                const shopifyResponse = await fetch(`https://${SHOPIFY_STORE}/admin/api/2023-04/files.json`, {
+                    method: "POST",
+                    headers: {
+                        "X-Shopify-Access-Token": SHOPIFY_ACCESS_TOKEN,
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        file: {
+                            attachment: Buffer.from(fileBuffer).toString("base64"),
+                            filename: file.originalFilename,
+                        },
+                    }),
+                });
+
+                const shopifyData = await shopifyResponse.json();
+                if (!shopifyData.file) {
+                    return resolve(json({ success: false, message: "Failed to upload to Shopify" }, { status: 500, headers }));
                 }
-            })
+
+                // Successfully uploaded to Shopify
+                return resolve(json({
+                    success: true,
+                    shopifyFileUrl: shopifyData.file.url,
+                    title,
+                    email,
+                    password,
+                }, { headers }));
+
+            } catch (uploadError) {
+                console.error('Error uploading file to Shopify:', uploadError);
+                return resolve(json({ success: false, message: 'Error uploading file to Shopify' }, { status: 500, headers }));
+            }
         });
-
-        const shopifyData = await shopifyResponse.json();
-        if (!shopifyData.file) {
-            return json({ success: false, message: "Failed to upload to Shopify" }, { status: 500, headers });
-        }
-
-        // Insert metadata into MongoDB (optional)
-        const result = await insertMongoData({
-            title,
-            email,
-            password,
-            shopifyFileUrl: shopifyData.file.url
-        });
-
-        return json({ success: true, insertedId: result.insertedId, shopifyFileUrl: shopifyData.file.url }, { headers });
-
-    } catch (error) {
-        console.error("Error:", error);
-        return json({ success: false, message: "Internal server error" }, { status: 500, headers });
-    }
+    });
 }
