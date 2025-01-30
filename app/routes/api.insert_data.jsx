@@ -85,7 +85,7 @@
 import { json } from '@remix-run/node';  // For JSON response
 import { insertMongoData } from '../entry.server';
 import { shopifyApp } from '@shopify/shopify-app-remix/server';
-
+import shopify from '../shopify.server';
 
 export async function loader({ request }) {
     if (request.method === 'OPTIONS') {
