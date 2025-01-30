@@ -22,7 +22,7 @@ export async function action({ request }) {
         'Access-Control-Allow-Methods': 'POST, OPTIONS, PUT',
         'Access-Control-Allow-Headers': 'Content-Type'
     };
-    console.log(shopify)
+    
     try {
         const { filename, mimeType, shop } = await request.json(); // Ensure you pass the 'shop' parameter
 
@@ -32,35 +32,40 @@ export async function action({ request }) {
             throw new Error("Session not found");
         }
 
-        // Use the correct Shopify GraphQL client
-        const client = new shopify.api.clients.Graphql({ session });
+        
 
         // GraphQL Mutation
         const mutation = `
-            mutation GenerateUploadUrl($files: [StagedUploadInput!]!) {
-                stagedUploadsCreate(input: $files) {
-                    stagedTargets {
-                        url
-                        resourceUrl
-                    }
-                }
+        mutation GenerateUploadUrl($files: [StagedUploadInput!]!) {
+            stagedUploadsCreate(input: $files) {
+            stagedTargets {
+                url
+                resourceUrl
             }
+            }
+        }
         `;
 
-        // Mutation Variables
         const variables = {
-            files: [
-                {
-                    filename: filename,
-                    mimeType: mimeType,
-                    resource: "FILE",
-                }
-            ]
+        files: [
+            {
+            filename,
+            mimeType,
+            resource: "FILE",
+            },
+        ],
         };
+
+        // Use the correct Shopify GraphQL client
+        const client = new shopify.clients.GraphQL({ session });
 
         // Send GraphQL Request
         const response = await client.query({ data: { query: mutation, variables } });
 
+        if (!response.body || !response.body.data) {
+            throw new Error("Invalid response from Shopify API");
+        }
+        
         // Extract the Upload URL from Response
         const uploadUrl = response.body.data.stagedUploadsCreate.stagedTargets[0].url;
 
