@@ -78,85 +78,84 @@
 //     }
 // }
 /************************************************************************** */
-import { json } from '@remix-run/node';
-import formidable from 'formidable';
+import { json, redirect, unstable_parseMultipartFormData } from '@remix-run/node';
 import fs from 'fs';
 import fetch from 'node-fetch';
 
+
 const SHOPIFY_STORE = "trevorf-testing.myshopify.com";
 const SHOPIFY_ACCESS_TOKEN = "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";
-
-// Set up formidable options
-const form = new formidable.IncomingForm();
-form.uploadDir = "./tmp"; // Temporary folder to store uploaded files
-form.keepExtensions = true; // Keep file extension
+const UPLOAD_DIR = "./tmp";
 
 export async function action({ request }) {
-    const headers = {
-        'Access-Control-Allow-Origin': '*',
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type',
-    };
+  const headers = {
+    'Content-Type': 'application/json',
+    'Access-Control-Allow-Origin': '*', // For testing, change in production
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
 
-    if (request.method !== 'POST') {
-        return json({ success: false, message: 'Invalid request method' }, { status: 405, headers });
+  // Parse the multipart form data
+  try {
+    const formData = await unstable_parseMultipartFormData(request, {
+      // Handle the file upload
+      file: async ({ filename, stream }) => {
+        const filePath = `${UPLOAD_DIR}/${filename}`;
+        const fileStream = fs.createWriteStream(filePath);
+        stream.pipe(fileStream);
+
+        // Return the path where the file is saved
+        return new Promise((resolve, reject) => {
+          fileStream.on('finish', () => resolve(filePath));
+          fileStream.on('error', reject);
+        });
+      },
+    });
+
+    const title = formData.get('title');
+    const email = formData.get('email');
+    const password = formData.get('password');
+    const filePath = formData.get('file'); // Path to the uploaded file
+
+    if (!filePath) {
+      return json({ success: false, message: 'File is missing' }, { status: 400, headers });
     }
 
-    return new Promise((resolve, reject) => {
-        form.parse(request, async (err, fields, files) => {
-            if (err) {
-                console.error("Error parsing form data:", err);
-                return resolve(json({ success: false, message: 'Error parsing form data' }, { status: 500, headers }));
-            }
+    // Read the uploaded file
+    const fileBuffer = fs.readFileSync(filePath);
 
-            const title = fields.title[0];  // Assuming title is sent in fields
-            const email = fields.email[0];  // Same for email
-            const password = fields.password[0];  // Same for password
-
-            const file = files.file[0]; // This will contain the file object
-            const filePath = file.filepath; // Temporary path where the file is stored
-
-            if (!filePath) {
-                return resolve(json({ success: false, message: "File is missing" }, { status: 400, headers }));
-            }
-
-            // Read the file into a buffer and upload it to Shopify
-            const fileBuffer = fs.readFileSync(filePath);
-
-            try {
-                // Upload file to Shopify
-                const shopifyResponse = await fetch(`https://${SHOPIFY_STORE}/admin/api/2023-04/files.json`, {
-                    method: "POST",
-                    headers: {
-                        "X-Shopify-Access-Token": SHOPIFY_ACCESS_TOKEN,
-                        "Content-Type": "application/json",
-                    },
-                    body: JSON.stringify({
-                        file: {
-                            attachment: Buffer.from(fileBuffer).toString("base64"),
-                            filename: file.originalFilename,
-                        },
-                    }),
-                });
-
-                const shopifyData = await shopifyResponse.json();
-                if (!shopifyData.file) {
-                    return resolve(json({ success: false, message: "Failed to upload to Shopify" }, { status: 500, headers }));
-                }
-
-                // Successfully uploaded to Shopify
-                return resolve(json({
-                    success: true,
-                    shopifyFileUrl: shopifyData.file.url,
-                    title,
-                    email,
-                    password,
-                }, { headers }));
-
-            } catch (uploadError) {
-                console.error('Error uploading file to Shopify:', uploadError);
-                return resolve(json({ success: false, message: 'Error uploading file to Shopify' }, { status: 500, headers }));
-            }
-        });
+    // Upload the file to Shopify
+    const shopifyResponse = await fetch(`https://${SHOPIFY_STORE}/admin/api/2023-04/files.json`, {
+      method: "POST",
+      headers: {
+        "X-Shopify-Access-Token": SHOPIFY_ACCESS_TOKEN,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        file: {
+          attachment: Buffer.from(fileBuffer).toString("base64"),
+          filename: filePath.split("/").pop(),
+        },
+      }),
     });
+
+    const shopifyData = await shopifyResponse.json();
+
+    if (!shopifyData.file) {
+      return json({ success: false, message: "Failed to upload to Shopify" }, { status: 500, headers });
+    }
+
+    // Successfully uploaded to Shopify
+    return json({
+      success: true,
+      shopifyFileUrl: shopifyData.file.url,
+      title,
+      email,
+      password,
+    }, { headers });
+
+  } catch (error) {
+    console.error('Error handling file upload:', error);
+    return json({ success: false, message: 'Error processing the file upload' }, { status: 500, headers });
+  }
 }
