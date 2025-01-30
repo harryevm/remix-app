@@ -136,7 +136,7 @@ export async function loader({ request }) {
         const base64Image = buffer.toString("base64"); 
 
         // Upload file to Shopify Files API
-        const response = await fetch(`https://${SHOPIFY_STORE}/admin/api/2023-07/graphql.json`, {
+        const response = await fetch(`https://${SHOPIFY_STORE}/admin/api/2025-01/graphql.json`, {
           method: "POST",
           headers: {
               "Content-Type": "application/json",
