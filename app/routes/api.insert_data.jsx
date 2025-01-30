@@ -118,8 +118,8 @@ export async function action({ request }) {
           // 1. Get the Shopify session from shopifyApp
          const session = await shopifyApp.getSessionFromRequest(request);
 
-         console.log(jsonData);
-         console.log(session);
+         console.log(jsonData+' '+'----------JsonData');
+         console.log(session+' '+'----------Session');
          if (!session) {
           return json({ success: false, message: 'No Shopify session found' }, { status: 401, headers }); // Important!
         }
