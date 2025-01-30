@@ -13,7 +13,7 @@ const client = new MongoClient(url, {
     useUnifiedTopology: true,
   });
 const db = client.db(dbName);
-const collection = db.collection(shopify_sessions);
+const collection = db.collection('shopify_sessions');
 
 // Load session from MongoDB
 export async function loadSession(request) {
