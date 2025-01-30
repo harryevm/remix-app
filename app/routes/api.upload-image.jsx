@@ -1,7 +1,7 @@
 import { json } from '@remix-run/node';
 import shopify from '../shopify.server';
 
-console.log(shopify)
+
 
 export async function loader({ request }) {
     if (request.method === 'OPTIONS') {
@@ -22,7 +22,7 @@ export async function action({ request }) {
         'Access-Control-Allow-Methods': 'POST, OPTIONS, PUT',
         'Access-Control-Allow-Headers': 'Content-Type'
     };
-
+    console.log(shopify)
     try {
         const { filename, mimeType, shop } = await request.json(); // Ensure you pass the 'shop' parameter
 
