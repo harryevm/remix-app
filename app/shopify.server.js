@@ -5,9 +5,10 @@ import {
   shopifyApp,
 } from "@shopify/shopify-app-remix/server";
 import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
+import { deleteSession, loadSession, storeSession } from "./routes/mongo-session-storage";
 // import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
 // import prisma from "./db.server";
-MemorySessionStorage
+
 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
@@ -17,7 +18,12 @@ const shopify = shopifyApp({
   appUrl: process.env.SHOPIFY_APP_URL || "",
   authPathPrefix: "/auth",
   // sessionStorage: new PrismaSessionStorage(prisma),
-  sessionStorage: new MemorySessionStorage(),
+  // sessionStorage: new MemorySessionStorage(),
+  sessionStorage: {
+    loadSession,    // Use the loadSession function
+    storeSession,   // Use the storeSession function
+    deleteSession,  // Use the deleteSession function
+  },
   distribution: AppDistribution.AppStore,
   future: {
     unstable_newEmbeddedAuthStrategy: true,
