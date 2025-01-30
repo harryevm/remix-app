@@ -86,7 +86,9 @@
 import { json } from '@remix-run/node'; 
 import { insertMongoData } from '../entry.server'; 
 import { writeFile } from "fs/promises";
-import path from "path";
+import path, { dirname } from "path";
+import { fileURLToPath } from 'url';
+
 
 
 export async function loader({ request }) {
@@ -110,6 +112,10 @@ export async function loader({ request }) {
     };
 
     try {
+      // const __filename = fileURLToPath(import.meta.url);
+      // const __dirname = dirname(__filename);
+      // const uploadDir = path.join(__dirname, "../public/uploads");
+
       const formData = await request.formData();
       const file = formData.get("file");
       const title = formData.get("title");
@@ -124,7 +130,7 @@ export async function loader({ request }) {
           return json({ success: false, message: "Missing required fields" }, { status: 400, headers });
       }
 
-      const uploadDir = path.join(__dirname, "../public/uploads"); // Correct path for Remix
+      const uploadDir = path.join(process.cwd(), "public/uploads"); // No __dirname
       await writeFile(path.join(uploadDir, file.name), Buffer.from(await file.arrayBuffer()));
 
       const fileUrl = `/uploads/${file.name}`; // URL relative to the public directory
