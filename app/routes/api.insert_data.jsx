@@ -85,6 +85,8 @@ import fetch from 'node-fetch';
 
 const SHOPIFY_STORE = "trevorf-testing.myshopify.com";
 const SHOPIFY_ACCESS_TOKEN = "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";
+
+// Define the upload directory
 const UPLOAD_DIR = "./tmp";
 
 export async function action({ request }) {
@@ -95,8 +97,10 @@ export async function action({ request }) {
     'Access-Control-Allow-Headers': 'Content-Type',
   };
 
-  // Parse the multipart form data
   try {
+    console.log("Start parsing form data...");
+    
+    // Parse the multipart form data
     const formData = await unstable_parseMultipartFormData(request, {
       // Handle the file upload
       file: async ({ filename, stream }) => {
@@ -112,19 +116,26 @@ export async function action({ request }) {
       },
     });
 
+    console.log("Form data parsed successfully!");
+
     const title = formData.get('title');
     const email = formData.get('email');
     const password = formData.get('password');
     const filePath = formData.get('file'); // Path to the uploaded file
 
     if (!filePath) {
+      console.log("File is missing in the request");
       return json({ success: false, message: 'File is missing' }, { status: 400, headers });
     }
+
+    console.log("File saved at:", filePath);
 
     // Read the uploaded file
     const fileBuffer = fs.readFileSync(filePath);
 
     // Upload the file to Shopify
+    console.log("Uploading file to Shopify...");
+
     const shopifyResponse = await fetch(`https://${SHOPIFY_STORE}/admin/api/2023-04/files.json`, {
       method: "POST",
       headers: {
@@ -139,13 +150,23 @@ export async function action({ request }) {
       }),
     });
 
+    if (!shopifyResponse.ok) {
+      console.log("Error uploading to Shopify:", shopifyResponse.statusText);
+      const shopifyErrorText = await shopifyResponse.text();
+      console.error("Shopify error:", shopifyErrorText);
+      return json({ success: false, message: 'Failed to upload to Shopify' }, { status: 500, headers });
+    }
+
     const shopifyData = await shopifyResponse.json();
 
     if (!shopifyData.file) {
+      console.log("No file data returned from Shopify");
       return json({ success: false, message: "Failed to upload to Shopify" }, { status: 500, headers });
     }
 
     // Successfully uploaded to Shopify
+    console.log("File successfully uploaded to Shopify:", shopifyData.file.url);
+
     return json({
       success: true,
       shopifyFileUrl: shopifyData.file.url,
@@ -155,7 +176,7 @@ export async function action({ request }) {
     }, { headers });
 
   } catch (error) {
-    console.error('Error handling file upload:', error);
+    console.error('Error during the action:', error);
     return json({ success: false, message: 'Error processing the file upload' }, { status: 500, headers });
   }
 }
