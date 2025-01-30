@@ -101,6 +101,10 @@ export async function action({ request }) {
             const email = formData.get("email");
             const password = formData.get("password");
 
+            console.log(formData);
+            console.log(file);
+            console.log(title);
+
             if (!file || !title || !email || !password) {
                 return json({ success: false, message: "Missing required fields" }, { status: 400 });
             }
