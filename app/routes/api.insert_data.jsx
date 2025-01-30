@@ -123,7 +123,7 @@ export async function action({ request }) {
 
 
 function handleCors(request, callback) {
-    const allowedOrigins = ['https://trevor.myshopify.com']; // Replace with your Shopify domain
+    const allowedOrigins = ['https://trevorf-testing.myshopify.com']; // Replace with your Shopify domain
     const origin = request.headers.get('Origin');
 
     if (allowedOrigins.includes(origin) || !origin) { // Allow if origin is in list or no origin (for local dev)
