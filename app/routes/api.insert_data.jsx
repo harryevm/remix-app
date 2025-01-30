@@ -116,7 +116,8 @@ export async function action({ request }) {
           const jsonData = await request.json();
 
           // 1. Get the Shopify session from shopifyApp
-         const session = await shopifyApp.getSessionFromRequest(request);
+         const session = await shopifyApp.api.getSessionFromRequest(request);
+         
 
          console.log(jsonData+' '+'----------JsonData');
          console.log(session+' '+'----------Session');
