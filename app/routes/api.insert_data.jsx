@@ -83,68 +83,58 @@
 
 /****************** End my code *****************************/
 
-import { json } from '@remix-run/node';
-import { insertMongoData } from '../entry.server';
+import { json } from '@remix-run/node'; 
+import { insertMongoData } from '../entry.server'; 
 import { writeFile } from "fs/promises";
 import path from "path";
 
+
 export async function loader({ request }) {
-    return handleCors(request);
-}
+    if (request.method === 'OPTIONS') {
+      return new Response(null, {
+        status: 204,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'POST, OPTIONS',
+          'Access-Control-Allow-Headers': 'Content-Type',
+        },
+      });
+    }
+  }
 
 export async function action({ request }) {
-    return handleCors(request, async () => { // Pass a callback function
-        try {
-            const formData = await request.formData();
-            const file = formData.get("file");
-            const title = formData.get("title");
-            const email = formData.get("email");
-            const password = formData.get("password");
+    const headers = {
+        'Access-Control-Allow-Origin': '*', 
+        'Access-Control-Allow-Methods': 'POST, OPTIONS',
+        'Access-Control-Allow-Headers': 'Content-Type'
+    };
 
-            console.log(formData);
-            console.log(file);
-            console.log(title);
+    try {
+      const formData = await request.formData();
+      const file = formData.get("file");
+      const title = formData.get("title");
+      const email = formData.get("email");
+      const password = formData.get("password");
 
-            if (!file || !title || !email || !password) {
-                return json({ success: false, message: "Missing required fields" }, { status: 400 });
-            }
+      console.log(formData);
+      console.log(file);
+      console.log(title);
 
-            const uploadDir = path.join(__dirname, "../public/uploads"); // Correct path for Remix
-            await writeFile(path.join(uploadDir, file.name), Buffer.from(await file.arrayBuffer()));
+      if (!file || !title || !email || !password) {
+          return json({ success: false, message: "Missing required fields" }, { status: 400 });
+      }
 
-            const fileUrl = `/uploads/${file.name}`; // URL relative to the public directory
+      const uploadDir = path.join(__dirname, "../public/uploads"); // Correct path for Remix
+      await writeFile(path.join(uploadDir, file.name), Buffer.from(await file.arrayBuffer()));
 
-            const result = await insertMongoData({ title, email, password, fileUrl });
+      const fileUrl = `/uploads/${file.name}`; // URL relative to the public directory
 
-            return json({ success: true, fileUrl, insertedId: result.insertedId });
+      const result = await insertMongoData({ title, email, password, fileUrl });
 
-        } catch (error) {
-            console.error("Error inserting data:", error);
-            return json({ success: false, message: "Error inserting data" }, { status: 500 });
-        }
-    });
-}
+      return json({ success: true, fileUrl, insertedId: result.insertedId });
 
-
-function handleCors(request, callback) {
-    const allowedOrigins = ['https://trevorf-testing.myshopify.com']; // Replace with your Shopify domain
-    const origin = request.headers.get('Origin');
-
-    if (allowedOrigins.includes(origin) || !origin) { // Allow if origin is in list or no origin (for local dev)
-        const headers = {
-            'Access-Control-Allow-Origin': origin || '*', // Echo back the origin or allow all if none
-            'Access-Control-Allow-Methods': 'POST, OPTIONS',
-            'Access-Control-Allow-Headers': 'Content-Type',
-        };
-
-        if (request.method === 'OPTIONS') {
-            return new Response(null, { status: 204, headers });
-        } else if (callback) {
-            return callback(); // Execute the callback if it's a POST
-        } else {
-            return new Response("Not Found", { status: 404 }); // Handle other requests if no callback
-        }
-    } else {
-        return new Response("Forbidden", { status: 403 }); // Reject if origin is not allowed
-    }
+  } catch (error) {
+      console.error("Error inserting data:", error);
+      return json({ success: false, message: "Error inserting data" }, { status: 500 });
+  }
 }
