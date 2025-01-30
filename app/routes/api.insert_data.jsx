@@ -88,7 +88,8 @@ import { insertMongoData } from '../entry.server';
 import { writeFile } from "fs/promises";
 import path, { dirname } from "path";
 import { fileURLToPath } from 'url';
-
+const SHOPIFY_STORE = "trevorf-testing.myshopify.com"; // Replace with your Shopify store URL
+const ADMIN_API_TOKEN = "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";
 
 
 export async function loader({ request }) {
@@ -130,14 +131,53 @@ export async function loader({ request }) {
           return json({ success: false, message: "Missing required fields" }, { status: 400, headers });
       }
 
-      const uploadDir = path.join(process.cwd(), "public/uploads"); // No __dirname
-      await writeFile(path.join(uploadDir, file.name), Buffer.from(await file.arrayBuffer()));
+      const arrayBuffer = await file.arrayBuffer();
+        const buffer = Buffer.from(arrayBuffer);
+        const base64Image = buffer.toString("base64"); 
 
-      const fileUrl = `/uploads/${file.name}`; // URL relative to the public directory
+        // Upload file to Shopify Files API
+        const response = await fetch(`https://${SHOPIFY_STORE}/admin/api/2023-07/graphql.json`, {
+          method: "POST",
+          headers: {
+              "Content-Type": "application/json",
+              "X-Shopify-Access-Token": ADMIN_API_TOKEN,
+          },
+          body: JSON.stringify({
+              query: `
+                  mutation fileCreate($files: [FileCreateInput!]!) {
+                      fileCreate(files: $files) {
+                          files {
+                              id
+                              url
+                          }
+                          userErrors {
+                              field
+                              message
+                          }
+                      }
+                  }
+              `,
+              variables: {
+                  files: [
+                      {
+                          originalSource: `data:image/png;base64,${base64Image}`, // Convert to base64
+                      },
+                  ],
+              },
+          }),
+      });
 
-      const result = await insertMongoData({ title, email, password, fileUrl });
+      const result = await response.json();
 
-       return json({ success: true, fileUrl, insertedId: result.insertedId }, { headers });
+      if (result.data.fileCreate.userErrors.length > 0) {
+          return json({ success: false, message: result.data.fileCreate.userErrors[0].message }, { status: 400,headers });
+      }
+
+      return json({ success: true, fileUrl: result.data.fileCreate.files[0].url },{ headers });
+
+      // const result = await insertMongoData({ title, email, password, fileUrl });
+
+      //  return json({ success: true, fileUrl, insertedId: result.insertedId }, { headers });
 
   } catch (error) {
       console.error("Error inserting data:", error);
