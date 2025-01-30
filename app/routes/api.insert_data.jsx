@@ -102,7 +102,7 @@ export async function loader({ request }) {
     }
   }
 
-export async function action({ request }) {
+  export async function action({ request }) {
     const headers = {
         'Access-Control-Allow-Origin': '*', 
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
@@ -121,7 +121,7 @@ export async function action({ request }) {
       console.log(title);
 
       if (!file || !title || !email || !password) {
-          return json({ success: false, message: "Missing required fields" }, { status: 400 });
+          return json({ success: false, message: "Missing required fields" }, { status: 400, headers });
       }
 
       const uploadDir = path.join(__dirname, "../public/uploads"); // Correct path for Remix
@@ -131,10 +131,10 @@ export async function action({ request }) {
 
       const result = await insertMongoData({ title, email, password, fileUrl });
 
-      return json({ success: true, fileUrl, insertedId: result.insertedId });
+       return json({ success: true, fileUrl, insertedId: result.insertedId }, { headers });
 
   } catch (error) {
       console.error("Error inserting data:", error);
-      return json({ success: false, message: "Error inserting data" }, { status: 500 });
+      return json({ success: false, message: "Error inserting data" }, { status: 500, headers });
   }
 }
