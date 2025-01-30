@@ -61,10 +61,6 @@ export async function action({ request }) {
         try {
             // Parse the incoming JSON data
             const jsonData = await request.json();
-            console.log(jsonData)
-            if (!jsonData.file_url) {
-                return json({ success: false, message: 'File upload failed' }, { status: 400, headers });
-            }
             
             // Insert the data into MongoDB
             const result = await insertMongoData(jsonData);
