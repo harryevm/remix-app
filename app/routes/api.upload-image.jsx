@@ -1,8 +1,7 @@
 import { json } from '@remix-run/node';  
 import { insertMongoData } from '../entry.server';
-import shopify from "../shopify.server"; 
 
-const allowedOrigin = "*"; // Change in production
+const allowedOrigin = "*"; // Change this in production to your Shopify domain
 
 export async function loader({ request }) {
     if (request.method === 'OPTIONS') {
@@ -31,29 +30,16 @@ export async function action({ request }) {
     }
 
     try {
-        const { session } = await shopify.authenticate.admin(request);
-        
-        console.log(session)
-        if (!session || !session.accessToken) {
-            return json({ success: false, message: "Unauthorized" }, { status: 401, headers });
-        }
-
-        const shopifyAccessToken = session.accessToken;
-        const shop = session.shop; 
-
         const jsonData = await request.json();
         console.log("Received Data:", jsonData);
 
-        try {
-            const result = await insertMongoData(jsonData);
-            return json({ success: true, insertedId: result.insertedId,dataJsForm:jsonData }, { headers });
-        } catch (dbError) {
-            console.error("MongoDB Insertion Error:", dbError);
-            return json({ success: false, message: "Database error" }, { status: 500, headers });
-        }
+        // Insert into MongoDB
+        const result = await insertMongoData(jsonData);
+
+        return json({ success: true, insertedId: result.insertedId }, { headers });
 
     } catch (error) {
-        console.error("Unexpected Error:", error);
-        return json({ success: false, message: 'Unexpected server error' }, { status: 500, headers });
+        console.error("Error:", error);
+        return json({ success: false, message: 'Server error' }, { status: 500, headers });
     }
 }
