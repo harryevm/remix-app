@@ -40,7 +40,7 @@ export async function loader({ request }) {
       return new Response(null, {
         status: 204,
         headers: {
-          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Origin': 'https://trevorf-testing.myshopify.com/',
           'Access-Control-Allow-Methods': 'POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type',
         },
@@ -52,7 +52,7 @@ export async function loader({ request }) {
 export async function action({ request }) {
     const headers = {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',  // For testing. Change to your Shopify domain in production
+        'Access-Control-Allow-Origin': 'https://trevorf-testing.myshopify.com/',  // For testing. Change to your Shopify domain in production
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type'
       };
