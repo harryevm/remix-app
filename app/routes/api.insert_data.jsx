@@ -28,7 +28,9 @@
 
 import { json } from '@remix-run/node';  // For JSON response
 import { insertMongoData } from '../entry.server';
-
+import formidable from 'formidable';
+import { createReadStream } from 'fs';
+import shopify from '../shopify.server';
 
 
 
@@ -59,11 +61,40 @@ export async function action({ request }) {
       if (request.method === 'POST') {
 
         try {
+
+          const form = formidable({ multiples: true });
+          const [fields, files] = await new Promise((resolve, reject) => {
+            form.parse(request, (err, fields, files) => {
+              if (err) reject(err);
+              resolve([fields, files]);
+            });
+          });
+
+          const { session } = await shopify.authenticate.admin(request);
+          const fileStream = createReadStream(files.file.filepath);
+
+          const uploadResponse = await shopify.rest.File.create({
+            session,
+            file: {
+              attachment: fileStream,
+              filename: files.file.originalFilename,
+            },
+          });
+
+          const imageUrl = uploadResponse.public_url;
+
+      // Prepare data to insert into MongoDB
+      const dataToInsert = {
+        name: fields.name,
+        password: fields.password,
+        email: fields.email,
+        imageUrl: imageUrl,
+      };
             // Parse the incoming JSON data
-            const jsonData = await request.json();
+            // const jsonData = await request.json();
             
             // Insert the data into MongoDB
-            const result = await insertMongoData(jsonData);
+            const result = await insertMongoData(dataToInsert);
             
             // // return json({ success: true, insertedId: result.insertedId });
             return json({ success: true, insertedId: result.insertedId }, { headers });
