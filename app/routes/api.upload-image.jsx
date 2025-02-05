@@ -1,11 +1,12 @@
 import { json } from '@remix-run/node';  
 import { insertMongoData } from '../entry.server';
-import IncomingForm from 'formidable/Formidable';
+import formidable from 'formidable';
 const SHOPIFY_ACCESS_TOKEN = "shpua_29d15538abed3b88f2afb761fbbcc57a";  // Replace with your actual token
 const SHOPIFY_STORE = "https://trevorf-testing.myshopify.com/";
 import fs from 'fs';
 
 const allowedOrigin = "*"; // Change this in production to your Shopify domain
+
 
 export async function loader({ request }) {
     if (request.method === 'OPTIONS') {
@@ -36,7 +37,7 @@ export async function action({ request }) {
 
     try {
         // Create a new formidable form handler
-        const form = new IncomingForm();
+        const form = new formidable.IncomingForm();
 
         // Parse the form data
         form.parse(request, async (err, fields, files) => {
