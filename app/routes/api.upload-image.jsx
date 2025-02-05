@@ -5,7 +5,7 @@ const SHOPIFY_ACCESS_TOKEN = "shpua_29d15538abed3b88f2afb761fbbcc57a";  // Repla
 const SHOPIFY_STORE = "https://trevorf-testing.myshopify.com/";
 import fs from 'fs';
 
-const allowedOrigin = "*"; // Change this in production to your Shopify domain
+const allowedOrigin = "https://trevorf-testing.myshopify.com"; // Change this in production to your Shopify domain
 
 
 export async function loader({ request }) {
