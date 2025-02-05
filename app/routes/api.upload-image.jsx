@@ -34,7 +34,9 @@ export async function action({ request }) {
 
 
         try {
+            console.log('aaaaaaaaaaaaaaaaaa')
             const { session } = await shopify.authenticate.admin(request);
+            console.log(session)
             if (!session) {
                 return json({ success: false, message: "Unauthorized" }, { status: 401, headers });
             }
@@ -42,17 +44,18 @@ export async function action({ request }) {
             // Shopify access token for the current shop
             const shopifyAccessToken = session.accessToken;
             const shop = session.shop; // Store domain
-
+            console.log(shopifyAccessToken)
+            console.log(shop)
 
             // Parse the incoming JSON data
             const jsonData = await request.json();
             console.log(jsonData)
             
             // Insert the data into MongoDB
-            const result = await insertMongoData(jsonData);
+            // const result = await insertMongoData(jsonData);
             
             // // return json({ success: true, insertedId: result.insertedId });
-            return json({ success: true, insertedId: result.insertedId }, { headers });
+            return json({ success: true, insertedId: jsonData }, { headers });
 
             
 
