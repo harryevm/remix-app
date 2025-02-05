@@ -1,13 +1,10 @@
-import { json } from '@remix-run/node';  
-import { insertMongoData } from '../entry.server';
+import { json } from '@remix-run/node';
 import formidable from 'formidable';
-const SHOPIFY_ACCESS_TOKEN = "shpua_29d15538abed3b88f2afb761fbbcc57a";  // Replace with your actual token
-const SHOPIFY_STORE = "https://trevorf-testing.myshopify.com/";
-import fs from 'fs';
+import { insertMongoData } from '../entry.server';
 
-const allowedOrigin = "https://trevorf-testing.myshopify.com"; // Change this in production to your Shopify domain
+const allowedOrigin = 'https://trevorf-testing.myshopify.com'; // Shopify store domain
 
-
+// Handle the OPTIONS request to enable preflight checks for CORS
 export async function loader({ request }) {
     if (request.method === 'OPTIONS') {
         return new Response(null, {
@@ -19,6 +16,7 @@ export async function loader({ request }) {
             },
         });
     }
+
     return json({ success: false, message: 'Invalid request method' }, { status: 405 });
 }
 
@@ -30,21 +28,27 @@ export async function action({ request }) {
         'Access-Control-Allow-Headers': 'Content-Type'
     };
 
+    // Handle OPTIONS request for preflight check
+    if (request.method === 'OPTIONS') {
+        return new Response(null, { 
+            status: 204, 
+            headers 
+        });
+    }
+
     // Only allow POST requests
-    if (request.method !== "POST") {
+    if (request.method !== 'POST') {
         return json({ success: false, message: "Invalid request method" }, { status: 405, headers });
     }
 
     try {
-        // Create a new formidable form handler
-        const form = formidable({ 
-            // You can set various options for the form
-            uploadDir: './uploads',  // Temporary upload directory
-            keepExtensions: true,    // Keep the file's extension
-            maxFileSize: 10 * 1024 * 1024, // Limit the file size to 10MB
+        const form = formidable({
+            uploadDir: './uploads',
+            keepExtensions: true,
+            maxFileSize: 10 * 1024 * 1024, // Max file size 10MB
         });
 
-        // Parse the form data
+        // Parse the form data asynchronously
         const formData = await new Promise((resolve, reject) => {
             form.parse(request, (err, fields, files) => {
                 if (err) {
@@ -58,12 +62,12 @@ export async function action({ request }) {
         const { fields, files } = formData;
 
         console.log("Received Fields:", fields);  // Regular form fields
-            console.log("Received Files:", files); 
+        console.log("Received Files:", files);    // File data
 
-            const file = files.file[0];  // Assuming the file is uploaded under the name 'file'
+        const file = files.file[0];  // Assuming the file is uploaded under the name 'file'
         console.log("Uploaded file:", file);
 
-        // Parse the form data
+        // Insert data into MongoDB (including file URL)
         const result = await insertMongoData({ ...fields, fileUrl: file.filepath });
 
         return json({ success: true, insertedId: result.insertedId }, { headers });

@@ -37,6 +37,7 @@
     "@shopify/shopify-app-session-storage-mongodb": "^4.0.12",
     "@shopify/shopify-app-session-storage-prisma": "^5.1.5",
     "connect-mongodb-session": "^5.0.0",
+    "cors": "^2.8.5",
     "express": "^4.21.2",
     "formidable": "^3.5.2",
     "isbot": "^5.1.0",
