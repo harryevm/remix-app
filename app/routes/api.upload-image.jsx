@@ -37,27 +37,36 @@ export async function action({ request }) {
 
     try {
         // Create a new formidable form handler
-        const form = new formidable.IncomingForm();
+        const form = formidable({ 
+            // You can set various options for the form
+            uploadDir: './uploads',  // Temporary upload directory
+            keepExtensions: true,    // Keep the file's extension
+            maxFileSize: 10 * 1024 * 1024, // Limit the file size to 10MB
+        });
 
         // Parse the form data
-        form.parse(request, async (err, fields, files) => {
-            if (err) {
-                console.error('Form parsing error:', err);
-                return json({ success: false, message: 'Error parsing form data' }, { status: 400, headers });
-            }
-
-            console.log("Received Fields:", fields);  // Regular form fields
-            console.log("Received Files:", files);    // File data
-
-            // Example of accessing the file
-            const file = files.file[0];  // Assuming the file is uploaded under the name 'file'
-            console.log("Uploaded file:", file);
-
-            // Insert the form data (including file info) into MongoDB
-            const result = await insertMongoData({ ...fields, fileUrl: file.filepath });
-
-            return json({ success: true, insertedId: result.insertedId }, { headers });
+        const formData = await new Promise((resolve, reject) => {
+            form.parse(request, (err, fields, files) => {
+                if (err) {
+                    reject(err);
+                } else {
+                    resolve({ fields, files });
+                }
+            });
         });
+
+        const { fields, files } = formData;
+
+        console.log("Received Fields:", fields);  // Regular form fields
+            console.log("Received Files:", files); 
+
+            const file = files.file[0];  // Assuming the file is uploaded under the name 'file'
+        console.log("Uploaded file:", file);
+
+        // Parse the form data
+        const result = await insertMongoData({ ...fields, fileUrl: file.filepath });
+
+        return json({ success: true, insertedId: result.insertedId }, { headers });
     } catch (error) {
         console.error("Server error:", error);
         return json({ success: false, message: 'Server error' }, { status: 500, headers });
