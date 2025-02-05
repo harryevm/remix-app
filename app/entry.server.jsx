@@ -5,6 +5,8 @@ import { createReadableStreamFromReadable } from "@remix-run/node";
 import { isbot } from "isbot";
 import { addDocumentResponseHeaders } from "./shopify.server";
 import { MongoClient, ObjectId } from "mongodb";
+import User from "./routes/models/User";
+
 
 
 const url =
@@ -103,18 +105,29 @@ export async function fetchMongoDataById(userId) {
 
 
 
-export async function insertMongoData(data) {
+// export async function insertMongoData(data) {
  
+//   try {
+//     await client.connect();
+//     const db = client.db('Trevor');
+//     const collection = db.collection('Trevor');
+//     const result = await collection.insertOne(data);
+//     return result;
+//   } catch (error) {
+//     console.error('Error inserting data into MongoDB:', error);
+//     throw error;
+//   } finally {
+//     await client.close();
+//   }
+// }
+
+export async function insertMongoData(data) {
   try {
-    await client.connect();
-    const db = client.db('Trevor');
-    const collection = db.collection('Trevor');
-    const result = await collection.insertOne(data);
-    return result;
+      const user = new User(data); // Create a new instance of User
+      const result = await user.save(); // Save the user to the database
+      return result; // Return the saved user document
   } catch (error) {
-    console.error('Error inserting data into MongoDB:', error);
-    throw error;
-  } finally {
-    await client.close();
+      console.error('Error inserting data into MongoDB:', error);
+      throw error;
   }
 }
