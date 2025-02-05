@@ -49,7 +49,7 @@ export async function action({ request }) {
             console.log(jsonData)
             
             // Insert the data into MongoDB
-            // const result = await insertMongoData(jsonData);
+            const result = await insertMongoData(jsonData);
             
             // // return json({ success: true, insertedId: result.insertedId });
             return json({ success: true, insertedId: result.insertedId }, { headers });
