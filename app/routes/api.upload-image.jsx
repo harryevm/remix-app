@@ -29,41 +29,36 @@ export async function action({ request }) {
         'Access-Control-Allow-Headers': 'Content-Type'
     };
 
+    // Only allow POST requests
     if (request.method !== "POST") {
         return json({ success: false, message: "Invalid request method" }, { status: 405, headers });
     }
 
     try {
+        // Create a new formidable form handler
         const form = new IncomingForm();
+
+        // Parse the form data
         form.parse(request, async (err, fields, files) => {
             if (err) {
-                return json({ success: false, message: "Error processing the form", error: err }, { status: 400, headers });
+                console.error('Form parsing error:', err);
+                return json({ success: false, message: 'Error parsing form data' }, { status: 400, headers });
             }
 
-            console.log("Fields:", fields);
-            console.log("Files:", files);
+            console.log("Received Fields:", fields);  // Regular form fields
+            console.log("Received Files:", files);    // File data
 
-            // Example: Save file information into MongoDB (files will contain file details)
-            // If you want to handle the file (e.g., save it, upload to Shopify, etc.)
-            const file = files.file[0];  // Assuming the file is named 'file' in the form data
-
-            // You can now handle the file, for example, upload it to Shopify Files API
-            // Or move the file to your desired location, etc.
+            // Example of accessing the file
+            const file = files.file[0];  // Assuming the file is uploaded under the name 'file'
             console.log("Uploaded file:", file);
 
             // Insert the form data (including file info) into MongoDB
-            // Example:
-            // const result = await insertMongoData({ ...fields, fileUrl: file.filepath });
+            const result = await insertMongoData({ ...fields, fileUrl: file.filepath });
 
-            return json({ success: true, fileUrl: file.filepath, fields });
+            return json({ success: true, insertedId: result.insertedId }, { headers });
         });
     } catch (error) {
-        console.error("Error:", error);
+        console.error("Server error:", error);
         return json({ success: false, message: 'Server error' }, { status: 500, headers });
     }
-
-    // } catch (error) {
-    //     console.error("Error:", error);
-    //     return json({ success: false, message: 'Server error' }, { status: 500, headers });
-    // }
 }
