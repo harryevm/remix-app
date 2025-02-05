@@ -1,11 +1,16 @@
-import { PrismaClient } from "@prisma/client";
+import mongoose from 'mongoose';
 
-if (process.env.NODE_ENV !== "production") {
-  if (!global.prisma) {
-    global.prisma = new PrismaClient();
-  }
-}
+const connectDB = async () => {
+    try {
+        await mongoose.connect(process.env.MONGODB_URI, {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        });
+        console.log('MongoDB connected');
+    } catch (error) {
+        console.error('MongoDB connection failed:', error);
+        process.exit(1);
+    }
+};
 
-const prisma = global.prisma || new PrismaClient();
-
-export default prisma;
+export default connectDB;
