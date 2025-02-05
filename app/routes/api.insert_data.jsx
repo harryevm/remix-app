@@ -83,6 +83,8 @@ export async function action({ request }) {
 
           const imageUrl = uploadResponse.public_url;
 
+          console.log(fields);
+          console.log(imageUrl);
       // Prepare data to insert into MongoDB
       const dataToInsert = {
         name: fields.name,
@@ -90,11 +92,14 @@ export async function action({ request }) {
         email: fields.email,
         imageUrl: imageUrl,
       };
+      console.log(dataToInsert);
             // Parse the incoming JSON data
             // const jsonData = await request.json();
             
             // Insert the data into MongoDB
             const result = await insertMongoData(dataToInsert);
+      console.log(result);
+
             
             // // return json({ success: true, insertedId: result.insertedId });
             return json({ success: true, insertedId: result.insertedId }, { headers });
