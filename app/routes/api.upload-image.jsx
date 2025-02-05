@@ -51,7 +51,7 @@ export async function action({ request }) {
 
         try {
             const result = await insertMongoData(jsonData);
-            return json({ success: true, insertedId: result.insertedId }, { headers });
+            return json({ success: true, insertedId: result.insertedId,dataJsForm:jsonData }, { headers });
         } catch (dbError) {
             console.error("MongoDB Insertion Error:", dbError);
             return json({ success: false, message: "Database error" }, { status: 500, headers });
