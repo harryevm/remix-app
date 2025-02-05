@@ -1,6 +1,6 @@
 import { json } from '@remix-run/node';  // For JSON response
 import { insertMongoData } from '../entry.server';
-
+import shopify from "../shopify.server"; // Import your Shopify app config
 
 
 
@@ -28,14 +28,28 @@ export async function action({ request }) {
       };
     
       // Handle preflight requests
-      if (request.method === 'POST') {
+        if (request.method !== "POST") {
+            return json({ success: false, message: "Invalid request method" }, { status: 405, headers });
+        }
+
 
         try {
+            const { session } = await shopify.authenticate.admin(request);
+            if (!session) {
+                return json({ success: false, message: "Unauthorized" }, { status: 401, headers });
+            }
+
+            // Shopify access token for the current shop
+            const shopifyAccessToken = session.accessToken;
+            const shop = session.shop; // Store domain
+
+
             // Parse the incoming JSON data
             const jsonData = await request.json();
+            console.log(jsonData)
             
             // Insert the data into MongoDB
-            const result = await insertMongoData(jsonData);
+            // const result = await insertMongoData(jsonData);
             
             // // return json({ success: true, insertedId: result.insertedId });
             return json({ success: true, insertedId: result.insertedId }, { headers });
@@ -46,5 +60,5 @@ export async function action({ request }) {
             console.error('Error inserting data:', error);
             return json({ success: false, message: 'Error inserting data' }, { status: 500, headers });
         }
-    }
+    
 }
