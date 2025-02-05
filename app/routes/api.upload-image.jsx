@@ -1,67 +1,64 @@
-import { json } from '@remix-run/node';  // For JSON response
+import { json } from '@remix-run/node';  
 import { insertMongoData } from '../entry.server';
-import shopify from "../shopify.server"; // Import your Shopify app config
+import shopify from "../shopify.server"; 
 
-
-
+const allowedOrigin = "*"; // Change in production
 
 export async function loader({ request }) {
     if (request.method === 'OPTIONS') {
-      return new Response(null, {
-        status: 204,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type',
-        },
-      });
+        return new Response(null, {
+            status: 204,
+            headers: {
+                'Access-Control-Allow-Origin': allowedOrigin,
+                'Access-Control-Allow-Methods': 'POST, OPTIONS',
+                'Access-Control-Allow-Headers': 'Content-Type',
+            },
+        });
     }
-  }
+    return json({ success: false, message: 'Invalid request method' }, { status: 405 });
+}
 
-  
 export async function action({ request }) {
     const headers = {
         'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',  // For testing. Change to your Shopify domain in production
+        'Access-Control-Allow-Origin': allowedOrigin,
         'Access-Control-Allow-Methods': 'POST, OPTIONS',
         'Access-Control-Allow-Headers': 'Content-Type'
-      };
-    
-      // Handle preflight requests
-        if (request.method !== "POST") {
-            return json({ success: false, message: "Invalid request method" }, { status: 405, headers });
+    };
+
+    if (request.method !== "POST") {
+        return json({ success: false, message: "Invalid request method" }, { status: 405, headers });
+    }
+
+    try {
+        let session;
+        try {
+            session = await shopify.authenticate.admin(request);
+        } catch (error) {
+            console.error("Shopify authentication failed:", error);
+            return json({ success: false, message: "Authentication failed" }, { status: 401, headers });
         }
 
+        if (!session || !session.accessToken) {
+            return json({ success: false, message: "Unauthorized" }, { status: 401, headers });
+        }
+
+        const shopifyAccessToken = session.accessToken;
+        const shop = session.shop; 
+
+        const jsonData = await request.json();
+        console.log("Received Data:", jsonData);
 
         try {
-            console.log('aaaaaaaaaaaaaaaaaa')
-            const { session } = await shopify.authenticate.admin(request);
-            console.log(session)
-            if (!session) {
-                return json({ success: false, message: "Unauthorized" }, { status: 401, headers });
-            }
-
-            // Shopify access token for the current shop
-            const shopifyAccessToken = session.accessToken;
-            const shop = session.shop; // Store domain
-            console.log(shopifyAccessToken)
-            console.log(shop)
-
-            // Parse the incoming JSON data
-            const jsonData = await request.json();
-            console.log(jsonData)
-            
-            // Insert the data into MongoDB
-            // const result = await insertMongoData(jsonData);
-            
-            // // return json({ success: true, insertedId: result.insertedId });
-            return json({ success: true, insertedId: jsonData }, { headers });
-
-            
-
-        } catch (error) {
-            console.error('Error inserting data:', error);
-            return json({ success: false, message: 'Error inserting data' }, { status: 500, headers });
+            const result = await insertMongoData(jsonData);
+            return json({ success: true, insertedId: result.insertedId }, { headers });
+        } catch (dbError) {
+            console.error("MongoDB Insertion Error:", dbError);
+            return json({ success: false, message: "Database error" }, { status: 500, headers });
         }
-    
+
+    } catch (error) {
+        console.error("Unexpected Error:", error);
+        return json({ success: false, message: 'Unexpected server error' }, { status: 500, headers });
+    }
 }
