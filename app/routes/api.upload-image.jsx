@@ -31,13 +31,8 @@ export async function action({ request }) {
     }
 
     try {
-        let session;
-        try {
-            session = await shopify.authenticate.admin(request);
-        } catch (error) {
-            console.error("Shopify authentication failed:", error);
-            return json({ success: false, message: "Authentication failed" }, { status: 401, headers });
-        }
+        const { session } = await shopify.authenticate.admin(request);
+        
         console.log(session)
         if (!session || !session.accessToken) {
             return json({ success: false, message: "Unauthorized" }, { status: 401, headers });
