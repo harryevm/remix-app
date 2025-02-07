@@ -9,10 +9,11 @@ import { MongoClient, ObjectId } from "mongodb";
 
 const url =
   "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
-const client = new MongoClient(url);
+
 
 // Function to connect to the database
 async function connectToDatabase() {
+  const client = new MongoClient(url);
   if (!client.isConnected()) {
     await client.connect();
   }
