@@ -52,7 +52,7 @@ export async function action({ request }) {
 
         // Upload to Shopify Files using Remix's built-in Shopify API
         const client = await shopify.api.rest.File.create({
-            session: await shopify.api.session.customAppSession("your-shop-name.myshopify.com"),
+            session: await shopify.api.session.customAppSession("trevorf-testing.myshopify.com"),
             input: {
                 files: [
                     {
