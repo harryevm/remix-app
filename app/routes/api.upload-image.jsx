@@ -15,13 +15,19 @@ export async function loader({ request }) {
   }
 }
 
-async function authenticateShopifySession(request) {
-  const session = await shopify.authenticate.admin(request);
-  if (!session) {
-    throw new Error('Unauthorized');
+async function authenticateShopifySession({ request }) {
+  try {
+    const session = await shopify.authenticate.admin(request);
+    if (!session) {
+      // If no session exists, send the user to login.
+      throw new Error('Session expired or not authenticated. Please log in.');
+    }
+    return session;
+  } catch (error) {
+    throw new Error('Failed to authenticate Shopify session: ' + error.message);
   }
-  return session;
 }
+
 
 export async function action({ request }) {
   const headers = {
