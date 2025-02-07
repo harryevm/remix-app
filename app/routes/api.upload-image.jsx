@@ -42,6 +42,7 @@ export async function action({ request }) {
   }
 
   try {
+    console.log(shopify)
     const formData = await request.formData();
 
     const title = formData.get('title');
