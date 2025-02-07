@@ -1,77 +1,44 @@
-// api.upload-image.jsx
-import { json } from '@remix-run/node'; 
-import { insertMongoData } from '../entry.server';
-import shopify from '../shopify.server';
+import "@shopify/shopify-app-remix/adapters/node";
+import {
+  ApiVersion,
+  AppDistribution,
+  shopifyApp,
+} from "@shopify/shopify-app-remix/server";
+import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
+import prisma from "./db.server";
+import { MongoDBSessionStorage } from "@shopify/shopify-app-session-storage-mongodb";
+import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
 
-export async function action({ request }) {
-  const headers = {
-    'Content-Type': 'application/json',
-    'Access-Control-Allow-Origin': '*',
-    'Access-Control-Allow-Methods': 'POST, OPTIONS',
-    'Access-Control-Allow-Headers': 'Content-Type',
-  };
 
-  // Handle preflight requests
-  if (request.method === 'OPTIONS') {
-    return new Response(null, {
-      status: 204,
-      headers,
-    });
-  }
 
-  // Handle POST request for image upload
-  if (request.method === 'POST') {
-    try {
-      const formData = await request.formData();
-      const title = formData.get('title');
-      const email = formData.get('email');
-      const password = formData.get('password');
-      const file = formData.get('file');
+const shopify = shopifyApp({
+  apiKey: process.env.SHOPIFY_API_KEY,
+  apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
+  apiVersion: ApiVersion.October24,
+  scopes: process.env.SCOPES?.split(","),
+  appUrl: process.env.SHOPIFY_APP_URL || "",
+  authPathPrefix: "/auth",
+  // sessionStorage: new PrismaSessionStorage(prisma),
+  // sessionStorage: new MongoDBSessionStorage(
+  //   'mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority',
+  //   'test',  // Replace with your actual database name
+  // ),
+  sessionStorage: new MemorySessionStorage(),
+  distribution: AppDistribution.AppStore,
+  future: {
+    unstable_newEmbeddedAuthStrategy: true,
+    removeRest: true,
+  },
+  ...(process.env.SHOP_CUSTOM_DOMAIN
+    ? { customShopDomains: [process.env.SHOP_CUSTOM_DOMAIN] }
+    : {}),
+});
 
-      // Ensure file is present
-      if (!file) {
-        return json({ success: false, message: 'No file uploaded' }, { status: 400, headers });
-      }
-
-      // Convert file to buffer and base64 string
-      const fileBuffer = await file.arrayBuffer();
-      const fileBase64 = Buffer.from(fileBuffer).toString('base64');
-
-      // Authenticate and get session
-      const session = await shopify.authenticate.admin(request);
-
-      // Check if session exists and is valid
-      if (!session) {
-        return json({ success: false, message: 'Unauthorized' }, { status: 401, headers });
-      }
-
-      // Upload file to Shopify
-      const fileUploadResponse = await shopify.rest.File.create({
-        session: session.admin,
-        input: {
-          files: [
-            {
-              originalSource: `data:${file.type};base64,${fileBase64}`,
-              alt: title,
-            },
-          ],
-        },
-      });
-
-      // Check if the file upload was successful
-      if (!fileUploadResponse || !fileUploadResponse.files || fileUploadResponse.files.length === 0) {
-        return json({ success: false, message: 'File upload failed' }, { status: 500, headers });
-      }
-
-      const fileUrl = fileUploadResponse.files[0].url;
-
-      // Insert data into MongoDB (or another database)
-      const result = await insertMongoData({ title, email, password, fileUrl });
-
-      return json({ success: true, insertedId: result.insertedId }, { headers });
-    } catch (error) {
-      console.error('Error processing image upload:', error);
-      return json({ success: false, message: 'Error processing upload' }, { status: 500, headers });
-    }
-  }
-}
+export default shopify;
+export const apiVersion = ApiVersion.October24;
+export const addDocumentResponseHeaders = shopify.addDocumentResponseHeaders;
+export const authenticate = shopify.authenticate;
+export const unauthenticated = shopify.unauthenticated;
+export const login = shopify.login;
+export const registerWebhooks = shopify.registerWebhooks;
+export const sessionStorage = shopify.sessionStorage;
