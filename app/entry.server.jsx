@@ -4,21 +4,7 @@ import { RemixServer } from "@remix-run/react";
 import { createReadableStreamFromReadable } from "@remix-run/node";
 import { isbot } from "isbot";
 import { addDocumentResponseHeaders } from "./shopify.server";
-import { MongoClient, ObjectId } from "mongodb";
 
-
-const url =
-  "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
-
-
-// Function to connect to the database
-async function connectToDatabase() {
-  const client = new MongoClient(url);
-  if (!client.isConnected()) {
-    await client.connect();
-  }
-  return client.db("Trevor");
-}
 
 // Function to handle the main request
 export const streamTimeout = 5000;
