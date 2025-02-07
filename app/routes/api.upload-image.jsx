@@ -15,18 +15,7 @@ export async function loader({ request }) {
   }
 }
 
-async function authenticateShopifySession({ request }) {
-  try {
-    const session = await shopify.authenticate.admin(request);
-    if (!session) {
-      // If no session exists, send the user to login.
-      throw new Error('Session expired or not authenticated. Please log in.');
-    }
-    return session;
-  } catch (error) {
-    throw new Error('Failed to authenticate Shopify session: ' + error.message);
-  }
-}
+
 
 
 export async function action({ request }) {
@@ -43,7 +32,7 @@ export async function action({ request }) {
 
   try {
     
-    console.log(request)
+    
     
     const formData = await request.formData();
 
@@ -63,7 +52,7 @@ export async function action({ request }) {
     const fileBase64 = Buffer.from(fileBuffer).toString('base64');
 
     // Authenticate Shopify session
-    const session = await authenticateShopifySession(request);
+    const session = await shopify.authenticate.admin(request);
     console.log(session)
 
     // Upload to Shopify Files API
