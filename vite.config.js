@@ -38,6 +38,9 @@ if (host === "localhost") {
 }
 
 export default defineConfig({
+  esbuild: {
+    target: 'esnext', // Allows top-level await
+  },
   server: {
     proxy:{
       '/api':'https://remix-app-88og.onrender.com/api/insert_data'
