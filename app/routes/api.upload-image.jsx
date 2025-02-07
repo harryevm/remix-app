@@ -41,7 +41,7 @@ export async function action({ request }) {
     const password = formData.get('password');
     const file = formData.get('file');
 
-    console.log(formData)
+    // console.log(formData)
 
     if (!file) {
       return json({ success: false, message: 'No file uploaded' }, { status: 400, headers });
@@ -53,6 +53,7 @@ export async function action({ request }) {
 
     // Authenticate Shopify session
     const session = await shopify.authenticate.admin(request);
+    console.log(shopify)
     console.log(session)
 
     // Upload to Shopify Files API
