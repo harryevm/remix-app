@@ -7,21 +7,14 @@ import {
 // import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prisma";
 import prisma from "./db.server";
 import { MongoDBSessionStorage } from "@shopify/shopify-app-session-storage-mongodb";
-import { MongoClient, ObjectId } from "mongodb";
+import { MongoClient } from "mongodb";
 const url =
   "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
 
-
-// Function to connect to MongoDB database
-async function connectToDatabase() {
-  const client = new MongoClient(url);
-  if (!client.isConnected()) {
-    await client.connect();
-  }
-  return client.db("Trevor");
-}
-
-const mongoSessionStorage = new MongoDBSessionStorage(connectToDatabase, "sessions");
+const client = new MongoClient(url);
+await client.connect();
+const db = client.db("Trevor");
+const mongoSessionStorage = new MongoDBSessionStorage(db, "sessions");
 
 
 const shopify = shopifyApp({
