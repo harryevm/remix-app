@@ -1,8 +1,15 @@
 import { json } from '@remix-run/node'; // For JSON response
 import { insertMongoData } from '../entry.server';
 import shopify from '../shopify.server';
+import { shopifyApi } from '@shopify/shopify-api';
+
 
 export async function loader({ request }) {
+  console.log(shopifyApi)
+  const session = await getSession(request);
+  console.log(session)
+  
+ 
   if (request.method === 'OPTIONS') {
     return new Response(null, {
       status: 204,
@@ -52,9 +59,9 @@ export async function action({ request }) {
     const fileBase64 = Buffer.from(fileBuffer).toString('base64');
 
     // Authenticate Shopify session
-    const session = await shopify.authenticate.admin(request);
-    console.log(shopify)
-    console.log(session)
+    // const session = await shopify.authenticate.admin(request);
+    // console.log(shopify)
+    // console.log(session)
 
     // Upload to Shopify Files API
     const fileUploadResponse = await shopify.rest.File.create({
