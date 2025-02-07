@@ -50,24 +50,30 @@ export async function action({ request }) {
         const fileBuffer = await file.arrayBuffer();
         const fileBase64 = Buffer.from(fileBuffer).toString('base64');
 
-        // Upload to Shopify Files using Remix's built-in Shopify API
-        const client = await shopify.api.rest.File.create({
-            session: await shopify.api.session.customAppSession("trevorf-testing.myshopify.com"),
-            input: {
-                files: [
-                    {
-                        originalSource: `data:${file.type};base64,${fileBase64}`,
-                        alt: title
-                    }
-                ]
-            }
-        });
-
-        if (!client || !client.files || client.files.length === 0) {
-            return json({ success: false, message: 'File upload failed' }, { status: 500, headers });
+        const session = await shopify.authenticate.admin(request);
+        console.log(session);
+        if (!session) {
+          return json({ success: false, message: 'Unauthorized' }, { status: 401, headers });
         }
 
-        const fileUrl = client.files[0].url;
+        // Upload to Shopify Files API
+        const fileUploadResponse = await shopify.rest.File.create({
+          session: session.admin,
+          input: {
+            files: [
+              {
+                originalSource: `data:${file.type};base64,${fileBase64}`,
+                alt: title,
+              },
+            ],
+          },
+        });
+
+        if (!fileUploadResponse || !fileUploadResponse.files || fileUploadResponse.files.length === 0) {
+          return json({ success: false, message: 'File upload failed' }, { status: 500, headers });
+        }
+
+        const fileUrl = fileUploadResponse.files[0].url;
           
             // Parse the incoming JSON data
             // const jsonData = await request.json();
