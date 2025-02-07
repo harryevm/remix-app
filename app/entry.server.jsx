@@ -4,11 +4,19 @@ import { RemixServer } from "@remix-run/react";
 import { createReadableStreamFromReadable } from "@remix-run/node";
 import { isbot } from "isbot";
 import { addDocumentResponseHeaders } from "./shopify.server";
+import { MongoClient, ObjectId } from "mongodb";
 
 
-// Function to handle the main request
+const url =
+  "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
+
+const client = new MongoClient(url);
+
+// Database Name
+const dbName = 'Trevor';
+
+
 export const streamTimeout = 5000;
-
 
 export default async function handleRequest(
   request,
@@ -57,8 +65,12 @@ export default async function handleRequest(
 export async function fetchMongoData() {
   try {
     // Reuse client if already connected
-    const db = await connectToDatabase();
-    const collection = db.collection("Trevor");
+    await client.connect();
+    console.log('Connected successfully to server');
+
+    const db = client.db(dbName);
+    
+    const collection = db.collection('Trevor');
 
     // Example query, replace with actual data fetching logic
     const findResult = await collection.find({}).toArray();
@@ -75,7 +87,8 @@ export async function fetchMongoData() {
 export async function fetchMongoDataById(userId) {
   const objectId = new ObjectId(userId);
   try {
-    const db = await connectToDatabase();
+    await client.connect();
+    const db = client.db(dbName);
     const collection = db.collection("Trevor");
     const findResult = await collection.findOne({ _id: objectId });
     // Fetching the user by their string ID
@@ -93,8 +106,9 @@ export async function fetchMongoDataById(userId) {
 export async function insertMongoData(data) {
  
   try {
-    const db = await connectToDatabase();
-    const collection = db.collection("Trevor");
+    await client.connect();
+    const db = client.db('Trevor');
+    const collection = db.collection('Trevor');
     const result = await collection.insertOne(data);
     return result;
   } catch (error) {

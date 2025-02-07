@@ -38,13 +38,8 @@ if (host === "localhost") {
 }
 
 export default defineConfig({
-  optimizeDeps: {
-    esbuildOptions: {
-      target: 'esnext'
-    }
-  },
-  build: {
-    target: 'esnext'
+  esbuild: {
+    target: 'esnext', // Allows top-level await
   },
   server: {
     proxy:{
