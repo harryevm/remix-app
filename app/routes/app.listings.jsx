@@ -1,6 +1,6 @@
 import { TitleBar } from "@shopify/app-bridge-react";
 import { json } from "@remix-run/node";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link } from "@remix-run/react";
 
 

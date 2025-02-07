@@ -10,7 +10,7 @@ import {
 } from "@shopify/polaris";
 import { TitleBar } from "@shopify/app-bridge-react";
 import { json } from "@remix-run/node";
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 
 // import { useLoaderData } from "@remix-run/react";
 // import { fetchMongoData, insertData } from "../entry.server";

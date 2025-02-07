@@ -15,6 +15,14 @@ export async function loader({ request }) {
   }
 }
 
+async function authenticateShopifySession(request) {
+  const session = await shopify.authenticate.admin(request);
+  if (!session) {
+    throw new Error('Unauthorized');
+  }
+  return session;
+}
+
 export async function action({ request }) {
   const headers = {
     'Content-Type': 'application/json',
@@ -35,6 +43,8 @@ export async function action({ request }) {
     const password = formData.get('password');
     const file = formData.get('file');
 
+    console.log(formData)
+
     if (!file) {
       return json({ success: false, message: 'No file uploaded' }, { status: 400, headers });
     }
@@ -44,10 +54,8 @@ export async function action({ request }) {
     const fileBase64 = Buffer.from(fileBuffer).toString('base64');
 
     // Authenticate Shopify session
-    const session = await shopify.authenticate.admin(request);
-    if (!session) {
-      return json({ success: false, message: 'Unauthorized' }, { status: 401, headers });
-    }
+    const session = await authenticateShopifySession(request);
+    console.log(session)
 
     // Upload to Shopify Files API
     const fileUploadResponse = await shopify.rest.File.create({
@@ -67,6 +75,7 @@ export async function action({ request }) {
     }
 
     const fileUrl = fileUploadResponse.files[0].url;
+    console.log(fileUrl)
 
     // Insert data into MongoDB
     const result = await insertMongoData({ title, email, password, fileUrl });

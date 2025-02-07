@@ -10,14 +10,17 @@ import { MongoDBSessionStorage } from "@shopify/shopify-app-session-storage-mong
 import { MongoClient } from "mongodb";
 const url =
   "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(url);
 
+// Function to connect to MongoDB database
 async function connectToDatabase() {
-  const client = new MongoClient(url);
-  await client.connect();
-  return client.db("Trevor");  // or return the database directly if needed
+  if (!client.isConnected()) {
+    await client.connect();
+  }
+  return client.db("Trevor");
 }
-const db = await connectToDatabase();
-const mongoSessionStorage = new MongoDBSessionStorage(db, "sessions");
+
+const mongoSessionStorage = new MongoDBSessionStorage(connectToDatabase, "sessions");
 
 
 const shopify = shopifyApp({

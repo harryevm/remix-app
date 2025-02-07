@@ -9,18 +9,19 @@ import { MongoClient, ObjectId } from "mongodb";
 
 const url =
   "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
+const client = new MongoClient(url);
 
+// Function to connect to the database
 async function connectToDatabase() {
-  const client = new MongoClient(url);
-  await client.connect();
-  return client.db("Trevor");  // or return the database directly if needed
+  if (!client.isConnected()) {
+    await client.connect();
+  }
+  return client.db("Trevor");
 }
-const db = await connectToDatabase();
 
-
-
-
+// Function to handle the main request
 export const streamTimeout = 5000;
+
 
 export default async function handleRequest(
   request,
@@ -69,12 +70,8 @@ export default async function handleRequest(
 export async function fetchMongoData() {
   try {
     // Reuse client if already connected
-    await client.connect();
-    console.log('Connected successfully to server');
-
-    // const db = client.db(dbName);
-    
-    const collection = db.collection('Trevor');
+    const db = await connectToDatabase();
+    const collection = db.collection("Trevor");
 
     // Example query, replace with actual data fetching logic
     const findResult = await collection.find({}).toArray();
@@ -91,8 +88,7 @@ export async function fetchMongoData() {
 export async function fetchMongoDataById(userId) {
   const objectId = new ObjectId(userId);
   try {
-    await client.connect();
-    
+    const db = await connectToDatabase();
     const collection = db.collection("Trevor");
     const findResult = await collection.findOne({ _id: objectId });
     // Fetching the user by their string ID
@@ -110,9 +106,8 @@ export async function fetchMongoDataById(userId) {
 export async function insertMongoData(data) {
  
   try {
-    await client.connect();
-    const db = client.db('Trevor');
-    const collection = db.collection('Trevor');
+    const db = await connectToDatabase();
+    const collection = db.collection("Trevor");
     const result = await collection.insertOne(data);
     return result;
   } catch (error) {
