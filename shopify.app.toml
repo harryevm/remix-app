@@ -1,7 +1,7 @@
 # Learn more about configuring your app at https://shopify.dev/docs/apps/tools/cli/configuration
 
 client_id = "37e49e51914544bf83dcf74502684490"
-application_url = "https://facility-appliances-appearing-knitting.trycloudflare.com"
+application_url = "https://remix-app-88og.onrender.com"
 embedded = true
 name = "remix-app-form"
 handle = "remix-app-form"
@@ -23,9 +23,9 @@ scopes = "read_products,write_products,write_files,read_files,read_themes,write_
 
 [auth]
 redirect_urls = [
-  "https://facility-appliances-appearing-knitting.trycloudflare.com/auth/callback",
-  "https://facility-appliances-appearing-knitting.trycloudflare.com/auth/shopify/callback",
-  "https://facility-appliances-appearing-knitting.trycloudflare.com/api/auth/callback"
+  "https://remix-app-88og.onrender.com/auth/callback",
+  "https://remix-app-88og.onrender.com/auth/shopify/callback",
+  "https://remix-app-88og.onrender.com/api/auth/callback"
 ]
 
 [pos]
