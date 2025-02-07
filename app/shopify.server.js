@@ -11,9 +11,12 @@ import { MongoClient } from "mongodb";
 const url =
   "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
 
-const client = new MongoClient(url);
-await client.connect();
-const db = client.db("Trevor");
+async function connectToDatabase() {
+  const client = new MongoClient(url);
+  await client.connect();
+  return client.db("Trevor");  // or return the database directly if needed
+}
+const db = await connectToDatabase();
 const mongoSessionStorage = new MongoDBSessionStorage(db, "sessions");
 
 

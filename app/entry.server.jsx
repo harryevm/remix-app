@@ -10,10 +10,14 @@ import { MongoClient, ObjectId } from "mongodb";
 const url =
   "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
 
-const client = new MongoClient(url);
+async function connectToDatabase() {
+  const client = new MongoClient(url);
+  await client.connect();
+  return client.db("Trevor");  // or return the database directly if needed
+}
+const db = await connectToDatabase();
 
-// Database Name
-const dbName = 'Trevor';
+
 
 
 export const streamTimeout = 5000;
@@ -68,7 +72,7 @@ export async function fetchMongoData() {
     await client.connect();
     console.log('Connected successfully to server');
 
-    const db = client.db(dbName);
+    // const db = client.db(dbName);
     
     const collection = db.collection('Trevor');
 
@@ -88,7 +92,7 @@ export async function fetchMongoDataById(userId) {
   const objectId = new ObjectId(userId);
   try {
     await client.connect();
-    const db = client.db(dbName);
+    
     const collection = db.collection("Trevor");
     const findResult = await collection.findOne({ _id: objectId });
     // Fetching the user by their string ID
