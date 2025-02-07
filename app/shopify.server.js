@@ -19,7 +19,7 @@ const shopify = shopifyApp({
   // sessionStorage: new PrismaSessionStorage(prisma),
   sessionStorage: new MongoDBSessionStorage(
     'mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority',
-    'Trevor',  // Replace with your actual database name
+    'test',  // Replace with your actual database name
   ),
   distribution: AppDistribution.AppStore,
   future: {
