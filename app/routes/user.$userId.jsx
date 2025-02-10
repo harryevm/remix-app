@@ -1,14 +1,11 @@
-import { Link, Outlet, useLoaderData, useRouteError } from "@remix-run/react";
-import { boundary } from "@shopify/shopify-app-remix/server";
-import { AppProvider } from "@shopify/shopify-app-remix/react";
-import { NavMenu } from "@shopify/app-bridge-react";
-import polarisStyles from "@shopify/polaris/build/esm/styles.css?url";
-import { authenticate } from "../shopify.server";
-
-import { useLoaderData } from '@remix-run/react';
+import { Link, useLoaderData } from '@remix-run/react';
 import { fetchMongoDataById } from '../entry.server';
-export const links = () => [{ rel: "stylesheet", href: polarisStyles },{ rel: "stylesheet", href: "/style.css" }];
 
+
+export const links = () => [
+  { rel: "stylesheet", href: polarisStyles },
+  { rel: "stylesheet", href: "/style.css" }
+];
 
 export const loader = async ({ params }) => {
   const { userId } = params; // `params` already contains userId from the URL
