@@ -23,13 +23,14 @@ export async function action({ request }) {
   // Handle POST request for image upload
   if (request.method === 'POST') {
     try {
-      try {
-        const { payload, session, topic, shop } = await authenticate.webhook(request);
-        console.log("Webhook Authenticated:", { payload, session, topic, shop });
-    } catch (error) {
-        console.error("Error in authenticate.webhook:", error);
-        return json({ success: false, message: "Webhook authentication failed" }, { status: 401, headers });
-    }
+      console.log(request)
+    //   try {
+    //     const { payload, session, topic, shop } = await authenticate.webhook(request);
+    //     console.log("Webhook Authenticated:", { payload, session, topic, shop });
+    // } catch (error) {
+    //     console.error("Error in authenticate.webhook:", error);
+    //     return json({ success: false, message: "Webhook authentication failed" }, { status: 401, headers });
+    // }
     
       const formData = await request.formData();
       const title = formData.get('title');
