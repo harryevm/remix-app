@@ -27,7 +27,7 @@ const shopify = shopifyApp({
   sessionStorage: new MongoDBSessionStorage(MONGO_URI, "Trevor", {
     cookieOptions: {
       sameSite: "None",
-      secure: true,
+      secure: false,
     },
   }),
 
