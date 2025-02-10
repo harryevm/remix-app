@@ -19,11 +19,12 @@ export async function action({ request }) {
     });
   }
 
+  const { payload, session, topic, shop } = await authenticate.webhook(request);
   // Handle POST request for image upload
   if (request.method === 'POST') {
     try {
 
-      const { payload, session, topic, shop } = await authenticate.webhook(request);
+      
       console.log(`Received ${topic} webhook for ${shop} and ${session}`);
 
       const formData = await request.formData();
@@ -33,13 +34,13 @@ export async function action({ request }) {
       const file = formData.get('file');
 
       // Ensure file is present
-      if (!file) {
-        return json({ success: false, message: 'No file uploaded' }, { status: 400, headers });
-      }
+      // if (!file) {
+      //   return json({ success: false, message: 'No file uploaded' }, { status: 400, headers });
+      // }
 
-      // Convert file to buffer and base64 string
-      const fileBuffer = await file.arrayBuffer();
-      const fileBase64 = Buffer.from(fileBuffer).toString('base64');
+      // // Convert file to buffer and base64 string
+      // const fileBuffer = await file.arrayBuffer();
+      // const fileBase64 = Buffer.from(fileBuffer).toString('base64');
 
       // Authenticate and get session
       // const session = await shopify.authenticate.admin(request);
