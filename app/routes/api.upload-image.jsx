@@ -24,6 +24,8 @@ export async function action({ request }) {
   if (request.method === 'POST') {
     try {
       const { payload, session, topic, shop } = await authenticate.webhook(request);
+
+      console.log(`Received ${topic} webhook for ${shop} and ${session}`);
       const formData = await request.formData();
       const title = formData.get('title');
       const email = formData.get('email');
