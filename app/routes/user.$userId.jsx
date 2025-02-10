@@ -27,7 +27,7 @@ export default function ItemPage() {
 
   return (
     <div>
-      <h1>{data.name}</h1>
+      <h1>{data.name}</h1>ghggh
       {/* Render other data fields as needed */}
     </div>
   );
