@@ -8,7 +8,7 @@ import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prism
 import prisma from "./db.server";
 import { MongoDBSessionStorage } from "@shopify/shopify-app-session-storage-mongodb";
 // import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
-
+const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
 
 
 const shopify = shopifyApp({
@@ -19,11 +19,12 @@ const shopify = shopifyApp({
   appUrl: process.env.SHOPIFY_APP_URL || "",
   authPathPrefix: "/auth",
   // sessionStorage: new PrismaSessionStorage(prisma),
-  sessionStorage: new MongoDBSessionStorage(
-    'mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority',
-    'test',  // Replace with your actual database name
-  ),
+  // sessionStorage: new MongoDBSessionStorage(
+  //   'mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority',
+  //   'test',  // Replace with your actual database name
+  // ),
   // sessionStorage: new MemorySessionStorage(),
+  sessionStorage : new MongoDBSessionStorage(MONGO_URI, "shopify-sessions"),
   distribution: AppDistribution.AppStore,
   future: {
     unstable_newEmbeddedAuthStrategy: true,
