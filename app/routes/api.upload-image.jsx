@@ -33,7 +33,14 @@ export async function action({ request }) {
         try {
           console.log(request)
             // Parse the incoming JSON data
-            const jsonData = await request.json();
+            const jsonData = await request.formData();
+            const title = jsonData.get('title');
+            const email = jsonData.get('email');
+            const password = jsonData.get('password');
+            const file = jsonData.get('file');
+
+            console.log(jsonData)
+            console.log(title,email,password,file)
             
             // Insert the data into MongoDB
             const result = await insertMongoData(jsonData);
