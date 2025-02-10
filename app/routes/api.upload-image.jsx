@@ -1,7 +1,6 @@
 import { json } from '@remix-run/node';  // For JSON response
 import { insertMongoData } from '../entry.server';
-
-
+import shopify from '../shopify.server';
 
 
 
@@ -31,6 +30,7 @@ export async function action({ request }) {
       if (request.method === 'POST') {
 
         try {
+          console.log(shopify)
           console.log(request)
             // Parse the incoming JSON data
             const jsonData = await request.formData();
