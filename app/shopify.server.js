@@ -30,7 +30,7 @@ const shopify = shopifyApp({
       secure: true,
     },
   }),
-  
+
   distribution: AppDistribution.AppStore,
   future: {
     unstable_newEmbeddedAuthStrategy: true,
