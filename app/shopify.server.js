@@ -24,7 +24,13 @@ const shopify = shopifyApp({
   //   'test',  // Replace with your actual database name
   // ),
   // sessionStorage: new MemorySessionStorage(),
-  sessionStorage : new MongoDBSessionStorage(MONGO_URI, "shopify-sessions"),
+  sessionStorage: new MongoDBSessionStorage(MONGO_URI, "Trevor", {
+    cookieOptions: {
+      sameSite: "None",
+      secure: true,
+    },
+  }),
+  
   distribution: AppDistribution.AppStore,
   future: {
     unstable_newEmbeddedAuthStrategy: true,
