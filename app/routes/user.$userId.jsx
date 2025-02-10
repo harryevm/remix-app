@@ -156,19 +156,19 @@ export default function ItemPage() {
               <h3>Photos</h3>
               <div className="photos-wr">
                 <div className="img-box">
-                  <img src="img.png" alt="" />
+                  <img src="/images/placeholder-img.png" alt="" />
                 </div>
                 <div className="img-box">
-                  <img src="img.png" alt="" />
+                  <img src="/images/placeholder-img.png" alt="" />
                 </div>
                 <div className="img-box">
-                  <img src="img.png" alt="" />
+                  <img src="/images/placeholder-img.png" alt="" />
                 </div>
                 <div className="img-box">
-                  <img src="img.png" alt="" />
+                  <img src="/images/placeholder-img.png" alt="" />
                 </div>
                 <div className="img-box">
-                  <img src="img.png" alt="" />
+                  <img src="/images/placeholder-img.png" alt="" />
                 </div>
               </div>
             </div>
@@ -178,19 +178,19 @@ export default function ItemPage() {
               <div className="videos-wr">
                 
                 <div className="video-box">
-                  <img src="video.png" alt="" />
+                  <img src="/images/placeholder-video.png" alt="" />
                 </div>
                 <div className="video-box">
-                  <img src="video.png" alt="" />
+                  <img src="/images/placeholder-video.png" alt="" />
                 </div>
                 <div className="video-box">
-                  <img src="video.png" alt="" />
+                  <img src="/images/placeholder-video.png" alt="" />
                 </div>
                 <div className="video-box">
-                  <img src="video.png" alt="" />
+                  <img src="/images/placeholder-video.png" alt="" />
                 </div>
                 <div className="video-box">
-                  <img src="video.png" alt="" />
+                  <img src="/images/placeholder-video.png" alt="" />
                 </div>
               </div>
             </div>
