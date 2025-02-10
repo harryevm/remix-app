@@ -2,8 +2,8 @@ import { Link, useLoaderData } from '@remix-run/react';
 import { fetchMongoDataById } from '../entry.server';
 
 
+
 export const links = () => [
-  { rel: "stylesheet", href: polarisStyles },
   { rel: "stylesheet", href: "/style.css" }
 ];
 
