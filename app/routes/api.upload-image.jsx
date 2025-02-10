@@ -1,57 +1,63 @@
-import { json } from '@remix-run/node';  // For JSON response
-import { insertMongoData } from '../entry.server';
+import { json } from "@remix-run/node";
 
+export const action = async ({ request }) => {
+  const formData = await request.formData();
+  const file = formData.get("file");
 
-
-
-
-export async function loader({ request }) {
-    if (request.method === 'OPTIONS') {
-      return new Response(null, {
-        status: 204,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type',
-        },
-      });
-    }
+  if (!file) {
+    return json({ error: "No file uploaded" }, { status: 400 });
   }
 
-  
-export async function action({ request }) {
-    const headers = {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',  // For testing. Change to your Shopify domain in production
-        'Access-Control-Allow-Methods': 'POST, OPTIONS',
-        'Access-Control-Allow-Headers': 'Content-Type'
-      };
-    
-      // Handle preflight requests
-      if (request.method === 'POST') {
+  // 1️⃣ Convert file to a Buffer
+  const fileBuffer = await file.arrayBuffer();
 
-        try {
-          console.log(request)
-            // Parse the incoming JSON data
-            const jsonData = await request.formData();
-            const title = jsonData.get('title');
-            const email = jsonData.get('email');
-            const password = jsonData.get('password');
-            const file = jsonData.get('file');
+  // 2️⃣ Upload file to a temporary hosting service (e.g., S3, Cloudinary, etc.)
+  const publicUrl = await uploadToCloud(fileBuffer, file.name); // Replace with your upload logic
 
-            console.log(request)
-            
-            // Insert the data into MongoDB
-            const result = await insertMongoData(jsonData);
-            
-            // // return json({ success: true, insertedId: result.insertedId });
-            return json({ success: true, insertedId: result.insertedId }, { headers });
+  // 3️⃣ Send the file to Shopify using GraphQL
+  const shopifyResponse = await uploadToShopify(publicUrl);
 
-            
+  return json({ success: true, shopifyResponse });
+};
 
-        } catch (error) {
-            console.error('Error inserting data:', error);
-            return json({ success: false, message: 'Error inserting data' }, { status: 500, headers });
+// Upload file to Shopify GraphQL API
+async function uploadToShopify(fileUrl) {
+  const shopifyGraphQL = "https://trevorf-testing.myshopify.com/admin/api/2025-01/graphql.json";
+
+  const query = `
+    mutation fileCreate($files: [FileCreateInput!]!) {
+      fileCreate(files: $files) {
+        files {
+          id
+          fileStatus
+          alt
+          createdAt
         }
+        userErrors {
+          field
+          message
+        }
+      }
     }
+  `;
+
+  const variables = {
+    files: [
+      {
+        originalSource: fileUrl,
+        contentType: "IMAGE",
+      },
+    ],
+  };
+
+  const response = await fetch(shopifyGraphQL, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "X-Shopify-Access-Token": "shpua_fe44c36d29738de95bf9cfcc4fb11f23",
+    },
+    body: JSON.stringify({ query, variables }),
+  });
+
+  return response.json();
 }
