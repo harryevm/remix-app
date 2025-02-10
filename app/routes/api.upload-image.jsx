@@ -39,33 +39,33 @@ export async function action({ request }) {
       const fileBuffer = await file.arrayBuffer();
       const fileBase64 = Buffer.from(fileBuffer).toString('base64');
 
-      // Authenticate and get session
-      // const session = await shopify.authenticate.admin(request);
+      // Authenticate and get session2
+      const session2 = await shopify.authenticate.admin(request);
 
-      // Check if session exists and is valid
-      // if (!session) {
-      //   return json({ success: false, message: 'Unauthorized' }, { status: 401, headers });
-      // }
+      // Check if session2 exists and is valid
+      if (!session2) {
+        return json({ success: false, message: 'Unauthorized' }, { status: 401, headers });
+      }
 
       // Upload file to Shopify
-      // const fileUploadResponse = await shopify.rest.File.create({
-      //   session: session.admin,
-      //   input: {
-      //     files: [
-      //       {
-      //         originalSource: `data:${file.type};base64,${fileBase64}`,
-      //         alt: title,
-      //       },
-      //     ],
-      //   },
-      // });
+      const fileUploadResponse = await shopify.rest.File.create({
+        session2: session2.admin,
+        input: {
+          files: [
+            {
+              originalSource: `data:${file.type};base64,${fileBase64}`,
+              alt: title,
+            },
+          ],
+        },
+      });
 
       // Check if the file upload was successful
-      // if (!fileUploadResponse || !fileUploadResponse.files || fileUploadResponse.files.length === 0) {
-      //   return json({ success: false, message: 'File upload failed' }, { status: 500, headers });
-      // }
+      if (!fileUploadResponse || !fileUploadResponse.files || fileUploadResponse.files.length === 0) {
+        return json({ success: false, message: 'File upload failed' }, { status: 500, headers });
+      }
 
-      const fileUrl = 'fileUploadResponse.files[0].url';
+      const fileUrl = fileUploadResponse.files[0].url;
 
       // Insert data into MongoDB (or another database)
       const result = await insertMongoData({ title, email, password, fileUrl });
