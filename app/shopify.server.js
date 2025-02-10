@@ -10,7 +10,7 @@ import { MongoDBSessionStorage } from "@shopify/shopify-app-session-storage-mong
 // import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
 const MONGO_URI = process.env.MONGO_URI || "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
 
-
+ 
 const shopify = shopifyApp({
   apiKey: process.env.SHOPIFY_API_KEY,
   apiSecretKey: process.env.SHOPIFY_API_SECRET || "",
