@@ -1,7 +1,3 @@
-import { TitleBar } from "@shopify/app-bridge-react";
-import { json } from "@remix-run/node";
-import { useEffect, useState } from "react";
-
 import { useLoaderData } from '@remix-run/react';
 import { fetchMongoDataById } from '../entry.server';
 
@@ -27,7 +23,7 @@ export default function ItemPage() {
 
   return (
     <>
-     <div className="dashboard">
+      <div className="dashboard">
       <div className="sidebar">
         <a href=""><h1>NYFISBO</h1></a>
         <ul className="menu">
@@ -181,18 +177,7 @@ export default function ItemPage() {
             <div className="detail-box videos">
               <h3>Videos</h3>
               <div className="videos-wr">
-                <!-- <div className="video-box">
-                  <video></video>
-                </div>
-                <div className="video-box">
-                  <video></video>
-                </div>
-                <div className="video-box">
-                  <video></video>
-                </div>
-                <div className="video-box">
-                  <video></video>
-                </div> -->
+                
                 <div className="video-box">
                   <img src="video.png" alt="" />
                 </div>
