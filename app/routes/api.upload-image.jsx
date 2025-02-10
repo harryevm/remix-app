@@ -3,6 +3,7 @@ import { insertMongoData } from '../entry.server';
 import shopify from '../shopify.server';
 import fetch from 'node-fetch';
 
+
 export async function loader({ request }) {
     if (request.method === 'OPTIONS') {
         return new Response(null, {
@@ -27,6 +28,11 @@ export async function action({ request }) {
     if (request.method === 'POST') {
         try {
             console.log(shopify);
+
+            
+
+            
+
 
             // Parse form data
             const formData = await request.formData();
@@ -61,8 +67,27 @@ export async function action({ request }) {
             const result = await insertMongoData(mongoData);
 
             // Upload file to Shopify using GraphQL Files API
-            const SHOPIFY_STORE = session.shop; // Store URL
-            const ACCESS_TOKEN = session.accessToken; // Admin API Access Token
+            const SHOPIFY_STORE = 'https://trevorf-testing.myshopify.com/'; // Store URL
+            const ACCESS_TOKEN = 'shpua_fe44c36d29738de95bf9cfcc4fb11f23'; // Admin API Access Token
+
+            const response = await fetch(`https://${SHOPIFY_STORE}/admin/api/2025-01/graphql.json`, {
+              method: "POST",
+              headers: {
+                  "Content-Type": "application/json",
+                  "X-Shopify-Access-Token": ACCESS_TOKEN
+              },
+              body: JSON.stringify({
+                  query: `{
+                      shop {
+                          name
+                          myshopifyDomain
+                      }
+                  }`
+              })
+          });
+
+          const responseData = await response.json();
+          console.log(responseData);
 
             const fileUploadResponse = await uploadFileToShopify(SHOPIFY_STORE, ACCESS_TOKEN, file);
             console.log('Shopify File Upload Response:', fileUploadResponse);
