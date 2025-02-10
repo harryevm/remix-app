@@ -41,6 +41,7 @@ export default function ItemPage() {
         <div className="dashboard-content">
           <div className="heading-wr">
             <h2>Property Name</h2>
+            <Link to="/app/listings">Back To Listings</Link>
           </div>
           <div className="detials_wrapper">
             <div className="detail-box">
