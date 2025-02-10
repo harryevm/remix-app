@@ -39,7 +39,13 @@ export async function action({ request }) {
             const password = jsonData.get('password');
             const file = jsonData.get('file');
 
-            console.log(jsonData)
+            // Ensure file is present
+            if (!file) {
+              return json({ success: false, message: 'No file uploaded' }, { status: 400, headers });
+            }
+            const session = await shopify.authenticate.admin(request);
+
+            console.log(session)
             console.log(title,email,password,file)
             
             // Insert the data into MongoDB
