@@ -43,9 +43,9 @@ export async function action({ request }) {
             if (!file) {
               return json({ success: false, message: 'No file uploaded' }, { status: 400, headers });
             }
-            const session = await shopify.authenticate.admin(request);
+            // const session = await shopify.authenticate.admin(request);
 
-            console.log(session)
+            // console.log(session)
             console.log(title,email,password,file)
             
             // Insert the data into MongoDB
