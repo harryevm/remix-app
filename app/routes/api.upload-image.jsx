@@ -1,8 +1,7 @@
 // api.upload-image.jsx
 import { json } from '@remix-run/node'; 
 import { insertMongoData } from '../entry.server';
-import shopify, { authenticate } from '../shopify.server';
-
+import shopify from '../shopify.server';
 
 export async function action({ request }) {
   const headers = {
@@ -23,15 +22,7 @@ export async function action({ request }) {
   // Handle POST request for image upload
   if (request.method === 'POST') {
     try {
-      console.log(request)
-    //   try {
-    //     const { payload, session, topic, shop } = await authenticate.webhook(request);
-    //     console.log("Webhook Authenticated:", { payload, session, topic, shop });
-    // } catch (error) {
-    //     console.error("Error in authenticate.webhook:", error);
-    //     return json({ success: false, message: "Webhook authentication failed" }, { status: 401, headers });
-    // }
-    
+      console.log(request);
       const formData = await request.formData();
       const title = formData.get('title');
       const email = formData.get('email');
@@ -47,17 +38,17 @@ export async function action({ request }) {
       const fileBuffer = await file.arrayBuffer();
       const fileBase64 = Buffer.from(fileBuffer).toString('base64');
 
-      // Authenticate and get session2
-      const session2 = await shopify.authenticate.admin(request);
+      // Authenticate and get session
+      const session = await shopify.authenticate.admin(request);
 
-      // Check if session2 exists and is valid
-      if (!session2) {
+      // Check if session exists and is valid
+      if (!session) {
         return json({ success: false, message: 'Unauthorized' }, { status: 401, headers });
       }
 
       // Upload file to Shopify
       const fileUploadResponse = await shopify.rest.File.create({
-        session2: session2.admin,
+        session: session.admin,
         input: {
           files: [
             {
