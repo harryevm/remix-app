@@ -45,6 +45,7 @@
     "mongoose": "^8.9.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
+    "remix": "^2.15.3",
     "shopify-api-node": "^3.14.1",
     "vite-tsconfig-paths": "^5.0.1"
   },
