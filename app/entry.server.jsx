@@ -118,3 +118,27 @@ export async function insertMongoData(data) {
     await client.close();
   }
 }
+
+
+
+export async function totalPropertyCount() {
+  try {
+    // Reuse client if already connected
+    await client.connect();
+    console.log('Connected successfully to server');
+
+    const db = client.db(dbName);
+    
+    const collection = db.collection('Trevor');
+
+    // Example query, replace with actual data fetching logic
+    const findResult = await collection.count()
+
+
+    return findResult;
+
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}
