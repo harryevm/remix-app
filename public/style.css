@@ -52,10 +52,10 @@ tbody#table-body button { background-color: transparent; border: none; outline: 
 .videos-wr>.video-box { background-color: #EEEEEE; padding: 20px; }
 
 
-.rangeSlider { width: 100%; height: 15px; background: #fff; /* Unfilled portion */ border-radius: 50px; outline: none; }
-.rangeSlider::-webkit-slider-thumb { appearance: none; width: 20px; height: 15px; background: #000; border-radius: 10px 10px 10px 10px; cursor: pointer; }
-.rangeSlider::-webkit-slider-runnable-track { background: linear-gradient(to right, #000 var(--fill), #fff var(--fill)); border-radius: 50px; }
-.rangeSlider::-moz-range-track { background: linear-gradient(to right, #000 var(--fill), #fff var(--fill)); border-radius: 50px; }
+.rangeSlider { width: 100%; height: 15px; background: #fff;  border-radius: 50px; outline: none; }
+/* .rangeSlider::-webkit-slider-thumb { appearance: none; width: 20px; height: 15px; background: #000; border-radius: 10px 10px 10px 10px; cursor: pointer; }
+.rangeSlider::-webkit-slider-runnable-track { background: linear-gradient(to right, #000 var(--fill), #fff var(--fill)); border-radius: 50px; } 
+.rangeSlider::-moz-range-track { background: linear-gradient(to right, #000 var(--fill), #fff var(--fill)); border-radius: 50px; }*/
  .total-info { padding: 0 2%; }       
 .total-boxes-wr { display: flex; gap: 20px; justify-content: space-between; margin-bottom: 30px; }
 .total-boxes-wr { display: flex; gap: 20px; justify-content: space-between; }
