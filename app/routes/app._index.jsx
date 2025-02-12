@@ -23,66 +23,37 @@ export const loader = async ({ request }) => {
 
 export const action = async ({ request }) => {
   const { admin } = await authenticate.admin(request);
-  const color = ["Red", "Orange", "Yellow", "Green"][
-    Math.floor(Math.random() * 4)
-  ];
+
+  const imageUrl = 'https://www.expertvillagemedia.com//sites-files/assets/images/shopify/country-logos/Australia.png';
+ 
   const response = await admin.graphql(
     `#graphql
-      mutation populateProduct($product: ProductCreateInput!) {
-        productCreate(product: $product) {
-          product {
+      mutation fileCreate($input: FileCreateInput!) {
+        fileCreate(input: $input) {
+          file {
             id
-            title
-            handle
-            status
-            variants(first: 10) {
-              edges {
-                node {
-                  id
-                  price
-                  barcode
-                  createdAt
-                }
-              }
-            }
+            url
+            mimeType
           }
         }
       }`,
     {
       variables: {
-        product: {
-          title: `${color} Snowboard`,
+        input: {
+          attachment: imageUrl,  // Base64 encoded image URL (or URL if direct image link)
+          mimeType: "image/png",  // Adjust MIME type based on your image format
+          filename: "image.png",  // Adjust the filename
         },
       },
     },
   );
   const responseJson = await response.json();
-  const product = responseJson.data.productCreate.product;
-  const variantId = product.variants.edges[0].node.id;
-  const variantResponse = await admin.graphql(
-    `#graphql
-    mutation shopifyRemixTemplateUpdateVariant($productId: ID!, $variants: [ProductVariantsBulkInput!]!) {
-      productVariantsBulkUpdate(productId: $productId, variants: $variants) {
-        productVariants {
-          id
-          price
-          barcode
-          createdAt
-        }
-      }
-    }`,
-    {
-      variables: {
-        productId: product.id,
-        variants: [{ id: variantId, price: "100.00" }],
-      },
-    },
-  );
-  const variantResponseJson = await variantResponse.json();
+  const file = responseJson.data.fileCreate.file;
+  
 
   return {
-    product: responseJson.data.productCreate.product,
-    variant: variantResponseJson.data.productVariantsBulkUpdate.productVariants,
+    message: "Image uploaded successfully",
+    fileUrl: file.url,  // The URL of the uploaded image
   };
 };
 
