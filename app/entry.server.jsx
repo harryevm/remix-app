@@ -62,7 +62,7 @@ export default async function handleRequest(
 }
 
 
-export async function fetchMongoData(page = 1, limit = 10) {
+export async function fetchMongoData() {
   try {
     // Reuse client if already connected
     await client.connect();
@@ -72,17 +72,11 @@ export async function fetchMongoData(page = 1, limit = 10) {
     
     const collection = db.collection('Trevor');
 
-    const skip = (page - 1) * limit;
-
     // Example query, replace with actual data fetching logic
-    // const findResult = await collection.find({}).toArray();
-    const findResult = await collection.find({}).skip(skip).limit(limit).toArray();
-
-    const totalItems = await collection.countDocuments();
+    const findResult = await collection.find({}).toArray();
 
 
-    // return findResult;
-    return { findResult, totalItems };
+    return findResult;
 
   } catch (error) {
     console.error("Error fetching data:", error);

@@ -22,10 +22,6 @@ export default function ListingPage() {
   ]);
   const [checkboxState, setCheckboxState] = useState({});
   const [isVisible, setIsVisible] = useState(false);
-
-  const [page, setPage] = useState(1); // Track the current page
-  const [totalItems, setTotalItems] = useState(0);
-  const [limit] = useState(10);
   
 
   const toggleVisibility = () => {
@@ -61,14 +57,13 @@ export default function ListingPage() {
     // Fetch data from API
     const fetchData = async () => {
       try {
-        const response = await fetch(`https://remix-app-88og.onrender.com/api/getdata?page=${page}`);
+        const response = await fetch("https://remix-app-88og.onrender.com/api/getdata");
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
         }
         const data = await response.json();
         // console.log(data);
         setSampleData(data); // Assuming the API returns an array of objects
-        setTotalItems(totalItems);
       } catch (err) {
         console.error("Failed to fetch data:", err);
         setError(err.message);
@@ -79,14 +74,9 @@ export default function ListingPage() {
 
     fetchData();
     
-  }, [page]);
+  }, []);
 
-  const totalPages = Math.ceil(totalItems / limit); 
-  const handlePageChange = (newPage) => {
-    if (newPage >= 1 && newPage <= totalPages) {
-      setPage(newPage);
-    }
-  };
+  console.log(sampleData)
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -162,15 +152,7 @@ export default function ListingPage() {
                       ))}
                     </tbody>
                 </table>
-                <div className="pagination">
-        <button onClick={() => handlePageChange(page - 1)} disabled={page === 1}>
-          Previous
-        </button>
-        <span>Page {page} of {totalPages}</span>
-        <button onClick={() => handlePageChange(page + 1)} disabled={page === totalPages}>
-          Next
-        </button>
-      </div>
+
             </div>
         </div>
         <div class="footer">All Content &#169; NYFISBO. All Rights Reserved</div>
