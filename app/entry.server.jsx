@@ -142,3 +142,27 @@ export async function totalPropertyCount() {
     throw error;
   }
 }
+
+export async function totalUserCount() {
+  try {
+    // Reuse client if already connected
+    await client.connect();
+    console.log('Connected successfully to server');
+
+    const db = client.db(dbName);
+    const collection = db.collection('Trevor');
+
+    // Use aggregation to count unique emails
+    const uniqueEmailCount = await collection.aggregate([
+      { $group: { _id: "$email" } },   // Group by email field
+      { $count: "uniqueEmails" }        // Count the unique emails
+    ]).toArray();
+
+    // If no result, return 0 (in case the collection is empty or no unique emails)
+    return uniqueEmailCount.length > 0 ? uniqueEmailCount[0].uniqueEmails : 0;
+
+  } catch (error) {
+    console.error("Error fetching data:", error);
+    throw error;
+  }
+}

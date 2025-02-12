@@ -8,6 +8,7 @@ export default function ListingPage() {
   const [sampleData, setSampleData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [count, setCount] = useState(0);
+  const [userCount, setUserCount] = useState(0);
   const [error, setError] = useState(null);
   const [visibleColumns, setVisibleColumns] = useState([
     "name",
@@ -48,6 +49,27 @@ export default function ListingPage() {
     };
 
     fetchPropertyCount();
+  }, []);
+
+  useEffect(() => {
+    // Call the API to get the property count
+    const fetchUserCount = async () => {
+      try {
+        const response = await fetch('https://remix-app-88og.onrender.com/api/getUsers');
+        const data = await response.json();
+       
+        if (data.error) {
+          setError(data.error);
+        } else {
+          setUserCount(data);
+        }
+      } catch (err) {
+        console.error('Error fetching property count:', err);
+        setError('Failed to fetch property count');
+      }
+    };
+
+    fetchUserCount();
   }, []);
 
   useEffect(() => {
@@ -99,13 +121,14 @@ export default function ListingPage() {
   }, []);
 
   console.log(sampleData)
-  console.log(sampleData)
+  console.log(userCount)
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <>
+    <h1>Total Property Count: {userCount}</h1>
     <h1>Total Property Count: {count}</h1>
            <div class="dashboard">
 	
