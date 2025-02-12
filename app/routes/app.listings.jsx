@@ -7,7 +7,9 @@ export default function ListingPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 5; // Adjust as needed
+  const itemsPerPage = 10; // Show 10 items per page
+  const [totalPages, setTotalPages] = useState(1);
+  
   const [visibleColumns, setVisibleColumns] = useState([
     "name",
     "email",
@@ -64,7 +66,8 @@ export default function ListingPage() {
         }
         const data = await response.json();
         // console.log(data);
-        setSampleData(data); // Assuming the API returns an array of objects
+        setSampleData(data.data); // Assuming the API returns an array of objects
+        setTotalPages(data.totalPages);
       } catch (err) {
         console.error("Failed to fetch data:", err);
         setError(err.message);
@@ -77,8 +80,6 @@ export default function ListingPage() {
     
   }, [currentPage]);
 
-  const totalPages = Math.ceil(sampleData.length / itemsPerPage);
-
   const nextPage = () => {
     if (currentPage < totalPages) {
       setCurrentPage((prevPage) => prevPage + 1);
@@ -90,6 +91,8 @@ export default function ListingPage() {
       setCurrentPage((prevPage) => prevPage - 1);
     }
   };
+
+ 
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
@@ -160,15 +163,11 @@ export default function ListingPage() {
                       ))}
                     </tbody>
                 </table>
-                <div className="pagination">
-        <button onClick={prevPage} disabled={currentPage === 1}>
-          Previous
-        </button>
-        <span>Page {currentPage} of {totalPages}</span>
-        <button onClick={nextPage} disabled={currentPage === totalPages}>
-          Next
-        </button>
-      </div>
+              <div className="pagination">
+                <button onClick={prevPage} disabled={currentPage === 1}>Previous</button>
+                <span>Page {currentPage} of {totalPages}</span>
+                <button onClick={nextPage} disabled={currentPage === totalPages}>Next</button>
+              </div>
             </div>
         </div>
         <div className="footer">All Content &#169; NYFISBO. All Rights Reserved</div>
