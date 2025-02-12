@@ -82,8 +82,7 @@ export async function fetchMongoData(page, limit) {
 
     // return findResult;
     return {
-      data: findResult,
-      totalCount
+      data: findResult
     };
 
   } catch (error) {
