@@ -35,7 +35,7 @@ export default function ListingPage() {
       try {
         const response = await fetch('https://remix-app-88og.onrender.com/api/getCount');
         const data = await response.json();
-        
+        console.log(data);
         if (data.error) {
           setError(data.error);
         } else {
@@ -98,6 +98,7 @@ export default function ListingPage() {
     
   }, []);
 
+  console.log(sampleData)
   console.log(sampleData)
 
   if (loading) return <div>Loading...</div>;
