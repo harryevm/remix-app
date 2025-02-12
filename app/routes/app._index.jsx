@@ -2,8 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 
-const [count, setCount] = useState(0);
-const [userCount, setUserCount] = useState(0);
+
 
 export const loader = async ({ request }) => {
   await authenticate.admin(request);
@@ -11,39 +10,43 @@ export const loader = async ({ request }) => {
   return null;
 };
 
-useEffect(() => {
-  // Call the API to get the property count
-  const fetchPropertyCount = async () => {
-    try {
-      const response = await fetch('https://remix-app-88og.onrender.com/api/getCount');
-      const data = await response.json();
-      setCount(data);
-    } catch (err) {
-      console.error('Error fetching property count:', err);
-      setError('Failed to fetch property count');
-    }
-  };
 
-  fetchPropertyCount();
-}, []);
-
-useEffect(() => {
-  // Call the API to get the property count
-  const fetchUserCount = async () => {
-    try {
-      const response = await fetch('https://remix-app-88og.onrender.com/api/getUsers');
-      const data = await response.json();
-      setUserCount(data);
-    } catch (err) {
-      console.error('Error fetching property count:', err);
-      setError('Failed to fetch property count');
-    }
-  };
-
-  fetchUserCount();
-}, []);
 
 export default function Index() {
+
+  const [count, setCount] = useState(0);
+  const [userCount, setUserCount] = useState(0);
+  useEffect(() => {
+    // Call the API to get the property count
+    const fetchPropertyCount = async () => {
+      try {
+        const response = await fetch('https://remix-app-88og.onrender.com/api/getCount');
+        const data = await response.json();
+        setCount(data);
+      } catch (err) {
+        console.error('Error fetching property count:', err);
+        setError('Failed to fetch property count');
+      }
+    };
+
+    fetchPropertyCount();
+  }, []);
+
+  useEffect(() => {
+    // Call the API to get the property count
+    const fetchUserCount = async () => {
+      try {
+        const response = await fetch('https://remix-app-88og.onrender.com/api/getUsers');
+        const data = await response.json();
+        setUserCount(data);
+      } catch (err) {
+        console.error('Error fetching property count:', err);
+        setError('Failed to fetch property count');
+      }
+    };
+
+    fetchUserCount();
+  }, []);
 
   return (
     <>
