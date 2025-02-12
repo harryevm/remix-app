@@ -40,7 +40,6 @@ export default function ListingPage() {
     setCheckboxState(initialState);
   }, []);
 
-  console.log(visibleColumns)
 
   const handleCheckboxChange = (e) => {
     const { value, checked } = e.target;
@@ -76,8 +75,7 @@ export default function ListingPage() {
     
   }, []);
 
-  console.log(sampleData)
-  console.log(userCount)
+ 
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
