@@ -2,6 +2,9 @@ import { TitleBar } from "@shopify/app-bridge-react";
 import { json } from "@remix-run/node";
 import { useEffect, useState } from "react";
 import { Link } from "@remix-run/react";
+import { totalPropertyCount } from "../entry.server";
+
+
 
 
 // import { useLoaderData } from "@remix-run/react";
@@ -105,13 +108,14 @@ export default function ListingPage() {
     
   }, []);
 
-  console.log(sampleData)
+  console.log(totalPropertyCount)
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
   return (
     <>
+    
            <div class="dashboard">
 	
     {/* <div class="sidebar">
