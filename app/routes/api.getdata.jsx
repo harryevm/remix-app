@@ -6,8 +6,8 @@ import { fetchMongoData } from '../entry.server';
 export async function loader({ request }) {
   try {
     const url = new URL(request.url);
-    const page = parseInt(url.searchParams.get("page")) || 1; // Default page 1
-    const limit = parseInt(url.searchParams.get("limit")) || 10; // Default 10 items per page
+    const page = parseInt(url.searchParams.get('page') || '1', 10);
+    const limit = parseInt(url.searchParams.get('limit') || '10', 10);
 
     // Fetch data from MongoDB using the fetchMongoData function
     const findResult = await fetchMongoData(page, limit);

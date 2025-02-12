@@ -7,8 +7,8 @@ export default function ListingPage() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
-  const itemsPerPage = 10; // Show 10 items per page
-  const [totalPages, setTotalPages] = useState(1);
+  const itemsPerPage = 10; // Showing 10 items per page
+
   
   const [visibleColumns, setVisibleColumns] = useState([
     "name",
@@ -67,7 +67,7 @@ export default function ListingPage() {
         const data = await response.json();
         // console.log(data);
         setSampleData(data.data); // Assuming the API returns an array of objects
-        setTotalPages(data.totalPages);
+        
       } catch (err) {
         console.error("Failed to fetch data:", err);
         setError(err.message);
@@ -79,6 +79,8 @@ export default function ListingPage() {
     fetchData();
     
   }, [currentPage]);
+
+  const totalPages = Math.ceil(sampleData.length / itemsPerPage);
 
   const nextPage = () => {
     if (currentPage < totalPages) {
