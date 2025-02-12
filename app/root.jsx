@@ -7,7 +7,7 @@ import {
 } from "@remix-run/react";
 
 export const links = () => [
-  { rel: "stylesheet", href: "/style.css?v=1.11" } // ✅ Path to public/style.css
+  { rel: "stylesheet", href: "/style.css?v=1.12" } // ✅ Path to public/style.css
 ];
 
 export default function App() {

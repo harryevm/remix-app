@@ -68,10 +68,10 @@ export default function Index() {
                                     <h5>{count}</h5>
                                 </div>
                             </div>
-                            <div className="range">
+                            {/* <div className="range">
                                 <div class = "container"> <input type="range" className="rangeSlider" min="10" max="100" value="30" /> </div>
                                 <label>increase <span>30</span>%</label>
-                            </div>
+                            </div> */}
                         </div>
                         <div className="total-box">
                             <div className="numbers">
@@ -81,10 +81,10 @@ export default function Index() {
                                     <h5>{userCount}</h5>
                                 </div>
                             </div>
-                            <div className="range">
+                            {/* <div className="range">
                                 <div class = "container"> <input type="range" className="rangeSlider" min="10" max="100" value="70" /> </div>
                                 <label>increase <span>70</span>%</label>
-                            </div>
+                            </div> */}
                         </div>
                     </div>
                 </div>
