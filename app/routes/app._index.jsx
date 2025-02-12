@@ -3,6 +3,9 @@ import { Link } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 
 
+export const links = () => [
+  { rel: "stylesheet", href: "/style.css" }
+];
 
 export const loader = async ({ request }) => {
   await authenticate.admin(request);
