@@ -24,7 +24,7 @@ export const loader = async ({ params }) => {
 };
 
 export default function ItemPage() {
-  const { data } = useLoaderData();
+  const { data } = useLoaderData(); 
 
   return (
     <>
