@@ -130,9 +130,7 @@ export default function Index() {
                       App Bridge
                     </Link>{" "}
                     interface examples like an{" "}
-                    <Link url="/app/additional" removeUnderline>
-                      additional page in the app nav
-                    </Link>
+          
                     , as well as an{" "}
                     <Link
                       url="https://shopify.dev/docs/api/admin-graphql"
