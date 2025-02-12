@@ -50,3 +50,17 @@ tbody#table-body button { background-color: transparent; border: none; outline: 
 .photos-wr,.videos-wr  { display: flex; gap: 15px; }
 .photos-wr>.img-box { background-color: #EEEEEE; padding: 20px; }
 .videos-wr>.video-box { background-color: #EEEEEE; padding: 20px; }
+
+
+.rangeSlider { -webkit-appearance: none; width: 100%; height: 15px; background: #fff; /* Unfilled portion */ border-radius: 50px; outline: none; }
+.rangeSlider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 20px; height: 15px; background: #000; border-radius: 10px 10px 10px 10px; cursor: pointer; }
+.rangeSlider::-webkit-slider-runnable-track { background: linear-gradient(to right, #000 var(--fill), #fff var(--fill)); border-radius: 50px; }
+.rangeSlider::-moz-range-track { background: linear-gradient(to right, #000 var(--fill), #fff var(--fill)); border-radius: 50px; }
+ .total-info { padding: 0 2%; }       
+.total-boxes-wr { display: flex; gap: 20px; justify-content: space-between; margin-bottom: 30px; }
+.total-boxes-wr { display: flex; gap: 20px; justify-content: space-between; }
+.total-boxes-wr .total-box { width: calc(31% - 40px); background-color: #EBEBEB; padding: 10px 20px; border-radius: 10px; }
+.total-boxes-wr .total-box .numbers { display: flex; align-items: center; margin-bottom: 10px; }
+.icon { width: 50px; height: 50px; display: flex; align-items: center; justify-content: center; background-color: #222222; border-radius: 10px; margin-right: 15px; }
+.info span,.range label { font-size: 14px; line-height: 20px; display: block;  }
+.info h5 { color: #222222; font-size: 30px; line-height: 40px; }
