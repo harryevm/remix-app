@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 
 const [count, setCount] = useState(0);
