@@ -3,10 +3,6 @@ import { fetchMongoDataById } from '../entry.server';
 
 
 
-export const links = () => [
-  { rel: "stylesheet", href: "/style.css" }
-];
-
 export const loader = async ({ params }) => {
   const { userId } = params; // `params` already contains userId from the URL
 
