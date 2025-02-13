@@ -62,48 +62,50 @@ export async function action({ request }) {
             const formFields = {};
             const imageUrls = [];
 
-            for (let [key, value] of formData.entries()) {
-              
+             // Loop through all form data entries
+             for (let [key, value] of formData.entries()) {
+              // Check if the field is a file input
               if (value instanceof File) {
-                // If file, handle the file upload
-                const buffer = await value.arrayBuffer();  // Await the arrayBuffer
-                const fileBuffer = Buffer.from(buffer);
+                  // If file, handle the file upload
+                  const buffer = await value.arrayBuffer();  // Await the arrayBuffer
+                  const fileBuffer = Buffer.from(buffer);
 
-                // Upload to Cloudinary and await the result
-                const uploadResult = await new Promise((resolve, reject) => {
-                    const uploadStream = cloudinary.v2.uploader.upload_stream(
-                        { folder: 'Shopify' },
-                        (error, result) => {
-                            if (error) {
-                                reject(error);
-                            } else {
-                                resolve(result);
-                            }
-                        }
-                    );
+                  // Use a promise to upload to Cloudinary
+                  const uploadResult = cloudinary.v2.uploader.upload_stream(
+                      { folder: 'Shopify' },
+                      (error, result) => {
+                          if (error) {
+                              console.error('Cloudinary error:', error);
+                              return null;  // Skip the upload on error
+                          } else {
+                              return result.secure_url;  // Return the secure URL after upload
+                          }
+                      }
+                  );
 
-                    const readableStream = new Readable();
-                    readableStream.push(fileBuffer);
-                    readableStream.push(null);
-                    readableStream.pipe(uploadStream);
-                });
+                  const readableStream = new Readable();
+                  readableStream.push(fileBuffer);
+                  readableStream.push(null);
+                  readableStream.pipe(uploadResult);
 
-                // Add the file URL to the corresponding field's array
-                if (!imageUrls[key]) {
-                    imageUrls[key] = []; // Initialize array if not already present
-                }
-                imageUrls[key].push(uploadResult.secure_url); // Add the URL
-            } else {
-                // Otherwise, store regular form fields (e.g., name, email, etc.)
-                formFields[key] = value;
-            }
-              
+                  // Store the promise for later resolution
+                  if (!imageUrls[key]) {
+                      imageUrls[key] = []; // Initialize array if not already present
+                  }
+
+                  // Push the result to the array
+                  imageUrls[key].push(uploadResult.secure_url); // Add the URL to the array
+              } else {
+                  // Otherwise, store regular form fields (e.g., name, email, etc.)
+                  formFields[key] = value;
+              }
           }
 
-          // After uploading all images, insert data into MongoDB
+          // Ensure all image uploads are completed before proceeding
+          const resolvedImageUrls = await Promise.all(Object.values(imageUrls).flat());
           const mongoData = {
               ...formFields,
-              imageUrls,
+              ...imageUrls,  // Include the image URLs dynamically for each field
           };
 
           await insertMongoData(mongoData);
