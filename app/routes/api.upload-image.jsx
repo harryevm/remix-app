@@ -2,6 +2,7 @@ import { json } from '@remix-run/node';  // For JSON response
 import { insertMongoData } from '../entry.server';
 
 import cloudinary from 'cloudinary';
+import { Readable } from 'stream';
 
 // Cloudinary configuration
 cloudinary.config({
@@ -58,6 +59,36 @@ export async function action({ request }) {
             console.log(email)
             console.log(imageFile)
 
+            const buffer = await imageFile.arrayBuffer(); // Get the file as an ArrayBuffer
+            const fileBuffer = Buffer.from(buffer); 
+
+            const uploadStream = cloudinary.v2.uploader.upload_stream(
+              {
+                  folder: 'Shopify',
+                  // resource_type: 'auto',   // Remove or comment out resource_type: 'auto'
+              },
+              (error, result) => {
+                if (error) {
+                    console.error('Cloudinary Upload Error:', error);
+                    // Handle the error appropriately (e.g., return an error response)
+                    return json({ success: false, message: 'Error uploading image to Cloudinary', error: error.message }, { status: 500, headers });
+                }
+
+                const imageUrl = result.secure_url;
+                // ... (MongoDB insertion)
+                const mongoData = {
+                    name,
+                    email,
+                    imageUrl,
+                };
+                insertMongoData(mongoData);
+
+                return json({ success: true, insertedId: result.insertedId }, { headers });
+            }
+          );
+
+
+            /*
             // Upload image to Cloudinary
             const uploadResult = await cloudinary.v2.uploader.upload(imageFile, {
               folder: 'Shopify', // Optional: specify folder in Cloudinary
@@ -75,8 +106,11 @@ export async function action({ request }) {
             const result = await insertMongoData(jsonData);
             
             // // return json({ success: true, insertedId: result.insertedId });
-            return json({ success: true, insertedId: result.insertedId }, { headers });
-
+            return json({ success: true, insertedId: result.insertedId }, { headers }); */
+            const readableStream = new Readable();
+            readableStream.push(fileBuffer);
+            readableStream.push(null);
+            readableStream.pipe(uploadStream);
             
 
         } catch (error) {
