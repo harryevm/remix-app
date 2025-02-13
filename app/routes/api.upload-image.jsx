@@ -1,7 +1,7 @@
 import { json } from '@remix-run/node';  // For JSON response
 import { insertMongoData } from '../entry.server';
-import shopify from '../shopify.server';
-import { authenticate } from '@shopify/shopify-app-remix/server';
+import shopify, { authenticate } from '../shopify.server';
+
 
 
 
@@ -30,8 +30,9 @@ export async function action({ request }) {
       // Handle preflight requests
       if (request.method === 'POST') {
         console.log(shopify)
-        const { session } = await authenticate.admin(request);
-        console.log(session)
+        // const { session } = await authenticate.admin(request);
+        console.log(process.env.SHOPIFY_API_KEY)
+        // console.log(session)
 
         try {
           
