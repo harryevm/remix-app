@@ -16,7 +16,16 @@ export async function loader({ request }) {
         },
       });
     }
-    return json({ message: 'Invalid request' }, { status: 405 });
+    
+    const { session } = await authenticate.admin(request);
+    if (!session) {
+      return json({ error: "Unauthorized" }, { status: 401 });
+    }
+  
+    return json({
+      apiKey: process.env.SHOPIFY_API_KEY || "",
+      session, // Return session details
+    });
 
   }
 
@@ -39,12 +48,12 @@ export async function action({ request }) {
        
 
         try {
-          const { default: shopify, authenticate } = await import('../shopify.server');
-
-        console.log(process.env.SHOPIFY_API_KEY + '----test');
-        console.log(shopify);
-        const { session } = await authenticate.admin(request);
-        console.log(session);
+          const { session } = await authenticate.admin(request);
+          if (!session) {
+            return json({ success: false, message: "Unauthorized" }, { status: 401, headers });
+          }
+    
+          console.log("Session:", session);
           
             // Parse the incoming JSON data
             // const jsonData = await request.json();
