@@ -42,8 +42,8 @@ export async function action({ request }) {
           const { default: shopify, authenticate } = await import('../shopify.server');
 
         console.log(process.env.SHOPIFY_API_KEY + '----test');
-        console.log(shopify);
-        console.log(authenticate);
+        console.log(request);
+        console.log(authenticate.admin(request));
         
           
             // Parse the incoming JSON data
