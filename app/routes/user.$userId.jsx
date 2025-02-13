@@ -45,15 +45,15 @@ export default function ItemPage() {
               <div className="box">
                 <div className="form-control">
                   <label>Address Line1</label>
-                  <input type="text" name="address1" value="{data.address}" />
+                  <input type="text" name="address1" value={data.address} />
                 </div>
                 <div className="form-control">
                   <label>Address Line2</label>
-                  <input type="text" name="address1" value="{data.address2}" />
+                  <input type="text" name="address1" value={data.address2} />
                 </div>
                 <div className="form-control">
                   <label>City</label>
-                  <input type="text" name="address1" value="{data.city}" />
+                  <input type="text" name="address1" value={data.city} />
                 </div>
                 <div className="form-control">
                   <label>State</label>
@@ -61,7 +61,7 @@ export default function ItemPage() {
                 </div>
                 <div className="form-control">
                   <label>Zip Code</label>
-                  <input type="text" name="address1" value="{data.zip}" />
+                  <input type="text" name="address1" value={data.zip} />
                 </div>
 
               </div>
@@ -72,27 +72,27 @@ export default function ItemPage() {
               <div className="box">
                 <div className="form-control">
                   <label>Property Type</label>
-                  <input type="text" name="address1" value="{data.property-type}" />
+                  <input type="text" name="address1" value={data.property-type} />
                 </div>
                 <div className="form-control">
                   <label>Home Size</label>
-                  <input type="text" name="address1" value="{data.home-size}" />
+                  <input type="text" name="address1" value={data.home-size} />
                 </div>
                 <div className="form-control">
                   <label>Lot Size</label>
-                  <input type="text" name="address1" value="{data.lot-size}" />
+                  <input type="text" name="address1" value={data.lot-size} />
                 </div>
                 <div className="form-control">
                   <label>Year Built</label>
-                  <input type="text" name="address1" value="{data.year-built}" />
+                  <input type="text" name="address1" value={data.year-built} />
                 </div>
                 <div className="form-control">
                   <label>Bedrooms</label>
-                  <input type="text" name="address1" value="{data.bedrooms}" />
+                  <input type="text" name="address1" value={data.bedrooms} />
                 </div>
                 <div className="form-control">
                   <label>Bathrooms</label>
-                  <input type="text" name="address1" value="{data.bathrooms}" />
+                  <input type="text" name="address1" value={data.bathrooms} />
                 </div>
 
               </div>
@@ -154,7 +154,7 @@ export default function ItemPage() {
               <div className="photos-wr">
               {data.propertyPhotos && data.propertyPhotos.map((item, index) => (
                 <div key={index} className="img-box">
-                  <img src="{item}" alt="" />
+                  <img src={item} alt="" />
                 </div>
               ))}
                 
