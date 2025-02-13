@@ -29,6 +29,9 @@ export async function action({ request }) {
       // Handle preflight requests
       if (request.method === 'POST') {
         console.log(shopify)
+        const session = await shopify.sessionStorage.getShopifySession(request);
+        console.log(session)
+
         try {
           
             // Parse the incoming JSON data
