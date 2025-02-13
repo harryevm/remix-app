@@ -21,7 +21,9 @@ export const loader = async ({ params }) => {
 
 export default function ItemPage() {
   const { data } = useLoaderData(); 
-
+  if (!data) {
+    return <p>Loading...</p>; // Add a loading state just in case the data isn't available yet
+  }
   return (
     <>
       <div className="dashboard">
@@ -45,7 +47,7 @@ export default function ItemPage() {
               <div className="box">
                 <div className="form-control">
                   <label>Address Line1</label>
-                  <input type="text" name="address1" value={data.address} />
+                  <input type="text" name="address1" value={data.address || ''} />
                 </div>
                 <div className="form-control">
                   <label>Address Line2</label>
