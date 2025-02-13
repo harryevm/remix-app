@@ -31,14 +31,14 @@ export async function action({ request }) {
     
       // Handle preflight requests
       if (request.method === 'POST') {
-        console.log(shopify)
+      
         // const { session } = await authenticate.admin(request);
-        console.log(process.env.SHOPIFY_API_KEY)
+        console.log(process.env.SHOPIFY_API_KEY+'----test')
         const { session } = await authenticate.admin(request);
         if (!session) {
             return json({ success: false, message: 'Unauthorized' }, { status: 401 });
         }
-        console.log(session);
+        console.log(session+'----test2');
         // console.log(session)
 
         try {
