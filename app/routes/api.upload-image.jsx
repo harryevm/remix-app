@@ -94,6 +94,7 @@ export async function action({ request }) {
                   }
 
                   uploadPromises.push(uploadPromise.then(url => {
+                    console.log('Uploaded Image URL:', url); 
                       imageUrls[key].push(url);  // Push the URL into the respective field's array
                   }));
               } else {
