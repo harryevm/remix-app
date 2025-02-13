@@ -44,24 +44,24 @@ console.log(data)
               <h3>Location</h3>
               <div className="box">
                 <div className="form-control">
-                  <label>Address Line1--{data.address}</label>
-                  <input type="text" name="address1" value="25 New street" />
+                  <label>Address Line1--{data['property-type']}</label>
+                  <input type="text" name="address1" value={data.address} />
                 </div>
                 <div className="form-control">
                   <label>Address Line2</label>
-                  <input type="text" name="address1" value="25 New street" />
+                  <input type="text" name="address1" value={data.address2} />
                 </div>
                 <div className="form-control">
                   <label>City</label>
-                  <input type="text" name="address1" value="25 New street" />
+                  <input type="text" name="address1" value={data.city} />
                 </div>
                 <div className="form-control">
                   <label>State</label>
-                  <input type="text" name="address1" value="25 New street" />
+                  <input type="text" name="address1" value='New York' />
                 </div>
                 <div className="form-control">
                   <label>Zip Code</label>
-                  <input type="text" name="address1" value="25 New street" />
+                  <input type="text" name="address1" value={data.zip} />
                 </div>
 
               </div>
@@ -72,27 +72,27 @@ console.log(data)
               <div className="box">
                 <div className="form-control">
                   <label>Property Type</label>
-                  <input type="text" name="address1" value="25 New street" />
+                  <input type="text" name="address1" value={data['property-type']} />
                 </div>
                 <div className="form-control">
                   <label>Home Size</label>
-                  <input type="text" name="address1" value="25 New street" />
+                  <input type="text" name="address1" value={data['home-size']} />
                 </div>
                 <div className="form-control">
                   <label>Lot Size</label>
-                  <input type="text" name="address1" value="25 New street" />
+                  <input type="text" name="address1" value={data['lot-size']+data['lot-unit']} />
                 </div>
                 <div className="form-control">
                   <label>Year Built</label>
-                  <input type="text" name="address1" value="25 New street" />
+                  <input type="text" name="address1" value={data['year-built']} />
                 </div>
                 <div className="form-control">
                   <label>Bedrooms</label>
-                  <input type="text" name="address1" value="25 New street" />
+                  <input type="text" name="address1" value={data.bedrooms} />
                 </div>
                 <div className="form-control">
                   <label>Bathrooms</label>
-                  <input type="text" name="address1" value="25 New street" />
+                  <input type="text" name="address1" value={data.bathrooms} />
                 </div>
 
               </div>
