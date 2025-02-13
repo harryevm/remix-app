@@ -1,7 +1,14 @@
 import { json } from '@remix-run/node';  // For JSON response
 import { insertMongoData } from '../entry.server';
 
+import cloudinary from 'cloudinary';
 
+// Cloudinary configuration
+cloudinary.config({
+    cloud_name: 'de4fo1raf',
+    api_key: '942849615248768',
+    api_secret: 'QoigN9bkSQiqLiJ7AeVjWQElC4E',
+});
 
 
 
@@ -39,15 +46,6 @@ export async function action({ request }) {
        
 
         try {
-          const { default: shopify, authenticate } = await import('../shopify.server');
-            console.log(process.env.SHOPIFY_API_KEY + '----test');
-            console.log(request);
-            const session = await authenticate.admin(request);
-            if (!session) {
-                console.error('❌ No session found.');
-                return json({ success: false, message: 'Unauthorized' }, { status: 401 });
-            }
-            console.log("✅ Session authenticated:", session);
         
           
             // Parse the incoming JSON data
@@ -60,10 +58,17 @@ export async function action({ request }) {
             console.log(email)
             console.log(imageFile)
 
+            // Upload image to Cloudinary
+            const uploadResult = await cloudinary.v2.uploader.upload(imageFile, {
+              folder: 'Shopify', // Optional: specify folder in Cloudinary
+              resource_type: 'auto', // Automatically detect the resource type (e.g., image, video)
+          });
+          console.log('Cloudinary Upload Result:', uploadResult);
+            const imageUrl = uploadResult.secure_url; 
             const jsonData = {
                 name,
                 email,
-                imageFile, // Store the Shopify file URL
+                imageFile: imageUrl, // Store the Shopify file URL
             };
             console.log(jsonData)
             // Insert the data into MongoDB
