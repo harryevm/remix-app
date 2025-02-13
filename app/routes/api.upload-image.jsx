@@ -54,50 +54,59 @@ export async function action({ request }) {
             const formData = await request.formData();
             const name = formData.get('name');
             const email = formData.get('email');
-            const imageFile = formData.get('image');
+            // const imageFile = formData.get('image');
+            const imageFiles = formData.getAll('image');
+            if (!imageFiles || imageFiles.length === 0) {
+                return json({ success: false, message: 'At least one image file is required' }, { status: 400, headers });
+            }
+            
             console.log(name)
             console.log(email)
             console.log(imageFile)
 
+            const imageUrls = [];
             const buffer = await imageFile.arrayBuffer();
             const fileBuffer = Buffer.from(buffer);
 
             // 2. Return a Promise from the action
-            return new Promise((resolve, reject) => {
-                const uploadStream = cloudinary.v2.uploader.upload_stream(
-                    {
-                        folder: 'Shopify',
-                    },
-                    (error, result) => {
-                        if (error) {
-                            console.error('Cloudinary Upload Error:', error);
-                            reject(json({ success: false, message: 'Error uploading image to Cloudinary', error: error.message }, { status: 500, headers })); // Reject with error response
-                            return; // Important: Stop further execution in the callback
-                        }
+            await Promise.all(
+              imageFiles.map(async (imageFile) => {
+                  return new Promise((resolve, reject) => {
+                      const buffer = await imageFile.arrayBuffer();
+                      const fileBuffer = Buffer.from(buffer);
 
-                        const imageUrl = result.secure_url;
+                      const uploadStream = cloudinary.v2.uploader.upload_stream(
+                          {
+                              folder: 'Shopify',
+                          },
+                          (error, result) => {
+                              if (error) {
+                                  console.error('Cloudinary Upload Error:', error);
+                                  reject(error); // Reject with the error
+                                  return;
+                              }
 
-                        const mongoData = {
-                            name,
-                            email,
-                            imageUrl,
-                        };
+                              imageUrls.push(result.secure_url); // Add URL to the array
+                              resolve(); // Resolve when upload is complete
+                          }
+                      );
 
-                        insertMongoData(mongoData)
-                            .then(() => {
-                                resolve(json({ success: true, insertedId: result.public_id }, { headers })); // Resolve with success response
-                            })
-                            .catch((mongoError) => {
-                                console.error("MongoDB Error:", mongoError);
-                                reject(json({ success: false, message: 'Error inserting into MongoDB', error: mongoError.message }, { status: 500, headers }));
-                            });
-                    }
-                );
-                const readableStream = new Readable();
-                readableStream.push(fileBuffer);
-                readableStream.push(null);
-                readableStream.pipe(uploadStream);
-            });
+                      const readableStream = new Readable();
+                      readableStream.push(fileBuffer);
+                      readableStream.push(null);
+                      readableStream.pipe(uploadStream);
+                  });
+              })
+          );
+          const mongoData = {
+            name,
+            email,
+            imageUrls, // Store the array of image URLs
+        };
+
+        const result = await insertMongoData(mongoData);
+        return json({ success: true, insertedId: result.insertedId }, { headers });
+
             
 
         } catch (error) {
