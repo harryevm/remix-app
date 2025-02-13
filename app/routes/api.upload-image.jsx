@@ -16,6 +16,8 @@ export async function loader({ request }) {
         },
       });
     }
+    return json({ message: 'Invalid request' }, { status: 405 });
+
   }
 
   
@@ -32,6 +34,11 @@ export async function action({ request }) {
         console.log(shopify)
         // const { session } = await authenticate.admin(request);
         console.log(process.env.SHOPIFY_API_KEY)
+        const { session } = await authenticate.admin(request);
+        if (!session) {
+            return json({ success: false, message: 'Unauthorized' }, { status: 401 });
+        }
+        console.log(session);
         // console.log(session)
 
         try {
