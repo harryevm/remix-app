@@ -21,9 +21,7 @@ export const loader = async ({ params }) => {
 
 export default function ItemPage() {
   const { data } = useLoaderData(); 
-  if (!data) {
-    return <p>Loading...</p>; // Add a loading state just in case the data isn't available yet
-  }
+console.log(data)
   return (
     <>
       <div className="dashboard">
@@ -46,24 +44,24 @@ export default function ItemPage() {
               <h3>Location</h3>
               <div className="box">
                 <div className="form-control">
-                  <label>Address Line1</label>
-                  <input type="text" name="address1" value={data.address || ''} />
+                  <label>Address Line1--{data.address}</label>
+                  <input type="text" name="address1" value="25 New street" />
                 </div>
                 <div className="form-control">
                   <label>Address Line2</label>
-                  <input type="text" name="address1" value={data.address2} />
+                  <input type="text" name="address1" value="25 New street" />
                 </div>
                 <div className="form-control">
                   <label>City</label>
-                  <input type="text" name="address1" value={data.city} />
+                  <input type="text" name="address1" value="25 New street" />
                 </div>
                 <div className="form-control">
                   <label>State</label>
-                  <input type="text" name="address1" value="New York" />
+                  <input type="text" name="address1" value="25 New street" />
                 </div>
                 <div className="form-control">
                   <label>Zip Code</label>
-                  <input type="text" name="address1" value={data.zip} />
+                  <input type="text" name="address1" value="25 New street" />
                 </div>
 
               </div>
@@ -74,27 +72,27 @@ export default function ItemPage() {
               <div className="box">
                 <div className="form-control">
                   <label>Property Type</label>
-                  <input type="text" name="address1" value={data.property-type} />
+                  <input type="text" name="address1" value="25 New street" />
                 </div>
                 <div className="form-control">
                   <label>Home Size</label>
-                  <input type="text" name="address1" value={data.home-size} />
+                  <input type="text" name="address1" value="25 New street" />
                 </div>
                 <div className="form-control">
                   <label>Lot Size</label>
-                  <input type="text" name="address1" value={data.lot-size} />
+                  <input type="text" name="address1" value="25 New street" />
                 </div>
                 <div className="form-control">
                   <label>Year Built</label>
-                  <input type="text" name="address1" value={data.year-built} />
+                  <input type="text" name="address1" value="25 New street" />
                 </div>
                 <div className="form-control">
                   <label>Bedrooms</label>
-                  <input type="text" name="address1" value={data.bedrooms} />
+                  <input type="text" name="address1" value="25 New street" />
                 </div>
                 <div className="form-control">
                   <label>Bathrooms</label>
-                  <input type="text" name="address1" value={data.bathrooms} />
+                  <input type="text" name="address1" value="25 New street" />
                 </div>
 
               </div>
@@ -154,13 +152,21 @@ export default function ItemPage() {
             <div className="detail-box photos">
               <h3>Photos</h3>
               <div className="photos-wr">
-              {data.propertyPhotos && data.propertyPhotos.map((item, index) => (
-                <div key={index} className="img-box">
-                  <img src={item} alt="" />
+                <div className="img-box">
+                  <img src="/images/placeholder-img.png" alt="" />
                 </div>
-              ))}
-                
-                
+                <div className="img-box">
+                  <img src="/images/placeholder-img.png" alt="" />
+                </div>
+                <div className="img-box">
+                  <img src="/images/placeholder-img.png" alt="" />
+                </div>
+                <div className="img-box">
+                  <img src="/images/placeholder-img.png" alt="" />
+                </div>
+                <div className="img-box">
+                  <img src="/images/placeholder-img.png" alt="" />
+                </div>
               </div>
             </div>
 
