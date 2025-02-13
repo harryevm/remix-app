@@ -1,6 +1,6 @@
 import { json } from '@remix-run/node';  // For JSON response
 import { insertMongoData } from '../entry.server';
-import shopify, { authenticate } from "../shopify.server";
+import shopify from "../shopify.server";
 
 
 
@@ -48,7 +48,7 @@ export async function action({ request }) {
        
 
         try {
-          const { session } = await authenticate.admin(request);
+          const { session } = await shopify.authenticate.admin(request);
           if (!session) {
             return json({ success: false, message: "Unauthorized" }, { status: 401, headers });
           }
