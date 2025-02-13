@@ -17,7 +17,7 @@ export async function loader({ request }) {
       });
     }
     
-    const { session } = await authenticate.admin(request);
+    const { session } = await shopify.authenticate.admin(request);
     if (!session) {
       return json({ error: "Unauthorized" }, { status: 401 });
     }
