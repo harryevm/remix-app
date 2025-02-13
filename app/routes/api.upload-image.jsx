@@ -65,11 +65,11 @@ export async function action({ request }) {
             formData.forEach((value, key) => {
               if (key.includes('image') || key.includes('file')) {
                 if (value instanceof File) {
-                  const buffer =  value.arrayBuffer();
+                  const buffer =  await value.arrayBuffer();
                   const fileBuffer = Buffer.from(buffer);
       
                   // Upload to Cloudinary
-                  const uploadResult =  new Promise((resolve, reject) => {
+                  const uploadResult =  await new Promise((resolve, reject) => {
                     const uploadStream = cloudinary.v2.uploader.upload_stream(
                       { folder: 'Shopify' },
                       (error, result) => {
