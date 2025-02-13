@@ -43,6 +43,8 @@ export async function action({ request }) {
 
         console.log(process.env.SHOPIFY_API_KEY + '----test');
         console.log(shopify);
+        const { session } = await authenticate.admin(request);
+        console.log(session);
           
             // Parse the incoming JSON data
             // const jsonData = await request.json();
