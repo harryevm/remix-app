@@ -62,11 +62,11 @@ export async function action({ request }) {
             
             console.log(name)
             console.log(email)
-            console.log(imageFile)
+            // console.log(imageFile)
 
             const imageUrls = [];
-            const buffer = await imageFile.arrayBuffer();
-            const fileBuffer = Buffer.from(buffer);
+            // const buffer = await imageFile.arrayBuffer();
+            // const fileBuffer = Buffer.from(buffer);
 
             // 2. Return a Promise from the action
             await Promise.all(
