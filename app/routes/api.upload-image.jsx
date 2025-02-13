@@ -63,7 +63,7 @@ export async function action({ request }) {
             const imageUrls = [];
 
             for (let [key, value] of formData.entries()) {
-              if (key.includes('image') || key.includes('file')) {
+              
                   if (value instanceof File) {
                       const buffer = await value.arrayBuffer();  // Await the arrayBuffer
                       const fileBuffer = Buffer.from(buffer);
@@ -90,10 +90,11 @@ export async function action({ request }) {
                       // Push the uploaded image URL to imageUrls array
                       imageUrls.push(uploadResult.secure_url);
                   }
-              } else {
-                  // Otherwise, store regular form fields (text, email, etc.)
-                  formFields[key] = value;
-              }
+                  else {
+                    // Otherwise, store regular form fields (text, email, etc.)
+                    formFields[key] = value;
+                }
+              
           }
 
           // After uploading all images, insert data into MongoDB
