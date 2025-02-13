@@ -40,10 +40,14 @@ export async function action({ request }) {
 
         try {
           const { default: shopify, authenticate } = await import('../shopify.server');
-
-        console.log(process.env.SHOPIFY_API_KEY + '----test');
-        console.log(request);
-        console.log(authenticate.admin(request));
+            console.log(process.env.SHOPIFY_API_KEY + '----test');
+            console.log(request);
+            const session = await authenticate.admin(request);
+            if (!session) {
+                console.error('❌ No session found.');
+                return json({ success: false, message: 'Unauthorized' }, { status: 401 });
+            }
+            console.log("✅ Session authenticated:", session);
         
           
             // Parse the incoming JSON data
