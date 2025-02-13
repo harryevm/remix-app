@@ -1,6 +1,6 @@
 import { json } from '@remix-run/node';  // For JSON response
 import { insertMongoData } from '../entry.server';
-import shopify from "../shopify.server";
+
 
 
 
@@ -16,16 +16,7 @@ export async function loader({ request }) {
         },
       });
     }
-    
-    const { session } = await shopify.authenticate.admin(request);
-    if (!session) {
-      return json({ error: "Unauthorized" }, { status: 401 });
-    }
-  
-    return json({
-      apiKey: process.env.SHOPIFY_API_KEY || "",
-      session, // Return session details
-    });
+    return json({ message: 'Invalid request' }, { status: 405 });
 
   }
 
@@ -48,12 +39,12 @@ export async function action({ request }) {
        
 
         try {
-          const { session } = await shopify.authenticate.admin(request);
-          if (!session) {
-            return json({ success: false, message: "Unauthorized" }, { status: 401, headers });
-          }
-    
-          console.log("Session:", session);
+          const { default: shopify, authenticate } = await import('../shopify.server');
+
+        console.log(process.env.SHOPIFY_API_KEY + '----test');
+        console.log(shopify);
+        console.log(authenticate);
+        
           
             // Parse the incoming JSON data
             // const jsonData = await request.json();
