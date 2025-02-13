@@ -56,57 +56,50 @@ export async function action({ request }) {
             const email = formData.get('email');
             // const imageFile = formData.get('image');
             const imageFiles = formData.getAll('image');
-            if (!imageFiles || imageFiles.length === 0) {
-                return json({ success: false, message: 'At least one image file is required' }, { status: 400, headers });
-            }
-            
             console.log(name)
             console.log(email)
-            // console.log(imageFile)
+            console.log(imageFiles)
 
             const imageUrls = [];
-            // const buffer = await imageFile.arrayBuffer();
-            // const fileBuffer = Buffer.from(buffer);
+            // Process each file
+            for (let i = 0; i < imageFiles.length; i++) {
+              const imageFile = imageFiles[i];
+              const buffer = await imageFile.arrayBuffer();
+              const fileBuffer = Buffer.from(buffer);
 
-            // 2. Return a Promise from the action
-            await Promise.all(
-              imageFiles.map(async (imageFile) => {
-                  return new Promise((resolve, reject) => {
-                      const buffer = await imageFile.arrayBuffer();
-                      const fileBuffer = Buffer.from(buffer);
-
-                      const uploadStream = cloudinary.v2.uploader.upload_stream(
-                          {
-                              folder: 'Shopify',
-                          },
-                          (error, result) => {
-                              if (error) {
-                                  console.error('Cloudinary Upload Error:', error);
-                                  reject(error); // Reject with the error
-                                  return;
-                              }
-
-                              imageUrls.push(result.secure_url); // Add URL to the array
-                              resolve(); // Resolve when upload is complete
+              // Upload the image to Cloudinary
+              const uploadResult = await new Promise((resolve, reject) => {
+                  const uploadStream = cloudinary.v2.uploader.upload_stream(
+                      { folder: 'Shopify' },
+                      (error, result) => {
+                          if (error) {
+                              console.error('Cloudinary Upload Error:', error);
+                              reject(error);
+                          } else {
+                              resolve(result);
                           }
-                      );
+                      }
+                  );
+                  const readableStream = new Readable();
+                  readableStream.push(fileBuffer);
+                  readableStream.push(null);
+                  readableStream.pipe(uploadStream);
+              });
 
-                      const readableStream = new Readable();
-                      readableStream.push(fileBuffer);
-                      readableStream.push(null);
-                      readableStream.pipe(uploadStream);
-                  });
-              })
-          );
+              // Push the uploaded image URL to the array
+              imageUrls.push(uploadResult.secure_url);
+          }
+
+          // After uploading all images, insert data into MongoDB
           const mongoData = {
-            name,
-            email,
-            imageUrls, // Store the array of image URLs
-        };
+              name,
+              email,
+              imageUrls, // Store array of image URLs
+          };
 
-        const result = await insertMongoData(mongoData);
-        return json({ success: true, insertedId: result.insertedId }, { headers });
+          await insertMongoData(mongoData);
 
+          return json({ success: true, insertedId: mongoData._id, imageUrls }, { headers })
             
 
         } catch (error) {
