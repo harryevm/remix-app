@@ -64,36 +64,39 @@ export async function action({ request }) {
 
             for (let [key, value] of formData.entries()) {
               
-                  if (value instanceof File) {
-                      const buffer = await value.arrayBuffer();  // Await the arrayBuffer
-                      const fileBuffer = Buffer.from(buffer);
+              if (value instanceof File) {
+                // If file, handle the file upload
+                const buffer = await value.arrayBuffer();  // Await the arrayBuffer
+                const fileBuffer = Buffer.from(buffer);
 
-                      // Upload to Cloudinary and await the result
-                      const uploadResult = await new Promise((resolve, reject) => {
-                          const uploadStream = cloudinary.v2.uploader.upload_stream(
-                              { folder: 'Shopify' },
-                              (error, result) => {
-                                  if (error) {
-                                      reject(error);
-                                  } else {
-                                      resolve(result);
-                                  }
-                              }
-                          );
+                // Upload to Cloudinary and await the result
+                const uploadResult = await new Promise((resolve, reject) => {
+                    const uploadStream = cloudinary.v2.uploader.upload_stream(
+                        { folder: 'Shopify' },
+                        (error, result) => {
+                            if (error) {
+                                reject(error);
+                            } else {
+                                resolve(result);
+                            }
+                        }
+                    );
 
-                          const readableStream = new Readable();
-                          readableStream.push(fileBuffer);
-                          readableStream.push(null);
-                          readableStream.pipe(uploadStream);
-                      });
+                    const readableStream = new Readable();
+                    readableStream.push(fileBuffer);
+                    readableStream.push(null);
+                    readableStream.pipe(uploadStream);
+                });
 
-                      // Push the uploaded image URL to imageUrls array
-                      imageUrls.push(uploadResult.secure_url);
-                  }
-                  else {
-                    // Otherwise, store regular form fields (text, email, etc.)
-                    formFields[key] = value;
+                // Add the file URL to the corresponding field's array
+                if (!imageUrls[key]) {
+                    imageUrls[key] = []; // Initialize array if not already present
                 }
+                imageUrls[key].push(uploadResult.secure_url); // Add the URL
+            } else {
+                // Otherwise, store regular form fields (e.g., name, email, etc.)
+                formFields[key] = value;
+            }
               
           }
 
