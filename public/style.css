@@ -52,6 +52,8 @@ tbody#table-body button { background-color: transparent; border: none; outline: 
 .agreements_block .box { display: block; margin-bottom: 15px; }
 .agreements_block .box h4 { margin-bottom: 15px; }
 .agreements_block .box .data-box { width: 100%; }
+.agreements_block .box .data-box a { display: inline-block; vertical-align: middle; }
+.agreements_block .box .data-box a svg { width: 20px; height: 20px; }
 .footer { padding: 0 2%; height: 100px; display: flex; align-items: center; justify-content: center; border-top: 1px solid #D3D3D3; margin-top: 30px; }
 .photos-wr, .videos-wr { display: flex; gap: 15px; flex-wrap: wrap; }
 .photos-wr>.img-box,.videos-wr>.video-box { padding: 0; width: calc(90% / 5); }
