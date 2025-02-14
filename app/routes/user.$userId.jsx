@@ -217,7 +217,7 @@ export default function ItemPage() {
             <div className="detail-box agreements_block">
               <h3>Agreements:</h3>
               <div className="box">
-                <h4>Agency Representation Agreement</h4>
+                <h4>1. Agency Representation Agreement</h4>
                 <div className="data-box">
                   <p><b>I confirm that I have signed this document.:</b> {data.agencyCheckbox}</p>
                 </div>
@@ -233,7 +233,7 @@ export default function ItemPage() {
               </div>
 
               <div className="box">
-                <h4>Fair Housing Disclosure Form</h4>
+                <h4>2. Fair Housing Disclosure Form</h4>
                 <div className="data-box">
                   <p><b>I confirm that I have signed this document.:</b> {data.fairHousingCheckbox}</p>
                 </div>
@@ -249,7 +249,7 @@ export default function ItemPage() {
               </div>
 
               <div className="box">
-                <h4>Property Disclosure Statement</h4>
+                <h4>3. Property Disclosure Statement</h4>
                 <div className="data-box">
                   <p><b>I confirm that I have signed this document.:</b> {data.propertyCheckbox}</p>
                 </div>
@@ -265,7 +265,7 @@ export default function ItemPage() {
               </div>
 
               <div className="box">
-                <h4>Listing Agreement</h4>
+                <h4>4. Listing Agreement</h4>
                 <div className="data-box">
                   <p><b>I confirm that I have signed this document.:</b> {data.listingAgreementCheck}</p>
                 </div>
