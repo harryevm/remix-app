@@ -228,7 +228,7 @@ export default function ItemPage() {
                   <p><b>Date:</b> {data.agencyDate}</p>
                 </div>
                 <div className="data-box">
-                  <p><b>Agreement image/docx:</b> {data.agencyAgreement[0]}</p>
+                  <p><b>Agreement image/docx:</b> <Link to={data.agencyAgreement[0]} target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="60px" height="60px">    <path d="M24.707,8.793l-6.5-6.5C18.019,2.105,17.765,2,17.5,2H7C5.895,2,5,2.895,5,4v22c0,1.105,0.895,2,2,2h16c1.105,0,2-0.895,2-2 V9.5C25,9.235,24.895,8.981,24.707,8.793z M18,10c-0.552,0-1-0.448-1-1V3.904L23.096,10H18z"/></svg></Link></p>
                 </div>
               </div>
 
@@ -244,7 +244,7 @@ export default function ItemPage() {
                   <p><b>Date:</b> {data.fairHousingDate}</p>
                 </div>
                 <div className="data-box">
-                  <p><b>Agreement image/docx:</b> {data.fairHousing[0]}</p>
+                  <p><b>Agreement image/docx:</b> <Link to={data.fairHousing[0]} target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="60px" height="60px">    <path d="M24.707,8.793l-6.5-6.5C18.019,2.105,17.765,2,17.5,2H7C5.895,2,5,2.895,5,4v22c0,1.105,0.895,2,2,2h16c1.105,0,2-0.895,2-2 V9.5C25,9.235,24.895,8.981,24.707,8.793z M18,10c-0.552,0-1-0.448-1-1V3.904L23.096,10H18z"/></svg></Link></p>
                 </div>
               </div>
 
@@ -260,7 +260,7 @@ export default function ItemPage() {
                   <p><b>Date:</b> {data.propertyDate}</p>
                 </div>
                 <div className="data-box">
-                  <p><b>Agreement image/docx:</b> {data.propertyDisclosure[0]}</p>
+                  <p><b>Agreement image/docx:</b> <Link to={data.propertyDisclosure[0]} target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="60px" height="60px">    <path d="M24.707,8.793l-6.5-6.5C18.019,2.105,17.765,2,17.5,2H7C5.895,2,5,2.895,5,4v22c0,1.105,0.895,2,2,2h16c1.105,0,2-0.895,2-2 V9.5C25,9.235,24.895,8.981,24.707,8.793z M18,10c-0.552,0-1-0.448-1-1V3.904L23.096,10H18z"/></svg></Link></p>
                 </div>
               </div>
 
@@ -276,7 +276,7 @@ export default function ItemPage() {
                   <p><b>Date:</b> {data.listingDate}</p>
                 </div>
                 <div className="data-box">
-                  <p><b>Agreement image/docx:</b> {data.listingAgreement[0]}</p>
+                  <p><b>Agreement image/docx:</b> <Link to={data.listingAgreement[0]} target="_blank"><svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 30 30" width="60px" height="60px">    <path d="M24.707,8.793l-6.5-6.5C18.019,2.105,17.765,2,17.5,2H7C5.895,2,5,2.895,5,4v22c0,1.105,0.895,2,2,2h16c1.105,0,2-0.895,2-2 V9.5C25,9.235,24.895,8.981,24.707,8.793z M18,10c-0.552,0-1-0.448-1-1V3.904L23.096,10H18z"/></svg></Link></p>
                 </div>
               </div>
 
