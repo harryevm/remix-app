@@ -2,12 +2,16 @@ import { TitleBar } from "@shopify/app-bridge-react";
 import { json } from "@remix-run/node";
 import { useEffect, useState } from "react";
 import { Link, useLoaderData } from "@remix-run/react";
+import { fetchMongoData } from "../entry.server";
+
+export async function loader() {
+  const listingData = await fetchMongoData();
+  return json({ listingData });
+}
 
 export default function ListingPage() {
-
-  const [sampleData, setSampleData] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const { listingData } = useLoaderData();
+ 
   const [visibleColumns, setVisibleColumns] = useState([
     "name",
     "email",
@@ -52,31 +56,6 @@ export default function ListingPage() {
     setIsVisible(false); // Close modal after confirming
   };
 
-  useEffect(() => {
-    // Fetch data from API
-    const fetchData = async () => {
-      try {
-        const response = await fetch("https://remix-app-88og.onrender.com/api/getdata");
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
-        const data = await response.json();
-        // console.log(data);
-        setSampleData(data); // Assuming the API returns an array of objects
-      } catch (err) {
-        console.error("Failed to fetch data:", err);
-        setError(err.message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchData();
-    
-  }, []);
-
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
 
   return (
     <>
@@ -129,7 +108,7 @@ export default function ListingPage() {
                     </tr>
                     </thead>
                     <tbody id="table-body">
-                    {sampleData.map((item, index) => (
+                    {listingData.map((item, index) => (
                         <tr key={index} test={item}>
                           {visibleColumns.map((col) => (
                             <td key={col}>{item[col]}</td>
