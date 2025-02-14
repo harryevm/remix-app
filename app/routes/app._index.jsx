@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 import { totalPropertyCount, totalUserCount } from "../entry.server";
