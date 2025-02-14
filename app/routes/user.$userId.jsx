@@ -38,25 +38,41 @@ export default function ItemPage() {
             <div className="detail-box">
               <h3>Location</h3>
               <div className="box">
-                <div className="form-control">
-                  <label>Address Line1</label>
-                  <input type="text" name="address1" value={data.address} />
+                <div className="data-box">
+                  <h5>Address Line1</h5>
+                  <div class="data-wr">
+                    <p>{data.address}</p>
+                  </div>
                 </div>
-                <div className="form-control">
-                  <label>Address Line2</label>
-                  <input type="text" name="address1" value={data.address2} />
+                <div className="data-box">
+                  <h5>Address Line2</h5>
+                  <div class="data-wr">
+                    <p>{data.address2}</p>
+                  </div>
                 </div>
-                <div className="form-control">
-                  <label>City</label>
-                  <input type="text" name="address1" value={data.city} />
+                <div className="data-box">
+                  <h5>City</h5>
+                  <div class="data-wr">
+                    <p>{data.city}</p>
+                  </div>
                 </div>
-                <div className="form-control">
-                  <label>State</label>
-                  <input type="text" name="address1" value='New York' />
+                <div className="data-box">
+                  <h5>State</h5>
+                  <div class="data-wr">
+                    <p>New York</p>
+                  </div>
                 </div>
-                <div className="form-control">
-                  <label>Zip Code</label>
-                  <input type="text" name="address1" value={data.zip} />
+                <div className="data-box">
+                  <h5>Zip Code</h5>
+                  <div class="data-wr">
+                    <p>{data.zip}</p>
+                  </div>
+                </div>
+                <div className="data-box">
+                  <h5>Neighborhood</h5>
+                  <div class="data-wr">
+                    <p>{data.neighborhood}</p>
+                  </div>
                 </div>
 
               </div>
@@ -65,29 +81,41 @@ export default function ItemPage() {
             <div className="detail-box">
               <h3>Home Details</h3>
               <div className="box">
-                <div className="form-control">
-                  <label>Property Type</label>
-                  <input type="text" name="address1" value={data['property-type']} />
+                <div className="data-box">
+                  <h5>Property Type</h5>
+                  <div class="data-wr">
+                    <p>{data['property-type']}</p>
+                  </div>
                 </div>
-                <div className="form-control">
-                  <label>Home Size</label>
-                  <input type="text" name="address1" value={data['home-size']} />
+                <div className="data-box">
+                  <h5>Home Size</h5>
+                  <div class="data-wr">
+                    <p>{data['home-size']}</p>
+                  </div>
                 </div>
-                <div className="form-control">
-                  <label>Lot Size</label>
-                  <input type="text" name="address1" value={data['lot-size']+data['lot-unit']} />
+                <div className="data-box">
+                  <h5>Lot Size</h5>
+                  <div class="data-wr">
+                    <p>{data['lot-size']+data['lot-unit']}</p>
+                  </div>
                 </div>
-                <div className="form-control">
-                  <label>Year Built</label>
-                  <input type="text" name="address1" value={data['year-built']} />
+                <div className="data-box">
+                  <h5>Year Built</h5>
+                  <div class="data-wr">
+                    <p>{data['year-built']}</p>
+                  </div>
                 </div>
-                <div className="form-control">
-                  <label>Bedrooms</label>
-                  <input type="text" name="address1" value={data.bedrooms} />
+                <div className="data-box">
+                  <h5>Bedrooms</h5>
+                  <div class="data-wr">
+                    <p>{data.bedrooms}</p>
+                  </div>
                 </div>
-                <div className="form-control">
-                  <label>Bathrooms</label>
-                  <input type="text" name="address1" value={data.bathrooms} />
+                <div className="data-box">
+                  <h5>Bathrooms</h5>
+                  <div class="data-wr">
+                    <p>{data.bathrooms}</p>
+                  </div>
                 </div>
 
               </div>
@@ -97,53 +125,42 @@ export default function ItemPage() {
               <h3>Utilities & Features</h3>
               <div className="box">
                 <div className="info">
-                  <h4>Appliances</h4>
+                  <h4>Utilities</h4>
                   <ul>
-                    <li>Dishwasher</li>
-                    <li>Garbage Disposal</li>
-                    <li>Refrigerator </li>
-                    <li>Microwave</li>
+                    <li><b>Heating Type:</b> {data.heating}</li>
+                    <li><b>Cooling Type:</b> {data.cooling}</li>
+                    <li><b>Water Source:</b> {data.waterSource}</li>
+                    <li><b>Sewer Type:</b> {data.sewer}</li>
+                    <li><b>Other Utilities:</b> {data.otherUtilities}</li>
                   </ul>
                 </div>
                 <div className="info">
-                  <h4>Floors</h4>
+                  <h4>Features</h4>
                   <ul>
-                    <li>Carpet </li>
-                    <li>Laminate </li>
-                    <li>Softwood  </li>
-                    <li>Linoleum-Vinyl</li>
-                  </ul>
-                </div>
-                <div className="info">
-                  <h4>Others</h4>
-                  <ul>
-                    <li>Security Systems </li>
-                    <li>Patio/Balconyl </li>
-                    <li>Central Heating  </li>
-                    <li>Spa/Jacuzzi</li>
-                  </ul>
-                </div>
-                <div className="info">
-                  <h4>Parking</h4>
-                  <ul>
-                    <li>Carport </li>
-                    <li>Garage Detached </li>
-                    <li>Garage Attached  </li>
-                    <li>On Street</li>
-                  </ul>
-                </div>
-                <div className="info">
-                  <h4>Rooms</h4>
-                  <ul>
-                    <li>Breakfast Nook </li>
-                    <li>Recreation Room </li>
-                    <li>Solarium-Atrium  </li>
-                    <li>Laundry Room</li>
+                    <li><b>Garage:</b> {data.garage}</li>
+                    {data.garage === "yes" && <li><b>Garage:</b> {data["garage-specify"]}</li>}
+                    <li><b>Basement:</b> {data.basement} </li>
+                    <li><b>Outdoor Features:</b> {data.outdoorFeatures}</li>
+                    <li><b>Additional Features:</b> {data.additionalFeatures}</li>
                   </ul>
                 </div>
               </div>
             </div>
 
+            <div className="detail-box">
+              <h3>Photos and Media Release:</h3>
+              <div className="box">
+                <div className="data-box">
+                  <p><b>I grant permission for the use of images taken of the property.:</b> {data.listingCheckbox}</p>
+                </div>
+                <div className="data-box">
+                  <p><b>Media Release Signature: </b>{data.mediaRelease}</p>
+                </div>
+                <div className="data-box">
+                  <p><b>Date: </b>{data.mediaReleaseDate}</p>
+                </div>
+              </div>
+            </div>
             <div className="detail-box photos">
               <h3>Photos</h3>
               <div className="photos-wr">
@@ -175,6 +192,94 @@ export default function ItemPage() {
                   <img src="/images/placeholder-video.png" alt="" />
                 </div>
               </div>
+            </div>
+
+            <div className="detail-box">
+              <h3>Property Description :</h3>
+              <div className="box">
+                <p>{data.description}</p>
+              </div>
+            </div>
+            <div className="detail-box">
+              <h3>Asking Price :</h3>
+              <div className="box">
+                <p>{data.askingPrice}</p>
+              </div>
+            </div>
+            <div className="detail-box">
+              <h3>Contact Information :</h3>
+              <div className="box">
+                <p><b>Preferred Contact Method:</b> {data.preferredContact}</p>
+                <p><b>Contact Hours:</b> {data.contactHours}</p>
+              </div>
+            </div>
+
+            <div className="detail-box">
+              <h3>Agreements:</h3>
+              <div className="box">
+                <h4>Agency Representation Agreement</h4>
+                <div className="data-box">
+                  <p><b>I confirm that I have signed this document.:</b> {data.agencyCheckbox}</p>
+                </div>
+                <div className="data-box">
+                  <p><b>Signature:</b> {data.agencySignature}</p>
+                </div>
+                <div className="data-box">
+                  <p><b>Date:</b> {data.agencyDate}</p>
+                </div>
+                <div className="data-box">
+                  <p>Agreement image/docx: <b>{data.agencyAgreement[0]}</b></p>
+                </div>
+              </div>
+
+              <div className="box">
+                <h4>Fair Housing Disclosure Form</h4>
+                <div className="data-box">
+                  <p><b>I confirm that I have signed this document.:</b> {data.fairHousingCheckbox}</p>
+                </div>
+                <div className="data-box">
+                  <p><b>Signature:</b> {data.fairHousingSignature}</p>
+                </div>
+                <div className="data-box">
+                  <p><b>Date:</b> {data.fairHousingDate}</p>
+                </div>
+                <div className="data-box">
+                  <p>Agreement image/docx: <b>{data.fairHousing[0]}</b></p>
+                </div>
+              </div>
+
+              <div className="box">
+                <h4>Property Disclosure Statement</h4>
+                <div className="data-box">
+                  <p><b>I confirm that I have signed this document.:</b> {data.propertyCheckbox}</p>
+                </div>
+                <div className="data-box">
+                  <p><b>Signature:</b> {data.propertySignature}</p>
+                </div>
+                <div className="data-box">
+                  <p><b>Date:</b> {data.propertyDate}</p>
+                </div>
+                <div className="data-box">
+                  <p>Agreement image/docx: <b>{data.propertyDisclosure[0]}</b></p>
+                </div>
+              </div>
+
+              <div className="box">
+                <h4>Listing Agreement</h4>
+                <div className="data-box">
+                  <p><b>I confirm that I have signed this document.:</b> {data.listingAgreementCheck}</p>
+                </div>
+                <div className="data-box">
+                  <p><b>Signature:</b> {data.listingSignature}</p>
+                </div>
+                <div className="data-box">
+                  <p><b>Date:</b> {data.listingDate}</p>
+                </div>
+                <div className="data-box">
+                  <p>Agreement image/docx: <b>{data.listingAgreement[0]}</b></p>
+                </div>
+              </div>
+
             </div>
 
 
