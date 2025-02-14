@@ -147,7 +147,7 @@ export default function ItemPage() {
               </div>
             </div>
 
-            <div className="detail-box">
+            <div className="detail-box media_release">
               <h3>Photos and Media Release:</h3>
               <div className="box">
                 <div className="data-box">
@@ -206,7 +206,7 @@ export default function ItemPage() {
                 <p>{data.askingPrice}</p>
               </div>
             </div>
-            <div className="detail-box">
+            <div className="detail-box contact_information">
               <h3>Contact Information :</h3>
               <div className="box">
                 <p><b>Preferred Contact Method:</b> {data.preferredContact}</p>
@@ -214,7 +214,7 @@ export default function ItemPage() {
               </div>
             </div>
 
-            <div className="detail-box">
+            <div className="detail-box agreements_block">
               <h3>Agreements:</h3>
               <div className="box">
                 <h4>Agency Representation Agreement</h4>
@@ -228,7 +228,7 @@ export default function ItemPage() {
                   <p><b>Date:</b> {data.agencyDate}</p>
                 </div>
                 <div className="data-box">
-                  <p>Agreement image/docx: <b>{data.agencyAgreement[0]}</b></p>
+                  <p><b>Agreement image/docx:</b> {data.agencyAgreement[0]}</p>
                 </div>
               </div>
 
@@ -244,7 +244,7 @@ export default function ItemPage() {
                   <p><b>Date:</b> {data.fairHousingDate}</p>
                 </div>
                 <div className="data-box">
-                  <p>Agreement image/docx: <b>{data.fairHousing[0]}</b></p>
+                  <p><b>Agreement image/docx:</b> {data.fairHousing[0]}</p>
                 </div>
               </div>
 
@@ -260,7 +260,7 @@ export default function ItemPage() {
                   <p><b>Date:</b> {data.propertyDate}</p>
                 </div>
                 <div className="data-box">
-                  <p>Agreement image/docx: <b>{data.propertyDisclosure[0]}</b></p>
+                  <p><b>Agreement image/docx:</b> {data.propertyDisclosure[0]}</p>
                 </div>
               </div>
 
@@ -276,7 +276,7 @@ export default function ItemPage() {
                   <p><b>Date:</b> {data.listingDate}</p>
                 </div>
                 <div className="data-box">
-                  <p>Agreement image/docx: <b>{data.listingAgreement[0]}</b></p>
+                  <p><b>Agreement image/docx:</b> {data.listingAgreement[0]}</p>
                 </div>
               </div>
 
