@@ -1,9 +1,17 @@
 import { TitleBar } from "@shopify/app-bridge-react";
 import { json } from "@remix-run/node";
 import { useEffect, useState } from "react";
-import { Link } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
+import { totalUserCount } from "../entry.server";
+
+export async function loader() {
+  const userCount = await totalUserCount();
+  return json({ userCount });
+}
+
 
 export default function ListingPage() {
+  const { userCount } = useLoaderData();
   // const { connected, message } = useLoaderData();
   const [sampleData, setSampleData] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -83,6 +91,7 @@ export default function ListingPage() {
 
   return (
     <>
+    <p>Total Unique Users: {userCount}</p>
            <div class="dashboard">
 	
     {/* <div class="sidebar">
