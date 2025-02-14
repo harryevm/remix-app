@@ -151,7 +151,7 @@ export default function ItemPage() {
               <h3>Photos and Media Release:</h3>
               <div className="box">
                 <div className="data-box">
-                  <p><b>I grant permission for the use of images taken of the property.:</b> {data.listingCheckbox}</p>
+                  <p><b>I grant permission for the use of images taken of the property.:</b> {data.listingCheckbox ? 'Yes' : 'No'}</p>
                 </div>
                 <div className="data-box">
                   <p><b>Media Release Signature: </b>{data.mediaRelease}</p>
@@ -219,7 +219,7 @@ export default function ItemPage() {
               <div className="box">
                 <h4>1. Agency Representation Agreement</h4>
                 <div className="data-box">
-                  <p><b>I confirm that I have signed this document.:</b> {data.agencyCheckbox}</p>
+                  <p><b>I confirm that I have signed this document.:</b> {data.agencyCheckbox ? 'Yes' : 'No'}</p>
                 </div>
                 <div className="data-box">
                   <p><b>Signature:</b> {data.agencySignature}</p>
@@ -235,7 +235,7 @@ export default function ItemPage() {
               <div className="box">
                 <h4>2. Fair Housing Disclosure Form</h4>
                 <div className="data-box">
-                  <p><b>I confirm that I have signed this document.:</b> {data.fairHousingCheckbox}</p>
+                  <p><b>I confirm that I have signed this document.:</b> {data.fairHousingCheckbox ? 'Yes' : 'No'}</p>
                 </div>
                 <div className="data-box">
                   <p><b>Signature:</b> {data.fairHousingSignature}</p>
@@ -251,7 +251,7 @@ export default function ItemPage() {
               <div className="box">
                 <h4>3. Property Disclosure Statement</h4>
                 <div className="data-box">
-                  <p><b>I confirm that I have signed this document.:</b> {data.propertyCheckbox}</p>
+                  <p><b>I confirm that I have signed this document.:</b> {data.propertyCheckbox ? 'Yes' : 'No'}</p>
                 </div>
                 <div className="data-box">
                   <p><b>Signature:</b> {data.propertySignature}</p>
@@ -267,7 +267,7 @@ export default function ItemPage() {
               <div className="box">
                 <h4>4. Listing Agreement</h4>
                 <div className="data-box">
-                  <p><b>I confirm that I have signed this document.:</b> {data.listingAgreementCheck}</p>
+                  <p><b>I confirm that I have signed this document.:</b> {data.listingAgreementCheck ? 'Yes' : 'No'}</p>
                 </div>
                 <div className="data-box">
                   <p><b>Signature:</b> {data.listingSignature}</p>
