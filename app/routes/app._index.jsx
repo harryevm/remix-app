@@ -1,51 +1,29 @@
 import { useEffect, useState } from "react";
-import { Link } from "@remix-run/react";
+import { Link, useLoaderData } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
-
+import { totalPropertyCount, totalUserCount } from "../entry.server";
 
 export const loader = async ({ request }) => {
-  await authenticate.admin(request);
+  const admin = await authenticate.admin(request);
 
-  return null;
+  if (!admin) {
+    throw new Response("Unauthorized", { status: 401 });
+  }
+
+  const [userCount, propertyCount] = await Promise.all([
+    totalUserCount(),
+    totalPropertyCount(),
+  ]);
+
+  return json({ admin, userCount, propertyCount });
 };
+
 
 
 
 export default function Index() {
 
-  const [count, setCount] = useState(0);
-  const [userCount, setUserCount] = useState(0);
-  useEffect(() => {
-    // Call the API to get the property count
-    const fetchPropertyCount = async () => {
-      try {
-        const response = await fetch('https://remix-app-88og.onrender.com/api/getCount');
-        const data = await response.json();
-        setCount(data);
-      } catch (err) {
-        console.error('Error fetching property count:', err);
-        setError('Failed to fetch property count');
-      }
-    };
-
-    fetchPropertyCount();
-  }, []);
-
-  useEffect(() => {
-    // Call the API to get the property count
-    const fetchUserCount = async () => {
-      try {
-        const response = await fetch('https://remix-app-88og.onrender.com/api/getUsers');
-        const data = await response.json();
-        setUserCount(data);
-      } catch (err) {
-        console.error('Error fetching property count:', err);
-        setError('Failed to fetch property count');
-      }
-    };
-
-    fetchUserCount();
-  }, []);
+  const { userCount, propertyCount } = useLoaderData();
 
   return (
     <>
@@ -65,7 +43,7 @@ export default function Index() {
                                 <div className="icon"><svg xmlns="http://www.w3.org/2000/svg" width="30" height="30" viewBox="0 0 30 30" fill="none"> <path d="M15.0018 1.875C15.5196 1.875 15.9393 2.29474 15.9393 2.8125V3.75H17.8125C19.3658 3.75 20.625 5.00919 20.625 6.5625V11.25H23.4375C24.9907 11.25 26.25 12.5092 26.25 14.0625V23.4375C26.25 24.9907 24.9907 26.25 23.4375 26.25H10.3125C10.3119 26.25 10.3131 26.25 10.3125 26.25H6.5625C5.00919 26.25 3.75 24.9907 3.75 23.4375V14.6126C3.75 13.6596 4.23268 12.7713 5.03237 12.2528L8.78237 9.82131C8.97469 9.6966 9.17334 9.59891 9.375 9.52641V6.5625C9.375 5.00919 10.6342 3.75 12.1875 3.75H14.0643V2.8125C14.0643 2.29474 14.4841 1.875 15.0018 1.875ZM11.25 9.52869C12.3039 9.90504 13.125 10.8957 13.125 12.1811V24.375H16.875V14.0625C16.875 12.8379 17.6576 11.7961 18.75 11.41V6.5625C18.75 6.04474 18.3303 5.625 17.8125 5.625H12.1875C11.6697 5.625 11.25 6.04474 11.25 6.5625V9.52869ZM19.6875 13.125C19.1698 13.125 18.75 13.5447 18.75 14.0625V24.375H23.4375C23.9552 24.375 24.375 23.9552 24.375 23.4375V14.0625C24.375 13.5447 23.9552 13.125 23.4375 13.125H19.6875ZM9.80246 11.3945L6.05246 13.826C5.78589 13.9989 5.625 14.295 5.625 14.6126V23.4375C5.625 23.9552 6.04474 24.375 6.5625 24.375H11.25V12.1811C11.25 11.4378 10.4262 10.9901 9.80246 11.3945Z" fill="white"/> </svg></div>
                                 <div className="info">
                                     <span>Total Properties</span>
-                                    <h5>{count}</h5>
+                                    <h5>{propertyCount}</h5>
                                 </div>
                             </div>
                             {/* <div className="range">
