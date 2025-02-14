@@ -4,16 +4,12 @@ import { fetchMongoDataById } from '../entry.server';
 
 
 export const loader = async ({ params }) => {
-  const { userId } = params; // `params` already contains userId from the URL
-
-  console.log('Fetching user with ID:', userId);
+  const { userId } = params; 
 
   const data = await fetchMongoDataById(userId); // Use the userId here
   
   if (!data) {
     throw new Response('Item not found', { status: 404 });
-  }else{
-    console.log('Error Hai')
   }
 
   return { data };
@@ -21,7 +17,6 @@ export const loader = async ({ params }) => {
 
 export default function ItemPage() {
   const { data } = useLoaderData(); 
-console.log(data)
   return (
     <>
       <div className="dashboard">
@@ -44,7 +39,7 @@ console.log(data)
               <h3>Location</h3>
               <div className="box">
                 <div className="form-control">
-                  <label>Address Line1--{data['property-type']}</label>
+                  <label>Address Line1</label>
                   <input type="text" name="address1" value={data.address} />
                 </div>
                 <div className="form-control">
@@ -152,21 +147,11 @@ console.log(data)
             <div className="detail-box photos">
               <h3>Photos</h3>
               <div className="photos-wr">
-                <div className="img-box">
-                  <img src="/images/placeholder-img.png" alt="" />
+              {data.propertyPhotos && data.propertyPhotos.map((item, index) => (
+                <div key={index} className="img-box">
+                  <img src={item} alt="property photo" />
                 </div>
-                <div className="img-box">
-                  <img src="/images/placeholder-img.png" alt="" />
-                </div>
-                <div className="img-box">
-                  <img src="/images/placeholder-img.png" alt="" />
-                </div>
-                <div className="img-box">
-                  <img src="/images/placeholder-img.png" alt="" />
-                </div>
-                <div className="img-box">
-                  <img src="/images/placeholder-img.png" alt="" />
-                </div>
+              ))}
               </div>
             </div>
 
