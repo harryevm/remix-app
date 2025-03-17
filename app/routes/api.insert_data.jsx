@@ -193,13 +193,22 @@ export async function action({ request }) {
         
             doc.fontSize(18).text("User Submission Data", { align: "center" });
             doc.moveDown();
-            for (const key in formFields) {
-                doc.fontSize(12).text(`${key}: ${formFields[key]}`);
+            
+            for (const [key, value] of Object.entries(formFields)) {
+              if (value) {
+                  doc.fontSize(12).text(`${key}: ${value}`);
+                  doc.moveDown(0.5);
+              }
             }
-            doc.moveDown();
+
+            // Add uploaded image URLs
             if (Object.keys(imageUrls).length > 0) {
-                doc.fontSize(12).text("Uploaded Images:");
-                Object.values(imageUrls).flat().forEach(url => doc.text(url));
+                doc.fontSize(14).text("Uploaded Images:", { underline: true });
+                Object.entries(imageUrls).forEach(([key, urls]) => {
+                    doc.fontSize(12).text(`${key}:`);
+                    urls.forEach(url => doc.text(url, { link: url, underline: true }));
+                    doc.moveDown();
+                });
             }
             doc.end();
         });
