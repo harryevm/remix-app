@@ -70,12 +70,20 @@ cloudinary.config({
 });
 
 // Nodemailer transporter setup (Replace with your SMTP settings)
+// const transporter = nodemailer.createTransport({
+//   host: "sandbox.smtp.mailtrap.io",
+//   port: 2525,
+//   auth: {
+//       user: "52d65f12ff66c5",
+//       pass: "3287542646728a"
+//   }
+// });
+
 const transporter = nodemailer.createTransport({
-  host: "sandbox.smtp.mailtrap.io",
-  port: 2525,
+  service: 'gmail',
   auth: {
-      user: "52d65f12ff66c5",
-      pass: "3287542646728a"
+      user: 'harish@expertvillagemedia.com',  // Replace with your email
+      pass: 'xlrk sxlx vnxv ushd'   // Use an App Password if using Gmail
   }
 });
 
