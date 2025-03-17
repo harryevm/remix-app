@@ -177,7 +177,7 @@ export async function action({ request }) {
           const insertedResult = await insertMongoData(mongoData);
 
           // Generate a PDF
-          // const pdfFilename = `${insertedResult.insertedId}.pdf`;
+          const pdfFilename = `${insertedResult.insertedId}.pdf`;
           // const pdfPath = path.join(process.cwd(), "public", "pdfs", pdfFilename);
 
           // if (!fs.existsSync(path.join(process.cwd(), "public", "pdfs"))) {
@@ -207,7 +207,7 @@ export async function action({ request }) {
         // Upload the generated PDF buffer to Cloudinary
         const pdfUploadResult = await new Promise((resolve, reject) => {
             const uploadStream = cloudinary.v2.uploader.upload_stream(
-                { folder: "PDFs", resource_type: "raw" },
+                { folder: "PDFs", resource_type: "raw",public_id: pdfFilename.replace(".pdf", ""),format: "pdf" },
                 (error, result) => {
                     if (error) reject(error);
                     else resolve(result.secure_url);
