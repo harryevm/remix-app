@@ -210,7 +210,7 @@ export async function action({ request }) {
               text: "Thank you for submitting the form. Attached is your PDF.",
               attachments: [
                   {
-                      filename: pdfFileName,
+                      filename: pdfFilename,
                       path: pdfFilePath
                   }
               ]
