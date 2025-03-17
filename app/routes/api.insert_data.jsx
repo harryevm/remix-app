@@ -222,34 +222,36 @@ export async function action({ request }) {
         });
         
         // Upload the generated PDF buffer to Cloudinary
-        const pdfUploadResult = await new Promise((resolve, reject) => {
-            const uploadStream = cloudinary.v2.uploader.upload_stream(
-                { folder: "PDFs", resource_type: "raw",public_id: pdfFilename.replace(".pdf", ""),format: "pdf" },
-                (error, result) => {
-                    if (error) reject(error);
-                    else resolve(result.secure_url);
-                }
-            );
-            Readable.from(pdfBuffer).pipe(uploadStream);
-        });
+        // const pdfUploadResult = await new Promise((resolve, reject) => {
+        //     const uploadStream = cloudinary.v2.uploader.upload_stream(
+        //         { folder: "PDFs", resource_type: "raw",public_id: pdfFilename.replace(".pdf", ""),format: "pdf" },
+        //         (error, result) => {
+        //             if (error) reject(error);
+        //             else resolve(result.secure_url);
+        //         }
+        //     );
+        //     Readable.from(pdfBuffer).pipe(uploadStream);
+        // });
 
             // 📧 Send Email with PDF
             const mailOptions = {
               from: "test@example.com",
-              to: `${formFields.email}, test@gmail.com`, // Send to user & test email
+              to: `${formFields.email}`, // Send to user & test email
               subject: "Your Form Submission",
               text: "Thank you for submitting the form. Attached is your PDF.",
               attachments: [
-                  {
-                      filename: pdfFilename
-                  }
-              ]
+                {
+                    filename: pdfFilename,
+                    content: pdfBuffer, // Attach the actual buffer
+                    contentType: "application/pdf"
+                }
+            ]
           };
 
             await transporter.sendMail(mailOptions);
             
 
-          return json({ success: true, insertedId: mongoData._id, imageUrls,  pdfUrl: pdfUploadResult  }, { headers });
+          return json({ success: true, insertedId: mongoData._id, imageUrls  }, { headers });
 
       } catch (error) {
           console.error('Error inserting data:', error);
