@@ -44,6 +44,8 @@
     "isbot": "^5.1.0",
     "mongodb": "^6.12.0",
     "mongoose": "^8.9.7",
+    "nodemailer": "^6.10.0",
+    "pdfkit": "^0.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "remix": "^2.15.3",

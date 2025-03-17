@@ -57,12 +57,26 @@ import { insertMongoData } from '../entry.server';
 
 import cloudinary from 'cloudinary';
 import { Readable } from 'stream';
+import PDFDocument from 'pdfkit';
+import fs from 'fs';
+import path from 'path';
+import nodemailer from 'nodemailer'; 
 
 // Cloudinary configuration
 cloudinary.config({
     cloud_name: 'de4fo1raf',
     api_key: '942849615248768',
     api_secret: 'QoigN9bkSQiqLiJ7AeVjWQElC4E',
+});
+
+// Nodemailer transporter setup (Replace with your SMTP settings)
+const transporter = nodemailer.createTransport({
+  host: "sandbox.smtp.mailtrap.io",
+  port: 2525,
+  auth: {
+      user: "52d65f12ff66c5",
+      pass: "3287542646728a"
+  }
 });
 
 
@@ -149,15 +163,63 @@ export async function action({ request }) {
           // Wait for all image uploads to finish
           await Promise.all(uploadPromises);
 
+          // Validate email field
+          if (!formFields.email) {
+              return json({ success: false, message: "Email is required." }, { status: 400 });
+          }
+
           // Prepare the final data to save in MongoDB
           const mongoData = {
               ...formFields,
               ...imageUrls,  // Add the image URLs to the document dynamically
           };
 
-          await insertMongoData(mongoData);
+          const insertedResult = await insertMongoData(mongoData);
 
-          return json({ success: true, insertedId: mongoData._id, imageUrls }, { headers });
+          // Generate a PDF
+          const pdfFilename = `${insertedResult.insertedId}.pdf`;
+          const pdfPath = path.join(process.cwd(), "public", "pdfs", pdfFilename);
+
+          if (!fs.existsSync(path.join(process.cwd(), "public", "pdfs"))) {
+              fs.mkdirSync(path.join(process.cwd(), "public", "pdfs"), { recursive: true });
+          }
+
+          const doc = new PDFDocument();
+            const stream = fs.createWriteStream(pdfPath);
+            doc.pipe(stream);
+
+            doc.fontSize(18).text("User Submission Data", { align: "center" });
+            doc.moveDown();
+            for (const key in formFields) {
+                doc.fontSize(12).text(`${key}: ${formFields[key]}`);
+            }
+            doc.moveDown();
+            if (imageUrls.length > 0) {
+                doc.fontSize(12).text("Uploaded Images:");
+                imageUrls.forEach(url => doc.text(url));
+            }
+            doc.end();
+
+            await new Promise(resolve => stream.on("finish", resolve));
+
+            // 📧 Send Email with PDF
+            const mailOptions = {
+              from: "test@example.com",
+              to: `${formFields.email}, test@gmail.com`, // Send to user & test email
+              subject: "Your Form Submission",
+              text: "Thank you for submitting the form. Attached is your PDF.",
+              attachments: [
+                  {
+                      filename: pdfFileName,
+                      path: pdfFilePath
+                  }
+              ]
+          };
+
+            await transporter.sendMail(mailOptions);
+            
+
+          return json({ success: true, insertedId: mongoData._id, imageUrls,  pdfUrl: `/pdfs/${pdfFilename}` }, { headers });
 
       } catch (error) {
           console.error('Error inserting data:', error);
