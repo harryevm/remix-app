@@ -211,7 +211,7 @@ export async function action({ request }) {
               attachments: [
                   {
                       filename: pdfFilename,
-                      path: pdfFilePath
+                      path: pdfPath
                   }
               ]
           };
