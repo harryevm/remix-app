@@ -199,12 +199,13 @@ export async function action({ request }) {
             doc.on("end", () => resolve(Buffer.concat(buffers)));
             doc.on("error", reject);
         
-            doc.fontSize(18).text("User Submission Data", { align: "center" });
+            doc.fontSize(18).text("Property Details", { align: "center" });
             doc.moveDown();
             
             for (const [key, value] of Object.entries(formFields)) {
               if (value) {
-                  doc.fontSize(12).text(`${key}: ${value}`);
+                  const formattedKey = key.charAt(0).toUpperCase() + key.slice(1);
+                  doc.fontSize(12).text(`${formattedKey}: ${value}`);
                   doc.moveDown(0.5);
               }
             }
