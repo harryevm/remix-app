@@ -177,30 +177,44 @@ export async function action({ request }) {
           const insertedResult = await insertMongoData(mongoData);
 
           // Generate a PDF
-          const pdfFilename = `${insertedResult.insertedId}.pdf`;
-          const pdfPath = path.join(process.cwd(), "public", "pdfs", pdfFilename);
+          // const pdfFilename = `${insertedResult.insertedId}.pdf`;
+          // const pdfPath = path.join(process.cwd(), "public", "pdfs", pdfFilename);
 
-          if (!fs.existsSync(path.join(process.cwd(), "public", "pdfs"))) {
-              fs.mkdirSync(path.join(process.cwd(), "public", "pdfs"), { recursive: true });
-          }
+          // if (!fs.existsSync(path.join(process.cwd(), "public", "pdfs"))) {
+          //     fs.mkdirSync(path.join(process.cwd(), "public", "pdfs"), { recursive: true });
+          // }
 
           const doc = new PDFDocument();
-            const stream = fs.createWriteStream(pdfPath);
-            doc.pipe(stream);
-
+          const pdfBuffer = await new Promise((resolve, reject) => {
+            const buffers = [];
+            doc.on("data", buffers.push.bind(buffers));
+            doc.on("end", () => resolve(Buffer.concat(buffers)));
+            doc.on("error", reject);
+        
             doc.fontSize(18).text("User Submission Data", { align: "center" });
             doc.moveDown();
             for (const key in formFields) {
                 doc.fontSize(12).text(`${key}: ${formFields[key]}`);
             }
             doc.moveDown();
-            if (imageUrls.length > 0) {
+            if (Object.keys(imageUrls).length > 0) {
                 doc.fontSize(12).text("Uploaded Images:");
-                imageUrls.forEach(url => doc.text(url));
+                Object.values(imageUrls).flat().forEach(url => doc.text(url));
             }
             doc.end();
-
-            await new Promise(resolve => stream.on("finish", resolve));
+        });
+        
+        // Upload the generated PDF buffer to Cloudinary
+        const pdfUploadResult = await new Promise((resolve, reject) => {
+            const uploadStream = cloudinary.v2.uploader.upload_stream(
+                { folder: "PDFs", resource_type: "raw" },
+                (error, result) => {
+                    if (error) reject(error);
+                    else resolve(result.secure_url);
+                }
+            );
+            Readable.from(pdfBuffer).pipe(uploadStream);
+        });
 
             // 📧 Send Email with PDF
             const mailOptions = {
@@ -219,7 +233,7 @@ export async function action({ request }) {
             await transporter.sendMail(mailOptions);
             
 
-          return json({ success: true, insertedId: mongoData._id, imageUrls,  pdfUrl: `/pdfs/${pdfFilename}` }, { headers });
+          return json({ success: true, insertedId: mongoData._id, imageUrls,  pdfUrl: pdfUploadResult  }, { headers });
 
       } catch (error) {
           console.error('Error inserting data:', error);
