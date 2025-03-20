@@ -27,7 +27,7 @@ export const loader = async ({ request }) => {
 export default function Index() {
 
   const { userCount, propertyCount, listingData } = useLoaderData();
-console.log(listingData)
+console.log(listingData);
   return (
     <>
       <div className="dashboard">
