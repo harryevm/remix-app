@@ -73,7 +73,7 @@ export async function fetchMongoData(limit = null) {
     const collection = db.collection('Trevor');
 
     // Example query, replace with actual data fetching logic
-    let query  = await collection.find({});
+    let query  = await collection.find({}).sort({ createdAt: -1 });
     if (limit) {
       query = query.limit(limit);
     }
@@ -113,6 +113,7 @@ export async function insertMongoData(data) {
     await client.connect();
     const db = client.db('Trevor');
     const collection = db.collection('Trevor');
+    data.createdAt = new Date();
     const result = await collection.insertOne(data);
     return result;
   } catch (error) {
