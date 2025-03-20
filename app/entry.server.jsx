@@ -113,7 +113,7 @@ export async function insertMongoData(data) {
     await client.connect();
     const db = client.db('Trevor');
     const collection = db.collection('Trevor');
-    data.createdAt = new Date();
+    data.createdAt = new Date(); 
     const result = await collection.insertOne(data);
     return result;
   } catch (error) {
