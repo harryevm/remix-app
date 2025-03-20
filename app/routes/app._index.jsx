@@ -1,19 +1,21 @@
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
-import { totalPropertyCount, totalUserCount } from "../entry.server";
+import { fetchMongoData, totalPropertyCount, totalUserCount } from "../entry.server";
+
 
 export const loader = async ({ request }) => {
   const admin = await authenticate.admin(request);
-  const listingData = await fetchMongoData(2);
+  
 
   if (!admin) {
     throw new Response("Unauthorized", { status: 401 });
   }
 
-  const [userCount, propertyCount] = await Promise.all([
+  const [userCount, propertyCount, listingData] = await Promise.all([
     totalUserCount(),
     totalPropertyCount(),
+    fetchMongoData(2)
   ]);
 
   return json({ admin, userCount, propertyCount, listingData });
@@ -25,7 +27,7 @@ export const loader = async ({ request }) => {
 export default function Index() {
 
   const { userCount, propertyCount, listingData } = useLoaderData();
-
+console.log(listingData)
   return (
     <>
       <div className="dashboard">
