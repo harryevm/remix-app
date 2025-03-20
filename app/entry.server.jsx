@@ -62,7 +62,7 @@ export default async function handleRequest(
 }
 
 
-export async function fetchMongoData() {
+export async function fetchMongoData(limit = null) {
   try {
     // Reuse client if already connected
     await client.connect();
@@ -73,7 +73,11 @@ export async function fetchMongoData() {
     const collection = db.collection('Trevor');
 
     // Example query, replace with actual data fetching logic
-    const findResult = await collection.find({}).toArray();
+    let query  = await collection.find({});
+    if (limit) {
+      query = query.limit(limit);
+    }
+    const findResult = await query.toArray();
 
 
     return findResult;
