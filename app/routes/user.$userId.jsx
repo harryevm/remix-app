@@ -1,5 +1,5 @@
 import { Link, useLoaderData } from '@remix-run/react';
-import { fetchMongoDataById } from '../../services/mongoData.server';
+import { fetchMongoDataById } from '../entry.server';
 
 
 
