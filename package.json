@@ -23,6 +23,7 @@
     "node": "^18.20 || ^20.10 || >=21.0.0"
   },
   "dependencies": {
+    "@prisma/client": "^5.22.0",
     "@remix-run/dev": "2.15.3",
     "@remix-run/fs-routes": "2.15.3",
     "@remix-run/node": "2.15.3",
@@ -35,7 +36,7 @@
     "@shopify/shopify-app-session-storage": "^3.0.11",
     "@shopify/shopify-app-session-storage-memory": "^4.0.11",
     "@shopify/shopify-app-session-storage-mongodb": "^4.0.12",
-    "@shopify/shopify-app-session-storage-prisma": "^5.1.5",
+    "@shopify/shopify-app-session-storage-prisma": "^5.2.3",
     "cloudinary": "^2.5.1",
     "connect-mongodb-session": "^5.0.0",
     "cors": "^2.8.5",
