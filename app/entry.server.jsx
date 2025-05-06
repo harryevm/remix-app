@@ -6,10 +6,11 @@ import { isbot } from "isbot";
 import { addDocumentResponseHeaders } from "./shopify.server";
 
 
-import { config as configDotenv } from "dotenv";
-import { fetchMongoData, fetchMongoDataById,insertMongoData,totalPropertyCount,totalUserCount } from "../services/mongoData.server.js";
 
+
+import { config as configDotenv } from "dotenv";
 configDotenv();
+
 export const streamTimeout = 5000;
 
 export default async function handleRequest(
