@@ -70,3 +70,13 @@ model shopify_sessions {
   state       String
 }
 
+model Session {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  accessToken String
+  id_         String  @map("id")
+  isOnline    Boolean
+  scope       String
+  shop        String
+  state       String
+}
+
