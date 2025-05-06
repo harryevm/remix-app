@@ -5,7 +5,13 @@ import { createReadableStreamFromReadable } from "@remix-run/node";
 import { isbot } from "isbot";
 import { addDocumentResponseHeaders } from "./shopify.server";
 import { MongoClient, ObjectId } from "mongodb";
+import { config as configDotenv } from "dotenv";
+configDotenv();
 
+console.log('Hello');
+console.log(process.env.MONGO_URL);
+console.log("SHOPIFY_API_KEY:", process.env.SHOPIFY_API_KEY);
+console.log('Hello');
 
 const url =
   "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
@@ -14,6 +20,8 @@ const client = new MongoClient(url);
 
 // Database Name
 const dbName = 'Trevor';
+
+
 
 
 export const streamTimeout = 5000;
