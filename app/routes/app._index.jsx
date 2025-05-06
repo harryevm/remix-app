@@ -3,6 +3,11 @@ import { Link, useLoaderData } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
 import { fetchMongoData, totalPropertyCount, totalUserCount } from "../entry.server";
 
+console.log('Hello');
+console.log(process.env.MONGO_URL);
+console.log("SHOPIFY_API_KEY:", process.env.SHOPIFY_API_KEY);
+console.log('Hello');
+
 
 export const loader = async ({ request }) => {
   const admin = await authenticate.admin(request);

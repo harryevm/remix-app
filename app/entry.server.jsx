@@ -8,11 +8,6 @@ import { MongoClient, ObjectId } from "mongodb";
 import { config as configDotenv } from "dotenv";
 configDotenv();
 
-console.log('Hello');
-console.log(process.env.MONGO_URL);
-console.log("SHOPIFY_API_KEY:", process.env.SHOPIFY_API_KEY);
-console.log('Hello');
-
 const url =
   "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
 
