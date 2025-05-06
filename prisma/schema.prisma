@@ -1,32 +1,71 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
 
-// Note that some adapters may set a maximum length for the String type by default, please ensure your strings are long
-// enough when changing adapters.
-// See https://www.prisma.io/docs/orm/reference/prisma-schema-reference#string for more information
 datasource db {
   provider = "mongodb"
-  url =       env("MONGO_URL")
+  url      = env("MONGO_URL")
 }
 
-model Session {
-  id    String  @id @default(auto()) @map("_id") @db.ObjectId
-  shop          String
-  state         String
-  isOnline      Boolean   @default(false)
-  scope         String?
-  expires       DateTime?
-  accessToken   String
-  userId        BigInt?
-  firstName     String?
-  lastName      String?
-  email         String?
-  accountOwner  Boolean   @default(false)
-  locale        String?
-  collaborator  Boolean?  @default(false)
-  emailVerified Boolean?  @default(false)
+model Trevor {
+  id                   String    @id @default(auto()) @map("_id") @db.ObjectId
+  additionalFeatures   String
+  address              String
+  address2             String
+  agencyAgreement      String[]
+  agencyCheckbox       String
+  agencyDate           String
+  agencySignature      String
+  askingPrice          String
+  basement             String
+  bathrooms            String
+  bedrooms             String
+  city                 String
+  contactHours         String
+  cooling              String
+  createdAt            DateTime? @db.Date
+  description          String
+  email                String
+  fairHousing          String[]
+  fairHousingCheckbox  String
+  fairHousingDate      String
+  fairHousingSignature String
+  garage               String
+  garage_specify       String    @map("garage-specify")
+  heating              String
+  home_size            String    @map("home-size")
+  listingAgreement     String[]
+  listingCheckbox      String
+  listingDate          String
+  listingSignature     String
+  lot_size             String    @map("lot-size")
+  lot_unit             String    @map("lot-unit")
+  mediaRelease         String
+  mediaReleaseDate     String
+  name                 String
+  neighborhood         String
+  otherUtilities       String
+  outdoorFeatures      String
+  phone                String
+  preferredContact     String
+  property_type        String    @map("property-type")
+  propertyCheckbox     String
+  propertyDate         String
+  propertyDisclosure   String[]
+  propertyPhotos       String[]
+  propertySignature    String
+  sewer                String
+  waterSource          String
+  year_built           String    @map("year-built")
+  zip                  String
+}
+
+model shopify_sessions {
+  id          String  @id @default(auto()) @map("_id") @db.ObjectId
+  accessToken String
+  id_         String  @map("id")
+  isOnline    Boolean
+  scope       String
+  shop        String
+  state       String
 }

@@ -1,7 +1,9 @@
 import { json } from "@remix-run/node";
 import { Link, useLoaderData } from "@remix-run/react";
 import { authenticate } from "../shopify.server";
-import { fetchMongoData, totalPropertyCount, totalUserCount } from "../entry.server";
+import { fetchMongoData, totalPropertyCount, totalUserCount } from "../../services/mongoData.server";
+// import { fetchMongoData, totalPropertyCount, totalUserCount } from "../entry.server";
+
 
 
 
