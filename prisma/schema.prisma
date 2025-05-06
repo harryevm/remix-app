@@ -60,7 +60,7 @@ model Trevor {
   zip                  String
 }
 
-model Session {
+model shopify_sessions {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
   accessToken String
   id_         String  @map("id")
@@ -69,3 +69,4 @@ model Session {
   shop        String
   state       String
 }
+
