@@ -35,7 +35,6 @@ export default function ItemPage() {
             <Link to="/app/listings">Back To Listings</Link>
           </div>
           <div className="detials_wrapper">
-            <p><b>Created Date: </b> {data.createdAt}</p>
             <div className="detail-box">
               <h3>Location</h3>
               <div className="box">
