@@ -30,10 +30,9 @@ export async function totalPropertyCount() {
 }
 
 export async function totalUserCount() {
-  const grouped = await prisma.trevor.groupBy({
-    by: ["email"],
-    _count: true,
+  const grouped = await prisma.trevor.findMany({
+    select: { email: true },
   });
-
-  return grouped.length;
+  const uniqueEmails = new Set(grouped.map(r => r.email));
+  return uniqueEmails.size;
 }
