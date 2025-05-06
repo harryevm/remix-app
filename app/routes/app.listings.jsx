@@ -2,7 +2,7 @@ import { TitleBar } from "@shopify/app-bridge-react";
 import { json } from "@remix-run/node";
 import { useEffect, useState } from "react";
 import { Link, useLoaderData } from "@remix-run/react";
-import { fetchMongoData } from "../entry.server";
+import { fetchMongoData } from "../../services/mongoData.server";
 
 export async function loader() {
   const listingData = await fetchMongoData();
