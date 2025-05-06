@@ -7,69 +7,6 @@ datasource db {
   url      = env("MONGO_URL")
 }
 
-model Trevor {
-  id                   String    @id @default(auto()) @map("_id") @db.ObjectId
-  additionalFeatures   String
-  address              String
-  address2             String
-  agencyAgreement      String[]
-  agencyCheckbox       String
-  agencyDate           String
-  agencySignature      String
-  askingPrice          String
-  basement             String
-  bathrooms            String
-  bedrooms             String
-  city                 String
-  contactHours         String
-  cooling              String
-  createdAt            DateTime? @db.Date
-  description          String
-  email                String
-  fairHousing          String[]
-  fairHousingCheckbox  String
-  fairHousingDate      String
-  fairHousingSignature String
-  garage               String
-  garage_specify       String    @map("garage-specify")
-  heating              String
-  home_size            String    @map("home-size")
-  listingAgreement     String[]
-  listingCheckbox      String
-  listingDate          String
-  listingSignature     String
-  lot_size             String    @map("lot-size")
-  lot_unit             String    @map("lot-unit")
-  mediaRelease         String
-  mediaReleaseDate     String
-  name                 String
-  neighborhood         String
-  otherUtilities       String
-  outdoorFeatures      String
-  phone                String
-  preferredContact     String
-  property_type        String    @map("property-type")
-  propertyCheckbox     String
-  propertyDate         String
-  propertyDisclosure   String[]
-  propertyPhotos       String[]
-  propertySignature    String
-  sewer                String
-  waterSource          String
-  year_built           String    @map("year-built")
-  zip                  String
-}
-
-model shopify_sessions {
-  id          String  @id @default(auto()) @map("_id") @db.ObjectId
-  accessToken String
-  id_         String  @map("id")
-  isOnline    Boolean
-  scope       String
-  shop        String
-  state       String
-}
-
 model Session {
   id          String  @id @default(auto()) @map("_id") @db.ObjectId
   accessToken String
