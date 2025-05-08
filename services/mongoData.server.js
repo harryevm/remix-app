@@ -14,7 +14,7 @@ export async function fetchMongoDataById(id) {
   // });
 }
 
-async function insertMongoData(data) {
+export async function insertMongoData(data) {
   return await prisma.trevor.create({
     data: {
       ...data,
