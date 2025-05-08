@@ -8,7 +8,8 @@ datasource db {
 }
 
 model Session {
-  id    String @id @default(auto()) @map("_id") @db.ObjectId
+  session_id    String  @id @default(auto()) @map("_id") @db.ObjectId
+  id            String  @unique
   shop          String
   state         String
   isOnline      Boolean   @default(false)
@@ -24,3 +25,4 @@ model Session {
   collaborator  Boolean   @default(false)
   emailVerified Boolean   @default(false)
 }
+
