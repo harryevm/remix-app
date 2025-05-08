@@ -15,13 +15,19 @@ export async function fetchMongoDataById(id) {
 }
 
 export async function insertMongoData(data) {
-  return await prisma.Trevor.create({
+  return await prisma.trevor.create({
     data: {
       ...data,
+      mediaReleaseDate: new Date(data.mediaReleaseDate),
+      agencyDate: new Date(data.agencyDate),
+      fairHousingDate: new Date(data.fairHousingDate),
+      propertyDate: new Date(data.propertyDate),
+      listingDate: new Date(data.listingDate),
       createdAt: new Date(),
     },
   });
 }
+
 
 
 export async function totalPropertyCount() {
