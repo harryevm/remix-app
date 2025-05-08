@@ -3,12 +3,10 @@ import prisma from "../app/db.server";
 
 export async function fetchMongoData(limit = null) {
   return await prisma.Trevor.findMany({
-    orderBy: {
-      createdAt: "desc",
-    },
     take: limit ?? undefined,
   });
 }
+
 
 export async function fetchMongoDataById(id) {
   // return await prisma.Trevor.findUnique({
@@ -24,6 +22,7 @@ export async function insertMongoData(data) {
     },
   });
 }
+
 
 export async function totalPropertyCount() {
   return await prisma.Trevor.count();
