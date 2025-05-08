@@ -72,6 +72,8 @@ model Trevor {
   propertyDate         DateTime
   listingSignature     String
   listingDate          DateTime
+  createdAt            DateTime @default(now())
+
   propertyPhotos       String[] // Use String[] for array of URLs or file identifiers
   agencyAgreement      String[]
   fairHousing          String[]
