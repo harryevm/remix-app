@@ -15,18 +15,24 @@ export async function fetchMongoDataById(id) {
 }
 
 export async function insertMongoData(data) {
+  const ensureDate = (value) => {
+    const parsedDate = new Date(value);
+    return !isNaN(parsedDate) ? parsedDate : null; // Return null if invalid date
+  };
+
   return await prisma.trevor.create({
     data: {
       ...data,
-      mediaReleaseDate: new Date(data.mediaReleaseDate),
-      agencyDate: new Date(data.agencyDate),
-      fairHousingDate: new Date(data.fairHousingDate),
-      propertyDate: new Date(data.propertyDate),
-      listingDate: new Date(data.listingDate),
+      mediaReleaseDate: ensureDate(data.mediaReleaseDate),
+      agencyDate: ensureDate(data.agencyDate),
+      fairHousingDate: ensureDate(data.fairHousingDate),
+      propertyDate: ensureDate(data.propertyDate),
+      listingDate: ensureDate(data.listingDate),
       createdAt: new Date(),
     },
   });
 }
+
 
 
 
