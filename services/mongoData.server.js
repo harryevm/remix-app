@@ -14,24 +14,25 @@ export async function fetchMongoDataById(id) {
   // });
 }
 
-export async function insertMongoData(data) {
-  const ensureDate = (value) => {
-    const parsedDate = new Date(value);
-    return !isNaN(parsedDate) ? parsedDate : null; // Return null if invalid date
-  };
-
+async function insertMongoData(data) {
   return await prisma.trevor.create({
     data: {
       ...data,
-      mediaReleaseDate: ensureDate(data.mediaReleaseDate),
-      agencyDate: ensureDate(data.agencyDate),
-      fairHousingDate: ensureDate(data.fairHousingDate),
-      propertyDate: ensureDate(data.propertyDate),
-      listingDate: ensureDate(data.listingDate),
-      createdAt: new Date(),
+      mediaReleaseDate: data.mediaReleaseDate ? new Date(data.mediaReleaseDate) : null,  // Handle DateTime conversion
+      agencyDate: data.agencyDate ? new Date(data.agencyDate) : null,
+      fairHousingDate: data.fairHousingDate ? new Date(data.fairHousingDate) : null,
+      propertyDate: data.propertyDate ? new Date(data.propertyDate) : null,
+      listingDate: data.listingDate ? new Date(data.listingDate) : null,
+      createdAt: new Date(),  // Current date for createdAt
+      lotUnit: data.lotUnit || null,  // Handle missing lotUnit
+      garageSpecify: data.garageSpecify || null,  // Handle missing garageSpecify
+      basement: data.basement || null,  // Handle missing basement
+      outdoorFeatures: data.outdoorFeatures || null,  // Handle missing outdoorFeatures
+      additionalFeatures: data.additionalFeatures || null,  // Handle missing additionalFeatures
     },
   });
 }
+
 
 
 

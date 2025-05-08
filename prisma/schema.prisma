@@ -33,14 +33,14 @@ model Trevor {
   email                String
   phone                String
   address              String
-  address2             String
+  address2             String?
   city                 String
   zip                  String
   neighborhood         String
   propertyType         String   @map("property-type")
   homeSize             String   @map("home-size")
   lotSize              String   @map("lot-size")
-  lotUnit              String
+  lotUnit              String?  // Nullable field
   yearBuilt            String   @map("year-built")
   bedrooms             String
   bathrooms            String
@@ -48,12 +48,12 @@ model Trevor {
   cooling              String
   waterSource          String
   sewer                String
-  otherUtilities       String
+  otherUtilities       String?
   garage               String
-  garageSpecify        String   @map("garage-specify")
-  basement             String
-  outdoorFeatures      String
-  additionalFeatures   String
+  garageSpecify        String?  @map("garage-specify") // Nullable field
+  basement             String?  // Nullable field
+  outdoorFeatures      String?  // Nullable field
+  additionalFeatures   String?  // Nullable field
   listingCheckbox      String
   mediaRelease         String
   mediaReleaseDate     DateTime
@@ -74,7 +74,7 @@ model Trevor {
   listingDate          DateTime
   createdAt            DateTime @default(now())
 
-  propertyPhotos       String[] // Use String[] for array of URLs or file identifiers
+  propertyPhotos       String[] // Array of URLs or file identifiers
   agencyAgreement      String[]
   fairHousing          String[]
   propertyDisclosure   String[]
