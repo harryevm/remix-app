@@ -251,8 +251,8 @@ export async function action({ request }) {
 
             await transporter.sendMail(mailOptions);
             
-
-          return json({ success: true, insertedId: mongoData._id, imageUrls  }, { headers });
+            console.log('Error inserting data:', mongoData);
+          return json({ success: true, insertedId: mongoData.id, imageUrls  }, { headers });
 
       } catch (error) {
           console.error('Error inserting data:', error);
