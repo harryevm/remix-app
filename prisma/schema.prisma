@@ -37,7 +37,7 @@ model Trevor {
   city                 String
   zip                  String
   neighborhood         String
-  propertyType         String   @map("property-type")
+  propertyType         String?   @map("property-type")
   homeSize             String   @map("home-size")
   lotSize              String   @map("lot-size")
   lotUnit              String?  // Nullable field
