@@ -56,22 +56,22 @@ model Trevor {
   additionalFeatures   String?  // Nullable field
   listingCheckbox      String
   mediaRelease         String
-  mediaReleaseDate     DateTime
+  mediaReleaseDate     String
   description          String
   askingPrice          String
   preferredContact     String
   contactHours         String
   agencyCheckbox       String
   agencySignature      String
-  agencyDate           DateTime
+  agencyDate           String
   fairHousingCheckbox  String
   fairHousingSignature String
-  fairHousingDate      DateTime
+  fairHousingDate      String
   propertyCheckbox     String
   propertySignature    String
-  propertyDate         DateTime
+  propertyDate         String
   listingSignature     String
-  listingDate          DateTime
+  listingDate          String
   createdAt            DateTime @default(now())
 
   propertyPhotos       String[] // Array of URLs or file identifiers
