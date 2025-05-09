@@ -9,9 +9,9 @@ export async function fetchMongoData(limit = null) {
 
 
 export async function fetchMongoDataById(id) {
-  // return await prisma.trevor.findUnique({
-  //   where: { id }, // 'id' should be a string (MongoDB ObjectId as string)
-  // });
+  return await prisma.trevor.findUnique({
+    where: { id }, // 'id' should be a string (MongoDB ObjectId as string)
+  });
 }
 
 export function insertMongoData(data) {
