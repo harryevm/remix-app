@@ -15,6 +15,9 @@ export async function fetchMongoDataById(id) {
 }
 
 export function insertMongoData(data) {
+  // Prevent accidental `null` override
+  delete data.createdAt;
+
   return prisma.trevor.create({ data });
 }
 
