@@ -73,7 +73,7 @@ export async function fetchMongoData(limit = null) {
 
     const db = client.db(dbName);
     
-    const collection = db.collection('Trevor');
+    const collection = db.collection('trevor_form');
 
     // Example query, replace with actual data fetching logic
     let query  = await collection.find({}).sort({ createdAt: -1 });
@@ -96,7 +96,7 @@ export async function fetchMongoDataById(userId) {
   try {
     await client.connect();
     const db = client.db(dbName);
-    const collection = db.collection("Trevor");
+    const collection = db.collection("trevor_form");
     const findResult = await collection.findOne({ _id: objectId });
     // Fetching the user by their string ID
     return findResult;
@@ -114,8 +114,8 @@ export async function insertMongoData(data) {
  
   try {
     await client.connect();
-    const db = client.db('Trevor');
-    const collection = db.collection('Trevor');
+    const db = client.db('trevor_form');
+    const collection = db.collection('trevor_form');
     data.createdAt = new Date(); 
     const result = await collection.insertOne(data);
     return result;
@@ -137,7 +137,7 @@ export async function totalPropertyCount() {
 
     const db = client.db(dbName);
     
-    const collection = db.collection('Trevor');
+    const collection = db.collection('trevor_form');
 
     // Example query, replace with actual data fetching logic
     const findResult = await collection.count()
@@ -158,7 +158,7 @@ export async function totalUserCount() {
     console.log('Connected successfully to server');
 
     const db = client.db(dbName);
-    const collection = db.collection('Trevor');
+    const collection = db.collection('trevor_form');
 
     // Use aggregation to count unique emails
     const uniqueEmailCount = await collection.aggregate([
