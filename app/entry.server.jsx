@@ -5,7 +5,15 @@ import { createReadableStreamFromReadable } from "@remix-run/node";
 import { isbot } from "isbot";
 import { addDocumentResponseHeaders } from "./shopify.server";
 
+import { MongoClient, ObjectId } from "mongodb";
 
+
+const url = process.env.MONGO_URL;
+
+const client = new MongoClient(url);
+
+// Database Name
+const dbName = 'trevor_form';
 
 
 import { config as configDotenv } from "dotenv";

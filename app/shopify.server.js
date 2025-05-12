@@ -61,7 +61,7 @@ import { PrismaSessionStorage } from "@shopify/shopify-app-session-storage-prism
 import prisma from "./db.server";
 import { MongoDBSessionStorage } from "@shopify/shopify-app-session-storage-mongodb";
 // import { MemorySessionStorage } from "@shopify/shopify-app-session-storage-memory";
-const MONGO_URL = process.env.MONGO_URL || "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
+const MONGO_URL = process.env.MONGO_URL;
 
  
 const shopify = shopifyApp({
