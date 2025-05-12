@@ -1,23 +1,18 @@
+import { config as configDotenv } from "dotenv";
+configDotenv();
 import { PassThrough } from "stream";
 import { renderToPipeableStream } from "react-dom/server";
 import { RemixServer } from "@remix-run/react";
 import { createReadableStreamFromReadable } from "@remix-run/node";
 import { isbot } from "isbot";
 import { addDocumentResponseHeaders } from "./shopify.server";
-
 import { MongoClient, ObjectId } from "mongodb";
 
-
 const url = process.env.MONGO_URL;
+const dbName = 'trevor_form';
+const collectionName = 'trevor_form';
 
 const client = new MongoClient(url);
-
-// Database Name
-const dbName = 'trevor_form';
-
-
-import { config as configDotenv } from "dotenv";
-configDotenv();
 
 export const streamTimeout = 5000;
 
@@ -64,26 +59,25 @@ export default async function handleRequest(
   });
 }
 
+// Ensure a single client connection is reused
+async function getMongoCollection() {
+  await client.connect(); // Safe to call multiple times
+  const db = client.db(dbName);
+  return db.collection(collectionName);
+}
+
 
 export async function fetchMongoData(limit = null) {
   try {
     // Reuse client if already connected
-    await client.connect();
-    console.log('Connected successfully to server');
-
-    const db = client.db(dbName);
-    
-    const collection = db.collection('trevor_form');
+    const collection = await getMongoCollection();
 
     // Example query, replace with actual data fetching logic
-    let query  = await collection.find({}).sort({ createdAt: -1 });
+    let cursor = collection.find({}).sort({ createdAt: -1 });
     if (limit) {
-      query = query.limit(limit);
+      cursor = cursor.limit(limit);
     }
-    const findResult = await query.toArray();
-
-
-    return findResult;
+    return await cursor.toArray();
 
   } catch (error) {
     console.error("Error fetching data:", error);
@@ -92,11 +86,9 @@ export async function fetchMongoData(limit = null) {
 }
 
 export async function fetchMongoDataById(userId) {
-  const objectId = new ObjectId(userId);
   try {
-    await client.connect();
-    const db = client.db(dbName);
-    const collection = db.collection("trevor_form");
+    const collection = await getMongoCollection();
+    const objectId = new ObjectId(userId);
     const findResult = await collection.findOne({ _id: objectId });
     // Fetching the user by their string ID
     return findResult;
@@ -113,9 +105,7 @@ export async function fetchMongoDataById(userId) {
 export async function insertMongoData(data) {
  
   try {
-    await client.connect();
-    const db = client.db('trevor_form');
-    const collection = db.collection('trevor_form');
+    const collection = await getMongoCollection();
     data.createdAt = new Date(); 
     const result = await collection.insertOne(data);
     return result;
@@ -132,17 +122,10 @@ export async function insertMongoData(data) {
 export async function totalPropertyCount() {
   try {
     // Reuse client if already connected
-    await client.connect();
-    console.log('Connected successfully to server');
-
-    const db = client.db(dbName);
-    
-    const collection = db.collection('trevor_form');
+     const collection = await getMongoCollection();
 
     // Example query, replace with actual data fetching logic
-    const findResult = await collection.count()
-
-
+    const findResult = await collection.countDocuments();
     return findResult;
 
   } catch (error) {
@@ -153,12 +136,7 @@ export async function totalPropertyCount() {
 
 export async function totalUserCount() {
   try {
-    // Reuse client if already connected
-    await client.connect();
-    console.log('Connected successfully to server');
-
-    const db = client.db(dbName);
-    const collection = db.collection('trevor_form');
+    const collection = await getMongoCollection();
 
     // Use aggregation to count unique emails
     const uniqueEmailCount = await collection.aggregate([
