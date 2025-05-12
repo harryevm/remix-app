@@ -1,6 +1,6 @@
 import { MongoClient } from "mongodb";
 
-const url = "mongodb://trevor_form:3E8Y8XFCB1L0Nvd@3.208.138.53:27017/trevor_form?authSource=trevor_form";
+const url = process.env.MONGO_URL;
 
 
 
