@@ -1,8 +1,9 @@
 import { json } from '@remix-run/node';  // For JSON response
-import { insertMongoData } from '../../services/mongoData.server';
+// import { insertMongoData } from '../../services/mongoData.server';
 
 import cloudinary from 'cloudinary';
 import { Readable } from 'stream';
+import { insertMongoData } from '../entry.server';
 
 // Cloudinary configuration
 cloudinary.config({

@@ -1,47 +1,43 @@
-// import { MongoClient } from "mongodb";
+import { MongoClient } from "mongodb";
 
-// const url = 
-// "mongodb+srv://harish_c:harish_c@cluster0.kdyad.mongodb.net/?retryWrites=true&w=majority";
-
+const url = "mongodb://trevor_form:3E8Y8XFCB1L0Nvd@3.208.138.53:27017/trevor_form?authSource=trevor_form";
 
 
-// // Database Name
-// const dbName = 'test';
 
-// const client = new MongoClient(url, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-//   });
-// const db = client.db(dbName);
-// const collection = db.collection('shopify_sessions');
+// Database Name
+const dbName = 'trevor_form';
 
-// // Load session from MongoDB
-// export async function loadSession(request) {
-// const shop = request.headers.get("X-Shopify-Shop-Domain");
-// if (!shop) return null;
+const client = new MongoClient(url);
+const db = client.db(dbName);
+const collection = db.collection('shopify_sessions');
 
-// const session = await collection.findOne({ shop });
-// return session || null;
-// }
+// Load session from MongoDB
+export async function loadSession(request) {
+const shop = request.headers.get("X-Shopify-Shop-Domain");
+if (!shop) return null;
+
+const session = await collection.findOne({ shop });
+return session || null;
+}
 
 
-// // Store session in MongoDB
-// export async function storeSession(session) {
-// const { shop, id, state, scope, accessToken, isOnline } = session;
+// Store session in MongoDB
+export async function storeSession(session) {
+const { shop, id, state, scope, accessToken, isOnline } = session;
 
-// const result = await collection.updateOne(
-//     { shop },
-//     { $set: { shop, id, state, scope, accessToken, isOnline, createdAt: new Date() } },
-//     { upsert: true }
-// );
+const result = await collection.updateOne(
+    { shop },
+    { $set: { shop, id, state, scope, accessToken, isOnline, createdAt: new Date() } },
+    { upsert: true }
+);
 
-// return result;
-// }
+return result;
+}
 
-// // Delete session from MongoDB
-// export async function deleteSession(request) {
-// const shop = request.headers.get("X-Shopify-Shop-Domain");
-// if (shop) {
-//     await collection.deleteOne({ shop });
-// }
-// }
+// Delete session from MongoDB
+export async function deleteSession(request) {
+const shop = request.headers.get("X-Shopify-Shop-Domain");
+if (shop) {
+    await collection.deleteOne({ shop });
+}
+}
